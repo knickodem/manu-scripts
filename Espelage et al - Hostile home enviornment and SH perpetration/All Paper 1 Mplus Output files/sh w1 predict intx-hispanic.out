@@ -1,0 +1,3369 @@
+Mplus VERSION 8.4
+MUTHEN & MUTHEN
+06/21/2021  11:09 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Sexual Harassment LGM with Wave 1 Predictors and Interactions - Hispanic
+
+  DATA: FILE = mpluswide_hispanic.csv;
+
+  VARIABLE:
+  NAMES = subjno School Gender Female Race Race4
+  Black Hispanic White OtherR SchBel
+  Age Grades FamCon Abuse SibAgg
+  del_w1 del_w2 del_w3 del_w4
+  dep_w1 dep_w2 dep_w3 dep_w4
+  emp_w1 emp_w2 emp_w3 emp_w4
+  schb_w1 schb_w2 schb_w3 schb_w4
+  sh_w1 sh_w2 sh_w3 sh_w4;
+
+  USEVARIABLES = sh_w1-sh_w4
+  FamCon Abuse SibAgg emp_w1 Female SchBel Grades
+  SBxFC SBxAB SBxSA AGxFC AGxAB AGxSA;
+
+  IDVARIABLE = subjno;
+  CLUSTER = School;
+
+  MISSING = ALL(-999);
+
+  DEFINE:
+  SBxFC = SchBel*FamCon;
+  SBxAB = SchBel*Abuse;
+  SBxSA = SchBel*SibAgg;
+  AGxFC = Grades*FamCon;
+  AGxAB = Grades*Abuse;
+  AGxSA = Grades*SibAgg;
+
+  ANALYSIS:
+  TYPE = COMPLEX;
+
+  MODEL:
+  i s | sh_w1@0 sh_w2@.5 sh_w3@1.5 sh_w4@2.5;
+  i s ON FamCon Abuse SibAgg emp_w1 Female SchBel Grades
+  SBxFC SBxAB SBxSA AGxFC AGxAB AGxSA;
+  [FamCon Abuse SibAgg emp_w1 Female SchBel Grades
+  SBxFC SBxAB SBxSA AGxFC AGxAB AGxSA];
+  !brings exogenous vars into model so missingness handled by FIML
+
+  OUTPUT:
+  STANDARDIZED CINTERVAL RESIDUAL TECH1 TECH4;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Sexual Harassment LGM with Wave 1 Predictors and Interactions - Hispanic
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         605
+
+Number of dependent variables                                    4
+Number of independent variables                                 13
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   SH_W1       SH_W2       SH_W3       SH_W4
+
+Observed independent variables
+   FAMCON      ABUSE       SIBAGG      EMP_W1      FEMALE      SCHBEL
+   GRADES      SBXFC       SBXAB       SBXSA       AGXFC       AGXAB
+   AGXSA
+
+Continuous latent variables
+   I           S
+
+Variables with special functions
+
+  Cluster variable      SCHOOL
+  ID variable           SUBJNO
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  mpluswide_hispanic.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            46
+     Number of clusters                         15
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.992
+ SH_W2          0.912         0.919
+ SH_W3          0.765         0.702         0.772
+ SH_W4          0.669         0.620         0.615         0.676
+ FAMCON         0.919         0.853         0.706         0.620         0.921
+ ABUSE          0.902         0.836         0.691         0.603         0.901
+ SIBAGG         0.970         0.894         0.754         0.656         0.901
+ EMP_W1         0.950         0.881         0.731         0.645         0.919
+ FEMALE         0.990         0.917         0.770         0.674         0.919
+ SCHBEL         0.992         0.919         0.772         0.676         0.921
+ GRADES         0.853         0.790         0.663         0.585         0.793
+ SBXFC          0.919         0.853         0.706         0.620         0.921
+ SBXAB          0.902         0.836         0.691         0.603         0.901
+ SBXSA          0.970         0.894         0.754         0.656         0.901
+ AGXFC          0.792         0.736         0.608         0.537         0.793
+ AGXAB          0.774         0.717         0.593         0.521         0.774
+ AGXSA          0.835         0.769         0.646         0.567         0.775
+
+
+           Covariance Coverage
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+ ABUSE          0.904
+ SIBAGG         0.884         0.974
+ EMP_W1         0.902         0.932         0.952
+ FEMALE         0.902         0.970         0.950         0.997
+ SCHBEL         0.904         0.974         0.952         0.997         1.000
+ GRADES         0.775         0.836         0.821         0.858         0.860
+ SBXFC          0.901         0.901         0.919         0.919         0.921
+ SBXAB          0.904         0.884         0.902         0.902         0.904
+ SBXSA          0.884         0.974         0.932         0.970         0.974
+ AGXFC          0.774         0.775         0.792         0.792         0.793
+ AGXAB          0.775         0.757         0.774         0.774         0.775
+ AGXSA          0.757         0.836         0.803         0.835         0.836
+
+
+           Covariance Coverage
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+ GRADES         0.860
+ SBXFC          0.793         0.921
+ SBXAB          0.775         0.901         0.904
+ SBXSA          0.836         0.901         0.884         0.974
+ AGXFC          0.793         0.793         0.774         0.775         0.793
+ AGXAB          0.775         0.774         0.775         0.757         0.774
+ AGXSA          0.836         0.775         0.757         0.836         0.775
+
+
+           Covariance Coverage
+              AGXAB         AGXSA
+              ________      ________
+ AGXAB          0.775
+ AGXSA          0.757         0.836
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     SH_W1                 0.210       4.485       0.000   87.33%       0.000      0.000      0.000
+             600.000       0.453      25.356       6.000    0.33%       0.000      0.000
+     SH_W2                 0.284       3.612       0.000   83.63%       0.000      0.000      0.000
+             556.000       0.603      15.944       6.000    0.36%       0.000      0.000
+     SH_W3                 0.340       3.239       0.000   81.16%       0.000      0.000      0.000
+             467.000       0.743      11.900       6.000    0.21%       0.000      0.000
+     SH_W4                 0.281       4.199       0.000   81.17%       0.000      0.000      0.000
+             409.000       0.564      22.682       6.000    0.49%       0.000      0.000
+     FAMCON                0.643       1.628       0.000   38.06%       0.000      0.333      0.333
+             557.000       0.624       2.822       4.000    0.72%       0.667      1.333
+     ABUSE                 0.344       1.989       0.000   74.59%       0.000      0.000      0.000
+             547.000       0.434       3.509       3.000    1.46%       0.000      1.000
+     SIBAGG                0.378       3.270       0.000   77.08%       0.000      0.000      0.000
+             589.000       0.943      10.811       5.000    1.87%       0.000      0.500
+     EMP_W1                2.584      -0.274       0.000    0.52%       1.800      2.400      2.600
+             576.000       0.776      -0.400       4.000    9.55%       2.800      3.400
+     FEMALE                0.483       0.070       0.000   51.74%       0.000      0.000      0.000
+             603.000       0.250      -1.995       1.000   48.26%       1.000      1.000
+     SCHBEL                0.641      -0.589       0.000   35.87%       0.000      1.000      1.000
+             605.000       0.230      -1.653       1.000   64.13%       1.000      1.000
+     GRADES                4.302      -1.062       0.000    2.12%       3.000      5.000      5.000
+             520.000       2.188       0.445       6.000   16.73%       5.000      5.000
+     SBXFC                 0.353       2.640       0.000   61.04%       0.000      0.000      0.000
+             557.000       0.390       8.938       4.000    0.54%       0.000      0.667
+     SBXAB                 0.170       3.147       0.000   86.84%       0.000      0.000      0.000
+             547.000       0.229      10.496       3.000    0.55%       0.000      0.000
+     SBXSA                 0.242       4.283       0.000   87.27%       0.000      0.000      0.000
+             589.000       0.715      18.787       5.000    1.70%       0.000      0.000
+     AGXFC                 2.658       1.849       0.000   39.38%       0.000      0.333      1.667
+             480.000      12.035       3.836      20.000    0.21%       2.000      5.000
+     AGXAB                 1.473       2.467       0.000   76.55%       0.000      0.000      0.000
+             469.000       9.767       6.444      18.000    0.43%       0.000      3.000
+     AGXSA                 1.547       3.866       0.000   77.87%       0.000      0.000      0.000
+             506.000      18.903      16.068      30.000    0.20%       0.000      1.500
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.363D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 15, [ SBXAB ]
+
+     THIS IS MOST LIKELY DUE TO HAVING MORE PARAMETERS THAN THE NUMBER
+     OF CLUSTERS MINUS THE NUMBER OF STRATA WITH MORE THAN ONE CLUSTER.
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                      139
+
+Loglikelihood
+
+          H0 Value                       -9413.651
+          H0 Scaling Correction Factor      2.6183
+            for MLR
+          H1 Value                       -9388.926
+          H1 Scaling Correction Factor      2.3612
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   19105.301
+          Bayesian (BIC)                 19717.628
+          Sample-Size Adjusted BIC       19276.337
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             40.920*
+          Degrees of Freedom                    31
+          P-Value                           0.1096
+          Scaling Correction Factor         1.2085
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.023
+          90 Percent C.I.                    0.000  0.040
+          Probability RMSEA <= .05           0.997
+
+CFI/TLI
+
+          CFI                                0.969
+          TLI                                0.943
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                            380.875
+          Degrees of Freedom                    58
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.020
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ I        |
+    SH_W1              1.000      0.000    999.000    999.000
+    SH_W2              1.000      0.000    999.000    999.000
+    SH_W3              1.000      0.000    999.000    999.000
+    SH_W4              1.000      0.000    999.000    999.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.500      0.000    999.000    999.000
+    SH_W3              1.500      0.000    999.000    999.000
+    SH_W4              2.500      0.000    999.000    999.000
+
+ I        ON
+    FAMCON             0.050      0.201      0.247      0.805
+    ABUSE              0.482      0.232      2.079      0.038
+    SIBAGG            -0.016      0.045     -0.361      0.718
+    EMP_W1            -0.004      0.028     -0.143      0.886
+    FEMALE            -0.063      0.056     -1.118      0.263
+    SCHBEL            -0.010      0.067     -0.155      0.877
+    GRADES            -0.018      0.007     -2.676      0.007
+    SBXFC             -0.090      0.136     -0.661      0.509
+    SBXAB             -0.293      0.151     -1.945      0.052
+    SBXSA              0.038      0.048      0.784      0.433
+    AGXFC              0.014      0.023      0.585      0.559
+    AGXAB             -0.012      0.045     -0.261      0.794
+    AGXSA             -0.001      0.009     -0.107      0.914
+
+ S        ON
+    FAMCON             0.059      0.132      0.452      0.651
+    ABUSE             -0.339      0.099     -3.409      0.001
+    SIBAGG            -0.086      0.054     -1.584      0.113
+    EMP_W1             0.005      0.010      0.525      0.600
+    FEMALE            -0.051      0.030     -1.710      0.087
+    SCHBEL            -0.062      0.048     -1.302      0.193
+    GRADES            -0.004      0.011     -0.385      0.700
+    SBXFC             -0.035      0.086     -0.407      0.684
+    SBXAB              0.083      0.099      0.842      0.400
+    SBXSA              0.034      0.060      0.576      0.565
+    AGXFC             -0.005      0.015     -0.342      0.732
+    AGXAB              0.039      0.016      2.389      0.017
+    AGXSA              0.015      0.011      1.339      0.180
+
+ S        WITH
+    I                 -0.005      0.029     -0.187      0.852
+
+ ABUSE    WITH
+    FAMCON             0.176      0.033      5.276      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.292      0.071      4.101      0.000
+    ABUSE              0.115      0.035      3.315      0.001
+
+ EMP_W1   WITH
+    FAMCON            -0.040      0.047     -0.861      0.389
+    ABUSE              0.038      0.040      0.936      0.349
+    SIBAGG            -0.014      0.047     -0.307      0.759
+
+ FEMALE   WITH
+    FAMCON             0.020      0.011      1.851      0.064
+    ABUSE             -0.028      0.010     -2.731      0.006
+    SIBAGG             0.032      0.012      2.600      0.009
+    EMP_W1            -0.079      0.014     -5.855      0.000
+
+ SCHBEL   WITH
+    FAMCON            -0.068      0.019     -3.494      0.000
+    ABUSE             -0.060      0.015     -4.009      0.000
+    SIBAGG            -0.001      0.008     -0.151      0.880
+    EMP_W1            -0.073      0.012     -5.834      0.000
+    FEMALE             0.023      0.008      2.692      0.007
+
+ GRADES   WITH
+    FAMCON            -0.109      0.092     -1.178      0.239
+    ABUSE              0.009      0.024      0.375      0.708
+    SIBAGG            -0.027      0.048     -0.563      0.573
+    EMP_W1            -0.139      0.043     -3.220      0.001
+    FEMALE             0.055      0.017      3.352      0.001
+    SCHBEL             0.152      0.033      4.607      0.000
+
+ SBXFC    WITH
+    FAMCON             0.286      0.039      7.332      0.000
+    ABUSE              0.041      0.017      2.503      0.012
+    SIBAGG             0.163      0.045      3.647      0.000
+    EMP_W1            -0.049      0.022     -2.277      0.023
+    FEMALE             0.013      0.006      2.050      0.040
+    SCHBEL             0.125      0.010     13.080      0.000
+    GRADES             0.066      0.032      2.087      0.037
+
+ SBXAB    WITH
+    FAMCON             0.058      0.014      4.104      0.000
+    ABUSE              0.199      0.013     15.135      0.000
+    SIBAGG             0.033      0.021      1.536      0.125
+    EMP_W1             0.012      0.021      0.573      0.566
+    FEMALE            -0.016      0.005     -3.140      0.002
+    SCHBEL             0.059      0.005     12.623      0.000
+    GRADES             0.049      0.031      1.565      0.118
+    SBXFC              0.106      0.019      5.614      0.000
+
+ SBXSA    WITH
+    FAMCON             0.138      0.040      3.483      0.000
+    ABUSE              0.007      0.015      0.474      0.635
+    SIBAGG             0.682      0.049     13.993      0.000
+    EMP_W1             0.000      0.032     -0.005      0.996
+    FEMALE             0.023      0.009      2.710      0.007
+    SCHBEL             0.087      0.005     17.138      0.000
+    GRADES             0.032      0.043      0.740      0.459
+    SBXFC              0.210      0.050      4.230      0.000
+    SBXAB              0.054      0.022      2.498      0.012
+
+ AGXFC    WITH
+    FAMCON             2.440      0.248      9.837      0.000
+    ABUSE              0.687      0.132      5.223      0.000
+    SIBAGG             1.224      0.265      4.615      0.000
+    EMP_W1            -0.186      0.192     -0.965      0.334
+    FEMALE             0.131      0.055      2.354      0.019
+    SCHBEL            -0.155      0.080     -1.953      0.051
+    GRADES             1.101      0.238      4.633      0.000
+    SBXFC              1.252      0.203      6.160      0.000
+    SBXAB              0.236      0.062      3.823      0.000
+    SBXSA              0.617      0.175      3.528      0.000
+
+ AGXAB    WITH
+    FAMCON             0.648      0.128      5.041      0.000
+    ABUSE              1.930      0.282      6.847      0.000
+    SIBAGG             0.423      0.131      3.231      0.001
+    EMP_W1             0.196      0.142      1.382      0.167
+    FEMALE            -0.089      0.047     -1.881      0.060
+    SCHBEL            -0.211      0.078     -2.712      0.007
+    GRADES             0.794      0.237      3.345      0.001
+    SBXFC              0.146      0.072      2.031      0.042
+    SBXAB              0.931      0.068     13.750      0.000
+    SBXSA              0.011      0.056      0.196      0.845
+    AGXFC              3.402      0.681      4.997      0.000
+
+ AGXSA    WITH
+    FAMCON             1.197      0.271      4.414      0.000
+    ABUSE              0.431      0.133      3.228      0.001
+    SIBAGG             4.109      0.423      9.705      0.000
+    EMP_W1            -0.123      0.208     -0.590      0.555
+    FEMALE             0.182      0.053      3.441      0.001
+    SCHBEL             0.045      0.025      1.812      0.070
+    GRADES             0.698      0.275      2.543      0.011
+    SBXFC              0.707      0.190      3.715      0.000
+    SBXAB              0.121      0.082      1.484      0.138
+    SBXSA              3.082      0.289     10.669      0.000
+    AGXFC              6.182      1.379      4.483      0.000
+    AGXAB              2.049      0.604      3.395      0.001
+
+ Means
+    FAMCON             0.649      0.063     10.361      0.000
+    ABUSE              0.360      0.035     10.420      0.000
+    SIBAGG             0.378      0.025     14.998      0.000
+    EMP_W1             2.586      0.048     53.724      0.000
+    FEMALE             0.483      0.020     24.267      0.000
+    SCHBEL             0.641      0.010     63.962      0.000
+    GRADES             4.294      0.260     16.546      0.000
+    SBXFC              0.350      0.032     10.838      0.000
+    SBXAB              0.171      0.010     16.278      0.000
+    SBXSA              0.241      0.016     15.448      0.000
+    AGXFC              2.683      0.262     10.229      0.000
+    AGXAB              1.556      0.194      8.032      0.000
+    AGXSA              1.592      0.148     10.754      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.214      0.119      1.801      0.072
+    S                  0.145      0.093      1.566      0.117
+
+ Variances
+    FAMCON             0.628      0.079      7.970      0.000
+    ABUSE              0.446      0.059      7.554      0.000
+    SIBAGG             0.944      0.073     12.985      0.000
+    EMP_W1             0.776      0.082      9.469      0.000
+    FEMALE             0.250      0.001    360.249      0.000
+    SCHBEL             0.230      0.003     81.168      0.000
+    GRADES             2.188      0.418      5.238      0.000
+    SBXFC              0.390      0.046      8.422      0.000
+    SBXAB              0.228      0.016     13.968      0.000
+    SBXSA              0.715      0.051     13.963      0.000
+    AGXFC             12.110      1.406      8.611      0.000
+    AGXAB              9.564      1.494      6.401      0.000
+    AGXSA             19.851      2.656      7.475      0.000
+
+ Residual Variances
+    SH_W1              0.275      0.081      3.378      0.001
+    SH_W2              0.369      0.049      7.549      0.000
+    SH_W3              0.470      0.079      5.972      0.000
+    SH_W4              0.183      0.050      3.660      0.000
+    I                  0.128      0.047      2.709      0.007
+    S                  0.048      0.029      1.647      0.100
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ I        |
+    SH_W1              0.650      0.058     11.252      0.000
+    SH_W2              0.598      0.104      5.772      0.000
+    SH_W3              0.523      0.115      4.569      0.000
+    SH_W4              0.562      0.122      4.626      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.162      0.032      5.080      0.000
+    SH_W3              0.425      0.101      4.193      0.000
+    SH_W4              0.761      0.164      4.626      0.000
+
+ I        ON
+    FAMCON             0.088      0.345      0.255      0.799
+    ABUSE              0.718      0.396      1.815      0.070
+    SIBAGG            -0.035      0.095     -0.369      0.712
+    EMP_W1            -0.008      0.054     -0.146      0.884
+    FEMALE            -0.070      0.053     -1.315      0.188
+    SCHBEL            -0.011      0.073     -0.151      0.880
+    GRADES            -0.058      0.022     -2.631      0.009
+    SBXFC             -0.126      0.174     -0.721      0.471
+    SBXAB             -0.312      0.159     -1.965      0.049
+    SBXSA              0.072      0.088      0.817      0.414
+    AGXFC              0.107      0.183      0.583      0.560
+    AGXAB             -0.082      0.320     -0.256      0.798
+    AGXSA             -0.010      0.089     -0.107      0.914
+
+ S        ON
+    FAMCON             0.194      0.466      0.417      0.677
+    ABUSE             -0.933      0.395     -2.360      0.018
+    SIBAGG            -0.344      0.245     -1.405      0.160
+    EMP_W1             0.020      0.038      0.520      0.603
+    FEMALE            -0.104      0.062     -1.684      0.092
+    SCHBEL            -0.123      0.094     -1.306      0.192
+    GRADES            -0.026      0.062     -0.422      0.673
+    SBXFC             -0.090      0.234     -0.385      0.700
+    SBXAB              0.164      0.226      0.727      0.467
+    SBXSA              0.120      0.193      0.621      0.535
+    AGXFC             -0.072      0.220     -0.328      0.743
+    AGXAB              0.494      0.230      2.150      0.032
+    AGXSA              0.276      0.255      1.085      0.278
+
+ S        WITH
+    I                 -0.069      0.343     -0.202      0.840
+
+ ABUSE    WITH
+    FAMCON             0.333      0.041      8.083      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.380      0.068      5.595      0.000
+    ABUSE              0.178      0.044      4.005      0.000
+
+ EMP_W1   WITH
+    FAMCON            -0.058      0.065     -0.888      0.374
+    ABUSE              0.064      0.068      0.947      0.344
+    SIBAGG            -0.017      0.055     -0.307      0.759
+
+ FEMALE   WITH
+    FAMCON             0.052      0.029      1.805      0.071
+    ABUSE             -0.083      0.027     -3.102      0.002
+    SIBAGG             0.065      0.024      2.701      0.007
+    EMP_W1            -0.180      0.024     -7.618      0.000
+
+ SCHBEL   WITH
+    FAMCON            -0.179      0.042     -4.258      0.000
+    ABUSE             -0.186      0.038     -4.937      0.000
+    SIBAGG            -0.002      0.016     -0.151      0.880
+    EMP_W1            -0.172      0.025     -7.010      0.000
+    FEMALE             0.095      0.035      2.673      0.008
+
+ GRADES   WITH
+    FAMCON            -0.093      0.066     -1.399      0.162
+    ABUSE              0.009      0.024      0.384      0.701
+    SIBAGG            -0.019      0.034     -0.563      0.573
+    EMP_W1            -0.107      0.037     -2.859      0.004
+    FEMALE             0.075      0.025      3.002      0.003
+    SCHBEL             0.214      0.037      5.819      0.000
+
+ SBXFC    WITH
+    FAMCON             0.578      0.052     11.225      0.000
+    ABUSE              0.099      0.039      2.554      0.011
+    SIBAGG             0.268      0.063      4.292      0.000
+    EMP_W1            -0.089      0.037     -2.419      0.016
+    FEMALE             0.040      0.020      2.039      0.041
+    SCHBEL             0.416      0.032     13.203      0.000
+    GRADES             0.072      0.035      2.026      0.043
+
+ SBXAB    WITH
+    FAMCON             0.153      0.033      4.710      0.000
+    ABUSE              0.623      0.038     16.245      0.000
+    SIBAGG             0.071      0.046      1.533      0.125
+    EMP_W1             0.028      0.049      0.579      0.563
+    FEMALE            -0.065      0.020     -3.224      0.001
+    SCHBEL             0.258      0.012     20.717      0.000
+    GRADES             0.069      0.038      1.814      0.070
+    SBXFC              0.357      0.041      8.772      0.000
+
+ SBXSA    WITH
+    FAMCON             0.206      0.049      4.210      0.000
+    ABUSE              0.013      0.027      0.478      0.632
+    SIBAGG             0.830      0.016     51.766      0.000
+    EMP_W1             0.000      0.043     -0.005      0.996
+    FEMALE             0.055      0.019      2.854      0.004
+    SCHBEL             0.214      0.010     22.479      0.000
+    GRADES             0.026      0.033      0.776      0.438
+    SBXFC              0.397      0.079      5.002      0.000
+    SBXAB              0.134      0.053      2.505      0.012
+
+ AGXFC    WITH
+    FAMCON             0.885      0.053     16.848      0.000
+    ABUSE              0.296      0.039      7.499      0.000
+    SIBAGG             0.362      0.063      5.707      0.000
+    EMP_W1            -0.061      0.062     -0.977      0.329
+    FEMALE             0.075      0.035      2.142      0.032
+    SCHBEL            -0.093      0.045     -2.063      0.039
+    GRADES             0.214      0.037      5.712      0.000
+    SBXFC              0.576      0.060      9.655      0.000
+    SBXAB              0.142      0.035      4.081      0.000
+    SBXSA              0.210      0.056      3.756      0.000
+
+ AGXAB    WITH
+    FAMCON             0.264      0.045      5.812      0.000
+    ABUSE              0.935      0.022     42.072      0.000
+    SIBAGG             0.141      0.036      3.896      0.000
+    EMP_W1             0.072      0.050      1.430      0.153
+    FEMALE            -0.057      0.028     -2.071      0.038
+    SCHBEL            -0.142      0.044     -3.245      0.001
+    GRADES             0.174      0.035      4.899      0.000
+    SBXFC              0.075      0.040      1.893      0.058
+    SBXAB              0.631      0.038     16.721      0.000
+    SBXSA              0.004      0.021      0.196      0.845
+    AGXFC              0.316      0.046      6.826      0.000
+
+ AGXSA    WITH
+    FAMCON             0.339      0.055      6.136      0.000
+    ABUSE              0.145      0.036      4.040      0.000
+    SIBAGG             0.949      0.012     76.464      0.000
+    EMP_W1            -0.031      0.053     -0.587      0.557
+    FEMALE             0.082      0.020      4.167      0.000
+    SCHBEL             0.021      0.012      1.727      0.084
+    GRADES             0.106      0.034      3.086      0.002
+    SBXFC              0.254      0.057      4.468      0.000
+    SBXAB              0.057      0.038      1.498      0.134
+    SBXSA              0.818      0.019     43.092      0.000
+    AGXFC              0.399      0.067      5.941      0.000
+    AGXAB              0.149      0.035      4.255      0.000
+
+ Means
+    FAMCON             0.819      0.055     14.813      0.000
+    ABUSE              0.538      0.020     27.204      0.000
+    SIBAGG             0.389      0.017     23.038      0.000
+    EMP_W1             2.936      0.132     22.213      0.000
+    FEMALE             0.966      0.038     25.112      0.000
+    SCHBEL             1.337      0.029     45.884      0.000
+    GRADES             2.903      0.447      6.495      0.000
+    SBXFC              0.560      0.047     11.923      0.000
+    SBXAB              0.358      0.013     27.303      0.000
+    SBXSA              0.285      0.013     21.284      0.000
+    AGXFC              0.771      0.044     17.384      0.000
+    AGXAB              0.503      0.027     18.985      0.000
+    AGXSA              0.357      0.013     26.910      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.478      0.239      2.002      0.045
+    S                  0.600      0.334      1.797      0.072
+
+ Variances
+    FAMCON             1.000      0.000    999.000    999.000
+    ABUSE              1.000      0.000    999.000    999.000
+    SIBAGG             1.000      0.000    999.000    999.000
+    EMP_W1             1.000      0.000    999.000    999.000
+    FEMALE             1.000      0.000    999.000    999.000
+    SCHBEL             1.000      0.000    999.000    999.000
+    GRADES             1.000      0.000    999.000    999.000
+    SBXFC              1.000      0.000    999.000    999.000
+    SBXAB              1.000      0.000    999.000    999.000
+    SBXSA              1.000      0.000    999.000    999.000
+    AGXFC              1.000      0.000    999.000    999.000
+    AGXAB              1.000      0.000    999.000    999.000
+    AGXSA              1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.578      0.075      7.705      0.000
+    SH_W2              0.658      0.073      9.024      0.000
+    SH_W3              0.641      0.064      9.978      0.000
+    SH_W4              0.289      0.094      3.081      0.002
+    I                  0.637      0.093      6.875      0.000
+    S                  0.816      0.139      5.852      0.000
+
+
+STDY Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ I        |
+    SH_W1              0.650      0.058     11.252      0.000
+    SH_W2              0.598      0.104      5.772      0.000
+    SH_W3              0.523      0.115      4.569      0.000
+    SH_W4              0.562      0.122      4.626      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.162      0.032      5.080      0.000
+    SH_W3              0.425      0.101      4.193      0.000
+    SH_W4              0.761      0.164      4.626      0.000
+
+ I        ON
+    FAMCON             0.088      0.345      0.255      0.799
+    ABUSE              0.718      0.396      1.815      0.070
+    SIBAGG            -0.035      0.095     -0.369      0.712
+    EMP_W1            -0.008      0.054     -0.146      0.884
+    FEMALE            -0.070      0.053     -1.315      0.188
+    SCHBEL            -0.011      0.073     -0.151      0.880
+    GRADES            -0.058      0.022     -2.631      0.009
+    SBXFC             -0.126      0.174     -0.721      0.471
+    SBXAB             -0.312      0.159     -1.965      0.049
+    SBXSA              0.072      0.088      0.817      0.414
+    AGXFC              0.107      0.183      0.583      0.560
+    AGXAB             -0.082      0.320     -0.256      0.798
+    AGXSA             -0.010      0.089     -0.107      0.914
+
+ S        ON
+    FAMCON             0.194      0.466      0.417      0.677
+    ABUSE             -0.933      0.395     -2.360      0.018
+    SIBAGG            -0.344      0.245     -1.405      0.160
+    EMP_W1             0.020      0.038      0.520      0.603
+    FEMALE            -0.104      0.062     -1.684      0.092
+    SCHBEL            -0.123      0.094     -1.306      0.192
+    GRADES            -0.026      0.062     -0.422      0.673
+    SBXFC             -0.090      0.234     -0.385      0.700
+    SBXAB              0.164      0.226      0.727      0.467
+    SBXSA              0.120      0.193      0.621      0.535
+    AGXFC             -0.072      0.220     -0.328      0.743
+    AGXAB              0.494      0.230      2.150      0.032
+    AGXSA              0.276      0.255      1.085      0.278
+
+ S        WITH
+    I                 -0.069      0.343     -0.202      0.840
+
+ ABUSE    WITH
+    FAMCON             0.333      0.041      8.083      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.380      0.068      5.595      0.000
+    ABUSE              0.178      0.044      4.005      0.000
+
+ EMP_W1   WITH
+    FAMCON            -0.058      0.065     -0.888      0.374
+    ABUSE              0.064      0.068      0.947      0.344
+    SIBAGG            -0.017      0.055     -0.307      0.759
+
+ FEMALE   WITH
+    FAMCON             0.052      0.029      1.805      0.071
+    ABUSE             -0.083      0.027     -3.102      0.002
+    SIBAGG             0.065      0.024      2.701      0.007
+    EMP_W1            -0.180      0.024     -7.618      0.000
+
+ SCHBEL   WITH
+    FAMCON            -0.179      0.042     -4.258      0.000
+    ABUSE             -0.186      0.038     -4.937      0.000
+    SIBAGG            -0.002      0.016     -0.151      0.880
+    EMP_W1            -0.172      0.025     -7.010      0.000
+    FEMALE             0.095      0.035      2.673      0.008
+
+ GRADES   WITH
+    FAMCON            -0.093      0.066     -1.399      0.162
+    ABUSE              0.009      0.024      0.384      0.701
+    SIBAGG            -0.019      0.034     -0.563      0.573
+    EMP_W1            -0.107      0.037     -2.859      0.004
+    FEMALE             0.075      0.025      3.002      0.003
+    SCHBEL             0.214      0.037      5.819      0.000
+
+ SBXFC    WITH
+    FAMCON             0.578      0.052     11.225      0.000
+    ABUSE              0.099      0.039      2.554      0.011
+    SIBAGG             0.268      0.063      4.292      0.000
+    EMP_W1            -0.089      0.037     -2.419      0.016
+    FEMALE             0.040      0.020      2.039      0.041
+    SCHBEL             0.416      0.032     13.203      0.000
+    GRADES             0.072      0.035      2.026      0.043
+
+ SBXAB    WITH
+    FAMCON             0.153      0.033      4.710      0.000
+    ABUSE              0.623      0.038     16.245      0.000
+    SIBAGG             0.071      0.046      1.533      0.125
+    EMP_W1             0.028      0.049      0.579      0.563
+    FEMALE            -0.065      0.020     -3.224      0.001
+    SCHBEL             0.258      0.012     20.717      0.000
+    GRADES             0.069      0.038      1.814      0.070
+    SBXFC              0.357      0.041      8.772      0.000
+
+ SBXSA    WITH
+    FAMCON             0.206      0.049      4.210      0.000
+    ABUSE              0.013      0.027      0.478      0.632
+    SIBAGG             0.830      0.016     51.766      0.000
+    EMP_W1             0.000      0.043     -0.005      0.996
+    FEMALE             0.055      0.019      2.854      0.004
+    SCHBEL             0.214      0.010     22.479      0.000
+    GRADES             0.026      0.033      0.776      0.438
+    SBXFC              0.397      0.079      5.002      0.000
+    SBXAB              0.134      0.053      2.505      0.012
+
+ AGXFC    WITH
+    FAMCON             0.885      0.053     16.848      0.000
+    ABUSE              0.296      0.039      7.499      0.000
+    SIBAGG             0.362      0.063      5.707      0.000
+    EMP_W1            -0.061      0.062     -0.977      0.329
+    FEMALE             0.075      0.035      2.142      0.032
+    SCHBEL            -0.093      0.045     -2.063      0.039
+    GRADES             0.214      0.037      5.712      0.000
+    SBXFC              0.576      0.060      9.655      0.000
+    SBXAB              0.142      0.035      4.081      0.000
+    SBXSA              0.210      0.056      3.756      0.000
+
+ AGXAB    WITH
+    FAMCON             0.264      0.045      5.812      0.000
+    ABUSE              0.935      0.022     42.072      0.000
+    SIBAGG             0.141      0.036      3.896      0.000
+    EMP_W1             0.072      0.050      1.430      0.153
+    FEMALE            -0.057      0.028     -2.071      0.038
+    SCHBEL            -0.142      0.044     -3.245      0.001
+    GRADES             0.174      0.035      4.899      0.000
+    SBXFC              0.075      0.040      1.893      0.058
+    SBXAB              0.631      0.038     16.721      0.000
+    SBXSA              0.004      0.021      0.196      0.845
+    AGXFC              0.316      0.046      6.826      0.000
+
+ AGXSA    WITH
+    FAMCON             0.339      0.055      6.136      0.000
+    ABUSE              0.145      0.036      4.040      0.000
+    SIBAGG             0.949      0.012     76.464      0.000
+    EMP_W1            -0.031      0.053     -0.587      0.557
+    FEMALE             0.082      0.020      4.167      0.000
+    SCHBEL             0.021      0.012      1.727      0.084
+    GRADES             0.106      0.034      3.086      0.002
+    SBXFC              0.254      0.057      4.468      0.000
+    SBXAB              0.057      0.038      1.498      0.134
+    SBXSA              0.818      0.019     43.092      0.000
+    AGXFC              0.399      0.067      5.941      0.000
+    AGXAB              0.149      0.035      4.255      0.000
+
+ Means
+    FAMCON             0.819      0.055     14.813      0.000
+    ABUSE              0.538      0.020     27.204      0.000
+    SIBAGG             0.389      0.017     23.038      0.000
+    EMP_W1             2.936      0.132     22.213      0.000
+    FEMALE             0.966      0.038     25.112      0.000
+    SCHBEL             1.337      0.029     45.884      0.000
+    GRADES             2.903      0.447      6.495      0.000
+    SBXFC              0.560      0.047     11.923      0.000
+    SBXAB              0.358      0.013     27.303      0.000
+    SBXSA              0.285      0.013     21.284      0.000
+    AGXFC              0.771      0.044     17.384      0.000
+    AGXAB              0.503      0.027     18.985      0.000
+    AGXSA              0.357      0.013     26.910      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.478      0.239      2.002      0.045
+    S                  0.600      0.334      1.797      0.072
+
+ Variances
+    FAMCON             1.000      0.000    999.000    999.000
+    ABUSE              1.000      0.000    999.000    999.000
+    SIBAGG             1.000      0.000    999.000    999.000
+    EMP_W1             1.000      0.000    999.000    999.000
+    FEMALE             1.000      0.000    999.000    999.000
+    SCHBEL             1.000      0.000    999.000    999.000
+    GRADES             1.000      0.000    999.000    999.000
+    SBXFC              1.000      0.000    999.000    999.000
+    SBXAB              1.000      0.000    999.000    999.000
+    SBXSA              1.000      0.000    999.000    999.000
+    AGXFC              1.000      0.000    999.000    999.000
+    AGXAB              1.000      0.000    999.000    999.000
+    AGXSA              1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.578      0.075      7.705      0.000
+    SH_W2              0.658      0.073      9.024      0.000
+    SH_W3              0.641      0.064      9.978      0.000
+    SH_W4              0.289      0.094      3.081      0.002
+    I                  0.637      0.093      6.875      0.000
+    S                  0.816      0.139      5.852      0.000
+
+
+STD Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ I        |
+    SH_W1              0.448      0.092      4.875      0.000
+    SH_W2              0.448      0.092      4.875      0.000
+    SH_W3              0.448      0.092      4.875      0.000
+    SH_W4              0.448      0.092      4.875      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.121      0.029      4.127      0.000
+    SH_W3              0.364      0.088      4.127      0.000
+    SH_W4              0.606      0.147      4.127      0.000
+
+ I        ON
+    FAMCON             0.111      0.440      0.252      0.801
+    ABUSE              1.075      0.621      1.732      0.083
+    SIBAGG            -0.036      0.097     -0.372      0.710
+    EMP_W1            -0.009      0.061     -0.146      0.884
+    FEMALE            -0.140      0.106     -1.316      0.188
+    SCHBEL            -0.023      0.152     -0.151      0.880
+    GRADES            -0.039      0.013     -2.947      0.003
+    SBXFC             -0.201      0.279     -0.721      0.471
+    SBXAB             -0.654      0.316     -2.070      0.038
+    SBXSA              0.085      0.102      0.831      0.406
+    AGXFC              0.031      0.053      0.580      0.562
+    AGXAB             -0.026      0.105     -0.252      0.801
+    AGXSA             -0.002      0.020     -0.108      0.914
+
+ S        ON
+    FAMCON             0.245      0.584      0.420      0.675
+    ABUSE             -1.397      0.622     -2.246      0.025
+    SIBAGG            -0.354      0.255     -1.386      0.166
+    EMP_W1             0.022      0.043      0.511      0.609
+    FEMALE            -0.209      0.124     -1.686      0.092
+    SCHBEL            -0.257      0.196     -1.312      0.190
+    GRADES            -0.018      0.043     -0.409      0.682
+    SBXFC             -0.144      0.378     -0.382      0.703
+    SBXAB              0.344      0.469      0.734      0.463
+    SBXSA              0.142      0.229      0.619      0.536
+    AGXFC             -0.021      0.064     -0.325      0.745
+    AGXAB              0.160      0.078      2.049      0.040
+    AGXSA              0.062      0.059      1.054      0.292
+
+ S        WITH
+    I                 -0.069      0.343     -0.202      0.840
+
+ ABUSE    WITH
+    FAMCON             0.176      0.033      5.276      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.292      0.071      4.101      0.000
+    ABUSE              0.115      0.035      3.315      0.001
+
+ EMP_W1   WITH
+    FAMCON            -0.040      0.047     -0.861      0.389
+    ABUSE              0.038      0.040      0.936      0.349
+    SIBAGG            -0.014      0.047     -0.307      0.759
+
+ FEMALE   WITH
+    FAMCON             0.020      0.011      1.851      0.064
+    ABUSE             -0.028      0.010     -2.731      0.006
+    SIBAGG             0.032      0.012      2.600      0.009
+    EMP_W1            -0.079      0.014     -5.855      0.000
+
+ SCHBEL   WITH
+    FAMCON            -0.068      0.019     -3.494      0.000
+    ABUSE             -0.060      0.015     -4.009      0.000
+    SIBAGG            -0.001      0.008     -0.151      0.880
+    EMP_W1            -0.073      0.012     -5.834      0.000
+    FEMALE             0.023      0.008      2.692      0.007
+
+ GRADES   WITH
+    FAMCON            -0.109      0.092     -1.178      0.239
+    ABUSE              0.009      0.024      0.375      0.708
+    SIBAGG            -0.027      0.048     -0.563      0.573
+    EMP_W1            -0.139      0.043     -3.220      0.001
+    FEMALE             0.055      0.017      3.352      0.001
+    SCHBEL             0.152      0.033      4.607      0.000
+
+ SBXFC    WITH
+    FAMCON             0.286      0.039      7.332      0.000
+    ABUSE              0.041      0.017      2.503      0.012
+    SIBAGG             0.163      0.045      3.647      0.000
+    EMP_W1            -0.049      0.022     -2.277      0.023
+    FEMALE             0.013      0.006      2.050      0.040
+    SCHBEL             0.125      0.010     13.080      0.000
+    GRADES             0.066      0.032      2.087      0.037
+
+ SBXAB    WITH
+    FAMCON             0.058      0.014      4.104      0.000
+    ABUSE              0.199      0.013     15.135      0.000
+    SIBAGG             0.033      0.021      1.536      0.125
+    EMP_W1             0.012      0.021      0.573      0.566
+    FEMALE            -0.016      0.005     -3.140      0.002
+    SCHBEL             0.059      0.005     12.623      0.000
+    GRADES             0.049      0.031      1.565      0.118
+    SBXFC              0.106      0.019      5.614      0.000
+
+ SBXSA    WITH
+    FAMCON             0.138      0.040      3.483      0.000
+    ABUSE              0.007      0.015      0.474      0.635
+    SIBAGG             0.682      0.049     13.993      0.000
+    EMP_W1             0.000      0.032     -0.005      0.996
+    FEMALE             0.023      0.009      2.710      0.007
+    SCHBEL             0.087      0.005     17.138      0.000
+    GRADES             0.032      0.043      0.740      0.459
+    SBXFC              0.210      0.050      4.230      0.000
+    SBXAB              0.054      0.022      2.498      0.012
+
+ AGXFC    WITH
+    FAMCON             2.440      0.248      9.837      0.000
+    ABUSE              0.687      0.132      5.223      0.000
+    SIBAGG             1.224      0.265      4.615      0.000
+    EMP_W1            -0.186      0.192     -0.965      0.334
+    FEMALE             0.131      0.055      2.354      0.019
+    SCHBEL            -0.155      0.080     -1.953      0.051
+    GRADES             1.101      0.238      4.633      0.000
+    SBXFC              1.252      0.203      6.160      0.000
+    SBXAB              0.236      0.062      3.823      0.000
+    SBXSA              0.617      0.175      3.528      0.000
+
+ AGXAB    WITH
+    FAMCON             0.648      0.128      5.041      0.000
+    ABUSE              1.930      0.282      6.847      0.000
+    SIBAGG             0.423      0.131      3.231      0.001
+    EMP_W1             0.196      0.142      1.382      0.167
+    FEMALE            -0.089      0.047     -1.881      0.060
+    SCHBEL            -0.211      0.078     -2.712      0.007
+    GRADES             0.794      0.237      3.345      0.001
+    SBXFC              0.146      0.072      2.031      0.042
+    SBXAB              0.931      0.068     13.750      0.000
+    SBXSA              0.011      0.056      0.196      0.845
+    AGXFC              3.402      0.681      4.997      0.000
+
+ AGXSA    WITH
+    FAMCON             1.197      0.271      4.414      0.000
+    ABUSE              0.431      0.133      3.228      0.001
+    SIBAGG             4.109      0.423      9.705      0.000
+    EMP_W1            -0.123      0.208     -0.590      0.555
+    FEMALE             0.182      0.053      3.441      0.001
+    SCHBEL             0.045      0.025      1.812      0.070
+    GRADES             0.698      0.275      2.543      0.011
+    SBXFC              0.707      0.190      3.715      0.000
+    SBXAB              0.121      0.082      1.484      0.138
+    SBXSA              3.082      0.289     10.669      0.000
+    AGXFC              6.182      1.379      4.483      0.000
+    AGXAB              2.049      0.604      3.395      0.001
+
+ Means
+    FAMCON             0.649      0.063     10.361      0.000
+    ABUSE              0.360      0.035     10.420      0.000
+    SIBAGG             0.378      0.025     14.998      0.000
+    EMP_W1             2.586      0.048     53.724      0.000
+    FEMALE             0.483      0.020     24.267      0.000
+    SCHBEL             0.641      0.010     63.962      0.000
+    GRADES             4.294      0.260     16.546      0.000
+    SBXFC              0.350      0.032     10.838      0.000
+    SBXAB              0.171      0.010     16.278      0.000
+    SBXSA              0.241      0.016     15.448      0.000
+    AGXFC              2.683      0.262     10.229      0.000
+    AGXAB              1.556      0.194      8.032      0.000
+    AGXSA              1.592      0.148     10.754      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.478      0.239      2.002      0.045
+    S                  0.600      0.334      1.797      0.072
+
+ Variances
+    FAMCON             0.628      0.079      7.970      0.000
+    ABUSE              0.446      0.059      7.554      0.000
+    SIBAGG             0.944      0.073     12.985      0.000
+    EMP_W1             0.776      0.082      9.469      0.000
+    FEMALE             0.250      0.001    360.249      0.000
+    SCHBEL             0.230      0.003     81.168      0.000
+    GRADES             2.188      0.418      5.238      0.000
+    SBXFC              0.390      0.046      8.422      0.000
+    SBXAB              0.228      0.016     13.968      0.000
+    SBXSA              0.715      0.051     13.963      0.000
+    AGXFC             12.110      1.406      8.611      0.000
+    AGXAB              9.564      1.494      6.401      0.000
+    AGXSA             19.851      2.656      7.475      0.000
+
+ Residual Variances
+    SH_W1              0.275      0.081      3.378      0.001
+    SH_W2              0.369      0.049      7.549      0.000
+    SH_W3              0.470      0.079      5.972      0.000
+    SH_W4              0.183      0.050      3.660      0.000
+    I                  0.637      0.093      6.875      0.000
+    S                  0.816      0.139      5.852      0.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    SH_W1              0.422      0.075      5.626      0.000
+    SH_W2              0.342      0.073      4.689      0.000
+    SH_W3              0.359      0.064      5.584      0.000
+    SH_W4              0.711      0.094      7.578      0.000
+
+     Latent                                         Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    I                  0.363      0.093      3.916      0.000
+    S                  0.184      0.139      1.317      0.188
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.675E-05
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ I        |
+    SH_W1            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W2            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W3            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W4            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.500       0.500       0.500       0.500       0.500       0.500       0.500
+    SH_W3            1.500       1.500       1.500       1.500       1.500       1.500       1.500
+    SH_W4            2.500       2.500       2.500       2.500       2.500       2.500       2.500
+
+ I        ON
+    FAMCON          -0.468      -0.344      -0.281       0.050       0.381       0.444       0.568
+    ABUSE           -0.115       0.028       0.101       0.482       0.863       0.936       1.079
+    SIBAGG          -0.131      -0.104      -0.089      -0.016       0.057       0.071       0.099
+    EMP_W1          -0.076      -0.059      -0.050      -0.004       0.042       0.051       0.068
+    FEMALE          -0.207      -0.173      -0.155      -0.063       0.030       0.047       0.082
+    SCHBEL          -0.182      -0.141      -0.120      -0.010       0.099       0.120       0.162
+    GRADES          -0.035      -0.030      -0.028      -0.018      -0.007      -0.005      -0.001
+    SBXFC           -0.441      -0.357      -0.314      -0.090       0.134       0.177       0.261
+    SBXAB           -0.681      -0.588      -0.541      -0.293      -0.045       0.002       0.095
+    SBXSA           -0.087      -0.057      -0.042       0.038       0.118       0.133       0.163
+    AGXFC           -0.047      -0.032      -0.025       0.014       0.052       0.060       0.074
+    AGXAB           -0.129      -0.101      -0.086      -0.012       0.063       0.077       0.105
+    AGXSA           -0.024      -0.018      -0.016      -0.001       0.014       0.017       0.022
+
+ S        ON
+    FAMCON          -0.279      -0.198      -0.157       0.059       0.276       0.317       0.398
+    ABUSE           -0.595      -0.533      -0.502      -0.339      -0.175      -0.144      -0.083
+    SIBAGG          -0.225      -0.192      -0.175      -0.086       0.003       0.020       0.054
+    EMP_W1          -0.021      -0.015      -0.011       0.005       0.022       0.025       0.032
+    FEMALE          -0.127      -0.109      -0.099      -0.051      -0.002       0.007       0.026
+    SCHBEL          -0.186      -0.156      -0.141      -0.062       0.016       0.032       0.061
+    GRADES          -0.033      -0.026      -0.023      -0.004       0.014       0.018       0.024
+    SBXFC           -0.256      -0.203      -0.176      -0.035       0.106       0.133       0.186
+    SBXAB           -0.172      -0.111      -0.080       0.083       0.247       0.278       0.339
+    SBXSA           -0.119      -0.082      -0.064       0.034       0.132       0.151       0.188
+    AGXFC           -0.043      -0.034      -0.029      -0.005       0.019       0.024       0.033
+    AGXAB           -0.003       0.007       0.012       0.039       0.065       0.070       0.080
+    AGXSA           -0.014      -0.007      -0.003       0.015       0.034       0.037       0.044
+
+ S        WITH
+    I               -0.080      -0.063      -0.053      -0.005       0.042       0.052       0.070
+
+ ABUSE    WITH
+    FAMCON           0.090       0.111       0.121       0.176       0.231       0.242       0.262
+
+ SIBAGG   WITH
+    FAMCON           0.109       0.152       0.175       0.292       0.409       0.432       0.476
+    ABUSE            0.026       0.047       0.058       0.115       0.172       0.183       0.205
+
+ EMP_W1   WITH
+    FAMCON          -0.162      -0.133      -0.118      -0.040       0.037       0.052       0.081
+    ABUSE           -0.066      -0.041      -0.029       0.038       0.105       0.117       0.142
+    SIBAGG          -0.135      -0.106      -0.091      -0.014       0.063       0.077       0.106
+
+ FEMALE   WITH
+    FAMCON          -0.008      -0.001       0.002       0.020       0.039       0.042       0.049
+    ABUSE           -0.054      -0.048      -0.044      -0.028      -0.011      -0.008      -0.002
+    SIBAGG           0.000       0.008       0.012       0.032       0.052       0.056       0.063
+    EMP_W1          -0.114      -0.106      -0.101      -0.079      -0.057      -0.053      -0.044
+
+ SCHBEL   WITH
+    FAMCON          -0.118      -0.106      -0.100      -0.068      -0.036      -0.030      -0.018
+    ABUSE           -0.098      -0.089      -0.084      -0.060      -0.035      -0.031      -0.021
+    SIBAGG          -0.021      -0.016      -0.014      -0.001       0.011       0.014       0.019
+    EMP_W1          -0.105      -0.097      -0.093      -0.073      -0.052      -0.048      -0.041
+    FEMALE           0.001       0.006       0.009       0.023       0.037       0.039       0.044
+
+ GRADES   WITH
+    FAMCON          -0.346      -0.289      -0.260      -0.109       0.043       0.072       0.129
+    ABUSE           -0.053      -0.038      -0.031       0.009       0.049       0.056       0.071
+    SIBAGG          -0.152      -0.122      -0.107      -0.027       0.052       0.067       0.097
+    EMP_W1          -0.251      -0.224      -0.211      -0.139      -0.068      -0.055      -0.028
+    FEMALE           0.013       0.023       0.028       0.055       0.083       0.088       0.098
+    SCHBEL           0.067       0.087       0.097       0.152       0.206       0.216       0.236
+
+ SBXFC    WITH
+    FAMCON           0.186       0.210       0.222       0.286       0.350       0.362       0.386
+    ABUSE           -0.001       0.009       0.014       0.041       0.069       0.074       0.084
+    SIBAGG           0.048       0.075       0.089       0.163       0.236       0.250       0.278
+    EMP_W1          -0.104      -0.091      -0.084      -0.049      -0.014      -0.007       0.006
+    FEMALE          -0.003       0.001       0.002       0.013       0.023       0.025       0.028
+    SCHBEL           0.100       0.106       0.109       0.125       0.140       0.143       0.149
+    GRADES          -0.016       0.004       0.014       0.066       0.119       0.129       0.148
+
+ SBXAB    WITH
+    FAMCON           0.022       0.030       0.035       0.058       0.081       0.086       0.094
+    ABUSE            0.165       0.173       0.177       0.199       0.220       0.225       0.233
+    SIBAGG          -0.022      -0.009      -0.002       0.033       0.068       0.075       0.088
+    EMP_W1          -0.042      -0.029      -0.022       0.012       0.046       0.053       0.065
+    FEMALE          -0.028      -0.025      -0.024      -0.016      -0.007      -0.006      -0.003
+    SCHBEL           0.047       0.050       0.051       0.059       0.067       0.068       0.071
+    GRADES          -0.031      -0.012      -0.002       0.049       0.100       0.110       0.129
+    SBXFC            0.058       0.069       0.075       0.106       0.137       0.143       0.155
+
+ SBXSA    WITH
+    FAMCON           0.036       0.060       0.073       0.138       0.203       0.215       0.240
+    ABUSE           -0.032      -0.023      -0.018       0.007       0.033       0.037       0.047
+    SIBAGG           0.556       0.586       0.602       0.682       0.762       0.777       0.807
+    EMP_W1          -0.083      -0.063      -0.053       0.000       0.053       0.063       0.082
+    FEMALE           0.001       0.006       0.009       0.023       0.037       0.040       0.045
+    SCHBEL           0.074       0.077       0.078       0.087       0.095       0.097       0.100
+    GRADES          -0.080      -0.053      -0.039       0.032       0.104       0.117       0.144
+    SBXFC            0.082       0.113       0.128       0.210       0.291       0.307       0.337
+    SBXAB           -0.002       0.012       0.018       0.054       0.090       0.096       0.110
+
+ AGXFC    WITH
+    FAMCON           1.801       1.954       2.032       2.440       2.848       2.926       3.079
+    ABUSE            0.348       0.429       0.471       0.687       0.903       0.945       1.026
+    SIBAGG           0.541       0.704       0.788       1.224       1.660       1.743       1.907
+    EMP_W1          -0.681      -0.563      -0.502      -0.186       0.131       0.191       0.310
+    FEMALE          -0.012       0.022       0.039       0.131       0.222       0.239       0.273
+    SCHBEL          -0.360      -0.311      -0.286      -0.155      -0.025       0.001       0.049
+    GRADES           0.489       0.635       0.710       1.101       1.492       1.567       1.714
+    SBXFC            0.728       0.853       0.918       1.252       1.586       1.650       1.775
+    SBXAB            0.077       0.115       0.134       0.236       0.337       0.357       0.395
+    SBXSA            0.167       0.274       0.330       0.617       0.905       0.961       1.068
+
+ AGXAB    WITH
+    FAMCON           0.317       0.396       0.436       0.648       0.859       0.899       0.978
+    ABUSE            1.204       1.378       1.466       1.930       2.394       2.483       2.656
+    SIBAGG           0.086       0.166       0.208       0.423       0.639       0.680       0.761
+    EMP_W1          -0.169      -0.082      -0.037       0.196       0.429       0.474       0.561
+    FEMALE          -0.210      -0.181      -0.166      -0.089      -0.011       0.004       0.033
+    SCHBEL          -0.411      -0.363      -0.338      -0.211      -0.083      -0.058      -0.011
+    GRADES           0.183       0.329       0.404       0.794       1.184       1.259       1.405
+    SBXFC           -0.039       0.005       0.028       0.146       0.264       0.286       0.330
+    SBXAB            0.757       0.799       0.820       0.931       1.043       1.064       1.106
+    SBXSA           -0.133      -0.099      -0.081       0.011       0.103       0.120       0.155
+    AGXFC            1.648       2.067       2.282       3.402       4.522       4.736       5.155
+
+ AGXSA    WITH
+    FAMCON           0.499       0.666       0.751       1.197       1.644       1.729       1.896
+    ABUSE            0.087       0.169       0.211       0.431       0.650       0.692       0.774
+    SIBAGG           3.019       3.279       3.413       4.109       4.806       4.939       5.200
+    EMP_W1          -0.660      -0.531      -0.466      -0.123       0.220       0.286       0.414
+    FEMALE           0.046       0.078       0.095       0.182       0.269       0.286       0.318
+    SCHBEL          -0.019      -0.004       0.004       0.045       0.086       0.094       0.109
+    GRADES          -0.009       0.160       0.247       0.698       1.150       1.236       1.405
+    SBXFC            0.217       0.334       0.394       0.707       1.020       1.080       1.197
+    SBXAB           -0.089      -0.039      -0.013       0.121       0.256       0.281       0.332
+    SBXSA            2.338       2.516       2.607       3.082       3.557       3.648       3.826
+    AGXFC            2.630       3.479       3.913       6.182       8.450       8.884       9.733
+    AGXAB            0.494       0.866       1.056       2.049       3.042       3.232       3.603
+
+ Means
+    FAMCON           0.487       0.526       0.546       0.649       0.752       0.771       0.810
+    ABUSE            0.271       0.292       0.303       0.360       0.416       0.427       0.448
+    SIBAGG           0.313       0.329       0.337       0.378       0.419       0.427       0.443
+    EMP_W1           2.462       2.492       2.507       2.586       2.665       2.681       2.710
+    FEMALE           0.431       0.444       0.450       0.483       0.515       0.522       0.534
+    SCHBEL           0.615       0.622       0.625       0.641       0.658       0.661       0.667
+    GRADES           3.626       3.785       3.867       4.294       4.721       4.803       4.963
+    SBXFC            0.266       0.286       0.297       0.350       0.403       0.413       0.433
+    SBXAB            0.144       0.150       0.154       0.171       0.188       0.191       0.198
+    SBXSA            0.201       0.211       0.216       0.241       0.267       0.272       0.282
+    AGXFC            2.008       2.169       2.252       2.683       3.115       3.198       3.359
+    AGXAB            1.057       1.176       1.237       1.556       1.875       1.936       2.055
+    AGXSA            1.211       1.302       1.349       1.592       1.836       1.883       1.974
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.092      -0.019       0.019       0.214       0.410       0.447       0.521
+    S               -0.094      -0.037      -0.007       0.145       0.298       0.327       0.384
+
+ Variances
+    FAMCON           0.425       0.473       0.498       0.628       0.757       0.782       0.830
+    ABUSE            0.294       0.330       0.349       0.446       0.543       0.562       0.598
+    SIBAGG           0.756       0.801       0.824       0.944       1.063       1.086       1.131
+    EMP_W1           0.565       0.615       0.641       0.776       0.911       0.936       0.987
+    FEMALE           0.248       0.248       0.249       0.250       0.251       0.251       0.252
+    SCHBEL           0.223       0.224       0.225       0.230       0.235       0.236       0.237
+    GRADES           1.112       1.369       1.501       2.188       2.875       3.007       3.264
+    SBXFC            0.271       0.299       0.314       0.390       0.466       0.480       0.509
+    SBXAB            0.186       0.196       0.201       0.228       0.255       0.260       0.270
+    SBXSA            0.583       0.615       0.631       0.715       0.799       0.815       0.847
+    AGXFC            8.488       9.354       9.797      12.110      14.424      14.867      15.733
+    AGXAB            5.715       6.635       7.106       9.564      12.021      12.492      13.412
+    AGXSA           13.011      14.646      15.483      19.851      24.219      25.056      26.691
+
+ Residual Variances
+    SH_W1            0.065       0.115       0.141       0.275       0.409       0.434       0.484
+    SH_W2            0.243       0.274       0.289       0.369       0.450       0.465       0.496
+    SH_W3            0.267       0.315       0.340       0.470       0.599       0.624       0.672
+    SH_W4            0.054       0.085       0.101       0.183       0.266       0.282       0.313
+    I                0.006       0.035       0.050       0.128       0.205       0.220       0.249
+    S               -0.027      -0.009       0.000       0.048       0.096       0.105       0.123
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ I        |
+    SH_W1            0.501       0.536       0.555       0.650       0.745       0.763       0.798
+    SH_W2            0.331       0.395       0.427       0.598       0.768       0.801       0.865
+    SH_W3            0.228       0.299       0.335       0.523       0.712       0.748       0.819
+    SH_W4            0.249       0.324       0.362       0.562       0.762       0.801       0.875
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.080       0.099       0.109       0.162       0.214       0.224       0.244
+    SH_W3            0.164       0.226       0.258       0.425       0.592       0.624       0.686
+    SH_W4            0.337       0.438       0.490       0.761       1.031       1.083       1.185
+
+ I        ON
+    FAMCON          -0.801      -0.589      -0.480       0.088       0.656       0.765       0.977
+    ABUSE           -0.301      -0.057       0.067       0.718       1.369       1.494       1.738
+    SIBAGG          -0.278      -0.220      -0.190      -0.035       0.121       0.150       0.209
+    EMP_W1          -0.147      -0.113      -0.097      -0.008       0.081       0.098       0.131
+    FEMALE          -0.207      -0.174      -0.158      -0.070       0.018       0.034       0.067
+    SCHBEL          -0.199      -0.154      -0.131      -0.011       0.109       0.132       0.177
+    GRADES          -0.115      -0.101      -0.094      -0.058      -0.022      -0.015      -0.001
+    SBXFC           -0.574      -0.467      -0.412      -0.126       0.161       0.216       0.323
+    SBXAB           -0.722      -0.624      -0.574      -0.312      -0.051      -0.001       0.097
+    SBXSA           -0.155      -0.100      -0.073       0.072       0.216       0.244       0.298
+    AGXFC           -0.365      -0.252      -0.194       0.107       0.408       0.465       0.578
+    AGXAB           -0.905      -0.708      -0.608      -0.082       0.444       0.545       0.741
+    AGXSA           -0.239      -0.184      -0.156      -0.010       0.137       0.165       0.220
+
+ S        ON
+    FAMCON          -1.006      -0.719      -0.572       0.194       0.961       1.107       1.394
+    ABUSE           -1.951      -1.708      -1.583      -0.933      -0.283      -0.158       0.085
+    SIBAGG          -0.975      -0.824      -0.747      -0.344       0.059       0.136       0.287
+    EMP_W1          -0.077      -0.054      -0.042       0.020       0.081       0.093       0.116
+    FEMALE          -0.264      -0.226      -0.206      -0.104      -0.002       0.017       0.055
+    SCHBEL          -0.366      -0.308      -0.279      -0.123       0.032       0.062       0.120
+    GRADES          -0.187      -0.148      -0.129      -0.026       0.076       0.096       0.134
+    SBXFC           -0.693      -0.549      -0.475      -0.090       0.295       0.369       0.513
+    SBXAB           -0.418      -0.279      -0.208       0.164       0.536       0.608       0.747
+    SBXSA           -0.377      -0.258      -0.198       0.120       0.437       0.498       0.616
+    AGXFC           -0.640      -0.504      -0.435      -0.072       0.290       0.360       0.496
+    AGXAB           -0.098       0.044       0.116       0.494       0.872       0.944       1.085
+    AGXSA           -0.379      -0.223      -0.142       0.276       0.695       0.775       0.932
+
+ S        WITH
+    I               -0.954      -0.743      -0.634      -0.069       0.496       0.604       0.815
+
+ ABUSE    WITH
+    FAMCON           0.227       0.252       0.265       0.333       0.401       0.414       0.439
+
+ SIBAGG   WITH
+    FAMCON           0.205       0.247       0.268       0.380       0.491       0.513       0.554
+    ABUSE            0.063       0.091       0.105       0.178       0.251       0.264       0.292
+
+ EMP_W1   WITH
+    FAMCON          -0.226      -0.186      -0.166      -0.058       0.049       0.070       0.110
+    ABUSE           -0.111      -0.069      -0.048       0.064       0.176       0.198       0.240
+    SIBAGG          -0.158      -0.124      -0.107      -0.017       0.073       0.090       0.124
+
+ FEMALE   WITH
+    FAMCON          -0.022      -0.004       0.005       0.052       0.099       0.108       0.125
+    ABUSE           -0.152      -0.135      -0.127      -0.083      -0.039      -0.031      -0.014
+    SIBAGG           0.003       0.018       0.026       0.065       0.105       0.113       0.127
+    EMP_W1          -0.241      -0.226      -0.219      -0.180      -0.141      -0.134      -0.119
+
+ SCHBEL   WITH
+    FAMCON          -0.287      -0.261      -0.248      -0.179      -0.110      -0.097      -0.071
+    ABUSE           -0.284      -0.260      -0.249      -0.186      -0.124      -0.112      -0.089
+    SIBAGG          -0.045      -0.035      -0.030      -0.002       0.025       0.030       0.040
+    EMP_W1          -0.236      -0.221      -0.213      -0.172      -0.132      -0.124      -0.109
+    FEMALE           0.003       0.025       0.036       0.095       0.153       0.164       0.186
+
+ GRADES   WITH
+    FAMCON          -0.263      -0.223      -0.202      -0.093       0.016       0.037       0.078
+    ABUSE           -0.052      -0.037      -0.030       0.009       0.048       0.056       0.070
+    SIBAGG          -0.106      -0.085      -0.074      -0.019       0.036       0.047       0.068
+    EMP_W1          -0.203      -0.180      -0.169      -0.107      -0.045      -0.034      -0.011
+    FEMALE           0.011       0.026       0.034       0.075       0.116       0.124       0.139
+    SCHBEL           0.119       0.142       0.153       0.214       0.274       0.286       0.308
+
+ SBXFC    WITH
+    FAMCON           0.446       0.477       0.494       0.578       0.663       0.679       0.711
+    ABUSE           -0.001       0.023       0.035       0.099       0.163       0.175       0.199
+    SIBAGG           0.107       0.146       0.166       0.268       0.371       0.391       0.430
+    EMP_W1          -0.184      -0.161      -0.150      -0.089      -0.029      -0.017       0.006
+    FEMALE          -0.011       0.002       0.008       0.040       0.073       0.079       0.091
+    SCHBEL           0.335       0.354       0.364       0.416       0.468       0.478       0.497
+    GRADES          -0.019       0.002       0.014       0.072       0.130       0.141       0.163
+
+ SBXAB    WITH
+    FAMCON           0.070       0.090       0.100       0.153       0.207       0.217       0.237
+    ABUSE            0.524       0.548       0.560       0.623       0.686       0.698       0.722
+    SIBAGG          -0.048      -0.020      -0.005       0.071       0.147       0.162       0.190
+    EMP_W1          -0.098      -0.068      -0.052       0.028       0.109       0.124       0.154
+    FEMALE          -0.118      -0.105      -0.099      -0.065      -0.032      -0.026      -0.013
+    SCHBEL           0.226       0.233       0.237       0.258       0.278       0.282       0.290
+    GRADES          -0.029      -0.006       0.006       0.069       0.132       0.144       0.167
+    SBXFC            0.252       0.277       0.290       0.357       0.423       0.436       0.461
+
+ SBXSA    WITH
+    FAMCON           0.080       0.110       0.125       0.206       0.286       0.301       0.332
+    ABUSE           -0.057      -0.040      -0.032       0.013       0.057       0.066       0.083
+    SIBAGG           0.789       0.799       0.804       0.830       0.857       0.862       0.872
+    EMP_W1          -0.111      -0.085      -0.071       0.000       0.071       0.084       0.111
+    FEMALE           0.005       0.017       0.023       0.055       0.086       0.092       0.104
+    SCHBEL           0.189       0.195       0.198       0.214       0.229       0.232       0.238
+    GRADES          -0.060      -0.039      -0.029       0.026       0.080       0.091       0.111
+    SBXFC            0.193       0.242       0.267       0.397       0.528       0.553       0.602
+    SBXAB           -0.004       0.029       0.046       0.134       0.222       0.238       0.271
+
+ AGXFC    WITH
+    FAMCON           0.750       0.782       0.799       0.885       0.972       0.988       1.020
+    ABUSE            0.194       0.218       0.231       0.296       0.360       0.373       0.397
+    SIBAGG           0.199       0.238       0.258       0.362       0.466       0.486       0.525
+    EMP_W1          -0.220      -0.182      -0.163      -0.061       0.041       0.061       0.099
+    FEMALE          -0.015       0.006       0.017       0.075       0.133       0.144       0.165
+    SCHBEL          -0.209      -0.181      -0.167      -0.093      -0.019      -0.005       0.023
+    GRADES           0.117       0.141       0.152       0.214       0.276       0.287       0.310
+    SBXFC            0.422       0.459       0.478       0.576       0.674       0.693       0.730
+    SBXAB            0.052       0.074       0.085       0.142       0.199       0.210       0.231
+    SBXSA            0.066       0.100       0.118       0.210       0.302       0.319       0.354
+
+ AGXAB    WITH
+    FAMCON           0.147       0.175       0.190       0.264       0.339       0.353       0.381
+    ABUSE            0.877       0.891       0.898       0.935       0.971       0.978       0.992
+    SIBAGG           0.048       0.070       0.081       0.141       0.200       0.212       0.234
+    EMP_W1          -0.058      -0.027      -0.011       0.072       0.155       0.170       0.201
+    FEMALE          -0.129      -0.112      -0.103      -0.057      -0.012      -0.003       0.014
+    SCHBEL          -0.255      -0.228      -0.214      -0.142      -0.070      -0.056      -0.029
+    GRADES           0.082       0.104       0.115       0.174       0.232       0.243       0.265
+    SBXFC           -0.027      -0.003       0.010       0.075       0.141       0.154       0.178
+    SBXAB            0.533       0.557       0.569       0.631       0.693       0.704       0.728
+    SBXSA           -0.051      -0.038      -0.031       0.004       0.039       0.046       0.059
+    AGXFC            0.197       0.225       0.240       0.316       0.392       0.407       0.435
+
+ AGXSA    WITH
+    FAMCON           0.197       0.231       0.248       0.339       0.430       0.448       0.482
+    ABUSE            0.052       0.075       0.086       0.145       0.204       0.215       0.237
+    SIBAGG           0.917       0.925       0.929       0.949       0.970       0.974       0.981
+    EMP_W1          -0.169      -0.136      -0.119      -0.031       0.056       0.073       0.106
+    FEMALE           0.031       0.043       0.049       0.082       0.114       0.120       0.132
+    SCHBEL          -0.010      -0.003       0.001       0.021       0.041       0.045       0.053
+    GRADES           0.018       0.039       0.049       0.106       0.162       0.173       0.194
+    SBXFC            0.108       0.143       0.161       0.254       0.348       0.366       0.401
+    SBXAB           -0.041      -0.018      -0.006       0.057       0.120       0.132       0.155
+    SBXSA            0.769       0.781       0.787       0.818       0.849       0.855       0.867
+    AGXFC            0.226       0.267       0.288       0.399       0.509       0.530       0.572
+    AGXAB            0.059       0.080       0.091       0.149       0.206       0.217       0.239
+
+ Means
+    FAMCON           0.677       0.711       0.728       0.819       0.910       0.927       0.961
+    ABUSE            0.487       0.500       0.506       0.538       0.571       0.577       0.589
+    SIBAGG           0.346       0.356       0.361       0.389       0.417       0.422       0.433
+    EMP_W1           2.596       2.677       2.719       2.936       3.154       3.195       3.277
+    FEMALE           0.867       0.891       0.903       0.966       1.029       1.041       1.065
+    SCHBEL           1.262       1.280       1.289       1.337       1.385       1.394       1.412
+    GRADES           1.752       2.027       2.168       2.903       3.638       3.779       4.054
+    SBXFC            0.439       0.468       0.483       0.560       0.637       0.652       0.681
+    SBXAB            0.324       0.332       0.336       0.358       0.379       0.383       0.391
+    SBXSA            0.251       0.259       0.263       0.285       0.307       0.312       0.320
+    AGXFC            0.657       0.684       0.698       0.771       0.844       0.858       0.885
+    AGXAB            0.435       0.451       0.460       0.503       0.547       0.555       0.571
+    AGXSA            0.323       0.331       0.336       0.357       0.379       0.383       0.392
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.137       0.010       0.085       0.478       0.871       0.946       1.093
+    S               -0.260      -0.054       0.051       0.600       1.149       1.254       1.459
+
+ Variances
+    FAMCON           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ABUSE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SIBAGG           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    EMP_W1           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    FEMALE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SCHBEL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    GRADES           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SBXFC            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SBXAB            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SBXSA            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXFC            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXAB            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXSA            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.385       0.431       0.455       0.578       0.701       0.725       0.771
+    SH_W2            0.470       0.515       0.538       0.658       0.778       0.801       0.846
+    SH_W3            0.476       0.515       0.535       0.641       0.747       0.767       0.807
+    SH_W4            0.047       0.105       0.135       0.289       0.443       0.473       0.531
+    I                0.398       0.455       0.485       0.637       0.790       0.819       0.876
+    S                0.457       0.543       0.587       0.816       1.046       1.090       1.176
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ I        |
+    SH_W1            0.501       0.536       0.555       0.650       0.745       0.763       0.798
+    SH_W2            0.331       0.395       0.427       0.598       0.768       0.801       0.865
+    SH_W3            0.228       0.299       0.335       0.523       0.712       0.748       0.819
+    SH_W4            0.249       0.324       0.362       0.562       0.762       0.801       0.875
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.080       0.099       0.109       0.162       0.214       0.224       0.244
+    SH_W3            0.164       0.226       0.258       0.425       0.592       0.624       0.686
+    SH_W4            0.337       0.438       0.490       0.761       1.031       1.083       1.185
+
+ I        ON
+    FAMCON          -0.801      -0.589      -0.480       0.088       0.656       0.765       0.977
+    ABUSE           -0.301      -0.057       0.067       0.718       1.369       1.494       1.738
+    SIBAGG          -0.278      -0.220      -0.190      -0.035       0.121       0.150       0.209
+    EMP_W1          -0.147      -0.113      -0.097      -0.008       0.081       0.098       0.131
+    FEMALE          -0.207      -0.174      -0.158      -0.070       0.018       0.034       0.067
+    SCHBEL          -0.199      -0.154      -0.131      -0.011       0.109       0.132       0.177
+    GRADES          -0.115      -0.101      -0.094      -0.058      -0.022      -0.015      -0.001
+    SBXFC           -0.574      -0.467      -0.412      -0.126       0.161       0.216       0.323
+    SBXAB           -0.722      -0.624      -0.574      -0.312      -0.051      -0.001       0.097
+    SBXSA           -0.155      -0.100      -0.073       0.072       0.216       0.244       0.298
+    AGXFC           -0.365      -0.252      -0.194       0.107       0.408       0.465       0.578
+    AGXAB           -0.905      -0.708      -0.608      -0.082       0.444       0.545       0.741
+    AGXSA           -0.239      -0.184      -0.156      -0.010       0.137       0.165       0.220
+
+ S        ON
+    FAMCON          -1.006      -0.719      -0.572       0.194       0.961       1.107       1.394
+    ABUSE           -1.951      -1.708      -1.583      -0.933      -0.283      -0.158       0.085
+    SIBAGG          -0.975      -0.824      -0.747      -0.344       0.059       0.136       0.287
+    EMP_W1          -0.077      -0.054      -0.042       0.020       0.081       0.093       0.116
+    FEMALE          -0.264      -0.226      -0.206      -0.104      -0.002       0.017       0.055
+    SCHBEL          -0.366      -0.308      -0.279      -0.123       0.032       0.062       0.120
+    GRADES          -0.187      -0.148      -0.129      -0.026       0.076       0.096       0.134
+    SBXFC           -0.693      -0.549      -0.475      -0.090       0.295       0.369       0.513
+    SBXAB           -0.418      -0.279      -0.208       0.164       0.536       0.608       0.747
+    SBXSA           -0.377      -0.258      -0.198       0.120       0.437       0.498       0.616
+    AGXFC           -0.640      -0.504      -0.435      -0.072       0.290       0.360       0.496
+    AGXAB           -0.098       0.044       0.116       0.494       0.872       0.944       1.085
+    AGXSA           -0.379      -0.223      -0.142       0.276       0.695       0.775       0.932
+
+ S        WITH
+    I               -0.954      -0.743      -0.634      -0.069       0.496       0.604       0.815
+
+ ABUSE    WITH
+    FAMCON           0.227       0.252       0.265       0.333       0.401       0.414       0.439
+
+ SIBAGG   WITH
+    FAMCON           0.205       0.247       0.268       0.380       0.491       0.513       0.554
+    ABUSE            0.063       0.091       0.105       0.178       0.251       0.264       0.292
+
+ EMP_W1   WITH
+    FAMCON          -0.226      -0.186      -0.166      -0.058       0.049       0.070       0.110
+    ABUSE           -0.111      -0.069      -0.048       0.064       0.176       0.198       0.240
+    SIBAGG          -0.158      -0.124      -0.107      -0.017       0.073       0.090       0.124
+
+ FEMALE   WITH
+    FAMCON          -0.022      -0.004       0.005       0.052       0.099       0.108       0.125
+    ABUSE           -0.152      -0.135      -0.127      -0.083      -0.039      -0.031      -0.014
+    SIBAGG           0.003       0.018       0.026       0.065       0.105       0.113       0.127
+    EMP_W1          -0.241      -0.226      -0.219      -0.180      -0.141      -0.134      -0.119
+
+ SCHBEL   WITH
+    FAMCON          -0.287      -0.261      -0.248      -0.179      -0.110      -0.097      -0.071
+    ABUSE           -0.284      -0.260      -0.249      -0.186      -0.124      -0.112      -0.089
+    SIBAGG          -0.045      -0.035      -0.030      -0.002       0.025       0.030       0.040
+    EMP_W1          -0.236      -0.221      -0.213      -0.172      -0.132      -0.124      -0.109
+    FEMALE           0.003       0.025       0.036       0.095       0.153       0.164       0.186
+
+ GRADES   WITH
+    FAMCON          -0.263      -0.223      -0.202      -0.093       0.016       0.037       0.078
+    ABUSE           -0.052      -0.037      -0.030       0.009       0.048       0.056       0.070
+    SIBAGG          -0.106      -0.085      -0.074      -0.019       0.036       0.047       0.068
+    EMP_W1          -0.203      -0.180      -0.169      -0.107      -0.045      -0.034      -0.011
+    FEMALE           0.011       0.026       0.034       0.075       0.116       0.124       0.139
+    SCHBEL           0.119       0.142       0.153       0.214       0.274       0.286       0.308
+
+ SBXFC    WITH
+    FAMCON           0.446       0.477       0.494       0.578       0.663       0.679       0.711
+    ABUSE           -0.001       0.023       0.035       0.099       0.163       0.175       0.199
+    SIBAGG           0.107       0.146       0.166       0.268       0.371       0.391       0.430
+    EMP_W1          -0.184      -0.161      -0.150      -0.089      -0.029      -0.017       0.006
+    FEMALE          -0.011       0.002       0.008       0.040       0.073       0.079       0.091
+    SCHBEL           0.335       0.354       0.364       0.416       0.468       0.478       0.497
+    GRADES          -0.019       0.002       0.014       0.072       0.130       0.141       0.163
+
+ SBXAB    WITH
+    FAMCON           0.070       0.090       0.100       0.153       0.207       0.217       0.237
+    ABUSE            0.524       0.548       0.560       0.623       0.686       0.698       0.722
+    SIBAGG          -0.048      -0.020      -0.005       0.071       0.147       0.162       0.190
+    EMP_W1          -0.098      -0.068      -0.052       0.028       0.109       0.124       0.154
+    FEMALE          -0.118      -0.105      -0.099      -0.065      -0.032      -0.026      -0.013
+    SCHBEL           0.226       0.233       0.237       0.258       0.278       0.282       0.290
+    GRADES          -0.029      -0.006       0.006       0.069       0.132       0.144       0.167
+    SBXFC            0.252       0.277       0.290       0.357       0.423       0.436       0.461
+
+ SBXSA    WITH
+    FAMCON           0.080       0.110       0.125       0.206       0.286       0.301       0.332
+    ABUSE           -0.057      -0.040      -0.032       0.013       0.057       0.066       0.083
+    SIBAGG           0.789       0.799       0.804       0.830       0.857       0.862       0.872
+    EMP_W1          -0.111      -0.085      -0.071       0.000       0.071       0.084       0.111
+    FEMALE           0.005       0.017       0.023       0.055       0.086       0.092       0.104
+    SCHBEL           0.189       0.195       0.198       0.214       0.229       0.232       0.238
+    GRADES          -0.060      -0.039      -0.029       0.026       0.080       0.091       0.111
+    SBXFC            0.193       0.242       0.267       0.397       0.528       0.553       0.602
+    SBXAB           -0.004       0.029       0.046       0.134       0.222       0.238       0.271
+
+ AGXFC    WITH
+    FAMCON           0.750       0.782       0.799       0.885       0.972       0.988       1.020
+    ABUSE            0.194       0.218       0.231       0.296       0.360       0.373       0.397
+    SIBAGG           0.199       0.238       0.258       0.362       0.466       0.486       0.525
+    EMP_W1          -0.220      -0.182      -0.163      -0.061       0.041       0.061       0.099
+    FEMALE          -0.015       0.006       0.017       0.075       0.133       0.144       0.165
+    SCHBEL          -0.209      -0.181      -0.167      -0.093      -0.019      -0.005       0.023
+    GRADES           0.117       0.141       0.152       0.214       0.276       0.287       0.310
+    SBXFC            0.422       0.459       0.478       0.576       0.674       0.693       0.730
+    SBXAB            0.052       0.074       0.085       0.142       0.199       0.210       0.231
+    SBXSA            0.066       0.100       0.118       0.210       0.302       0.319       0.354
+
+ AGXAB    WITH
+    FAMCON           0.147       0.175       0.190       0.264       0.339       0.353       0.381
+    ABUSE            0.877       0.891       0.898       0.935       0.971       0.978       0.992
+    SIBAGG           0.048       0.070       0.081       0.141       0.200       0.212       0.234
+    EMP_W1          -0.058      -0.027      -0.011       0.072       0.155       0.170       0.201
+    FEMALE          -0.129      -0.112      -0.103      -0.057      -0.012      -0.003       0.014
+    SCHBEL          -0.255      -0.228      -0.214      -0.142      -0.070      -0.056      -0.029
+    GRADES           0.082       0.104       0.115       0.174       0.232       0.243       0.265
+    SBXFC           -0.027      -0.003       0.010       0.075       0.141       0.154       0.178
+    SBXAB            0.533       0.557       0.569       0.631       0.693       0.704       0.728
+    SBXSA           -0.051      -0.038      -0.031       0.004       0.039       0.046       0.059
+    AGXFC            0.197       0.225       0.240       0.316       0.392       0.407       0.435
+
+ AGXSA    WITH
+    FAMCON           0.197       0.231       0.248       0.339       0.430       0.448       0.482
+    ABUSE            0.052       0.075       0.086       0.145       0.204       0.215       0.237
+    SIBAGG           0.917       0.925       0.929       0.949       0.970       0.974       0.981
+    EMP_W1          -0.169      -0.136      -0.119      -0.031       0.056       0.073       0.106
+    FEMALE           0.031       0.043       0.049       0.082       0.114       0.120       0.132
+    SCHBEL          -0.010      -0.003       0.001       0.021       0.041       0.045       0.053
+    GRADES           0.018       0.039       0.049       0.106       0.162       0.173       0.194
+    SBXFC            0.108       0.143       0.161       0.254       0.348       0.366       0.401
+    SBXAB           -0.041      -0.018      -0.006       0.057       0.120       0.132       0.155
+    SBXSA            0.769       0.781       0.787       0.818       0.849       0.855       0.867
+    AGXFC            0.226       0.267       0.288       0.399       0.509       0.530       0.572
+    AGXAB            0.059       0.080       0.091       0.149       0.206       0.217       0.239
+
+ Means
+    FAMCON           0.677       0.711       0.728       0.819       0.910       0.927       0.961
+    ABUSE            0.487       0.500       0.506       0.538       0.571       0.577       0.589
+    SIBAGG           0.346       0.356       0.361       0.389       0.417       0.422       0.433
+    EMP_W1           2.596       2.677       2.719       2.936       3.154       3.195       3.277
+    FEMALE           0.867       0.891       0.903       0.966       1.029       1.041       1.065
+    SCHBEL           1.262       1.280       1.289       1.337       1.385       1.394       1.412
+    GRADES           1.752       2.027       2.168       2.903       3.638       3.779       4.054
+    SBXFC            0.439       0.468       0.483       0.560       0.637       0.652       0.681
+    SBXAB            0.324       0.332       0.336       0.358       0.379       0.383       0.391
+    SBXSA            0.251       0.259       0.263       0.285       0.307       0.312       0.320
+    AGXFC            0.657       0.684       0.698       0.771       0.844       0.858       0.885
+    AGXAB            0.435       0.451       0.460       0.503       0.547       0.555       0.571
+    AGXSA            0.323       0.331       0.336       0.357       0.379       0.383       0.392
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.137       0.010       0.085       0.478       0.871       0.946       1.093
+    S               -0.260      -0.054       0.051       0.600       1.149       1.254       1.459
+
+ Variances
+    FAMCON           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ABUSE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SIBAGG           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    EMP_W1           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    FEMALE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SCHBEL           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    GRADES           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SBXFC            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SBXAB            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SBXSA            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXFC            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXAB            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXSA            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.385       0.431       0.455       0.578       0.701       0.725       0.771
+    SH_W2            0.470       0.515       0.538       0.658       0.778       0.801       0.846
+    SH_W3            0.476       0.515       0.535       0.641       0.747       0.767       0.807
+    SH_W4            0.047       0.105       0.135       0.289       0.443       0.473       0.531
+    I                0.398       0.455       0.485       0.637       0.790       0.819       0.876
+    S                0.457       0.543       0.587       0.816       1.046       1.090       1.176
+
+
+STD Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ I        |
+    SH_W1            0.211       0.268       0.297       0.448       0.599       0.628       0.685
+    SH_W2            0.211       0.268       0.297       0.448       0.599       0.628       0.685
+    SH_W3            0.211       0.268       0.297       0.448       0.599       0.628       0.685
+    SH_W4            0.211       0.268       0.297       0.448       0.599       0.628       0.685
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.046       0.064       0.073       0.121       0.170       0.179       0.197
+    SH_W3            0.137       0.191       0.219       0.364       0.509       0.536       0.591
+    SH_W4            0.228       0.318       0.365       0.606       0.848       0.894       0.984
+
+ I        ON
+    FAMCON          -1.023      -0.752      -0.613       0.111       0.835       0.974       1.245
+    ABUSE           -0.523      -0.141       0.054       1.075       2.096       2.292       2.674
+    SIBAGG          -0.285      -0.225      -0.195      -0.036       0.123       0.153       0.213
+    EMP_W1          -0.167      -0.129      -0.110      -0.009       0.092       0.111       0.149
+    FEMALE          -0.414      -0.349      -0.315      -0.140       0.035       0.069       0.134
+    SCHBEL          -0.415      -0.322      -0.274      -0.023       0.228       0.276       0.369
+    GRADES          -0.074      -0.065      -0.061      -0.039      -0.017      -0.013      -0.005
+    SBXFC           -0.920      -0.748      -0.660      -0.201       0.258       0.346       0.518
+    SBXAB           -1.468      -1.273      -1.174      -0.654      -0.134      -0.035       0.160
+    SBXSA           -0.178      -0.115      -0.083       0.085       0.253       0.285       0.348
+    AGXFC           -0.105      -0.073      -0.056       0.031       0.118       0.134       0.167
+    AGXAB           -0.297      -0.232      -0.199      -0.026       0.146       0.180       0.244
+    AGXSA           -0.053      -0.041      -0.035      -0.002       0.031       0.037       0.049
+
+ S        ON
+    FAMCON          -1.260      -0.900      -0.716       0.245       1.206       1.390       1.750
+    ABUSE           -2.999      -2.616      -2.420      -1.397      -0.374      -0.178       0.205
+    SIBAGG          -1.012      -0.855      -0.774      -0.354       0.066       0.147       0.304
+    EMP_W1          -0.090      -0.063      -0.049       0.022       0.094       0.107       0.134
+    FEMALE          -0.528      -0.452      -0.413      -0.209      -0.005       0.034       0.110
+    SCHBEL          -0.762      -0.641      -0.579      -0.257       0.065       0.127       0.248
+    GRADES          -0.130      -0.103      -0.089      -0.018       0.054       0.067       0.094
+    SBXFC           -1.117      -0.885      -0.766      -0.144       0.477       0.596       0.829
+    SBXAB           -0.864      -0.575      -0.428       0.344       1.116       1.264       1.553
+    SBXSA           -0.447      -0.306      -0.234       0.142       0.517       0.589       0.730
+    AGXFC           -0.185      -0.146      -0.126      -0.021       0.084       0.105       0.144
+    AGXAB           -0.041       0.007       0.031       0.160       0.288       0.312       0.360
+    AGXSA           -0.090      -0.053      -0.035       0.062       0.159       0.177       0.214
+
+ S        WITH
+    I               -0.954      -0.743      -0.634      -0.069       0.496       0.604       0.815
+
+ ABUSE    WITH
+    FAMCON           0.090       0.111       0.121       0.176       0.231       0.242       0.262
+
+ SIBAGG   WITH
+    FAMCON           0.109       0.152       0.175       0.292       0.409       0.432       0.476
+    ABUSE            0.026       0.047       0.058       0.115       0.172       0.183       0.205
+
+ EMP_W1   WITH
+    FAMCON          -0.162      -0.133      -0.118      -0.040       0.037       0.052       0.081
+    ABUSE           -0.066      -0.041      -0.029       0.038       0.105       0.117       0.142
+    SIBAGG          -0.135      -0.106      -0.091      -0.014       0.063       0.077       0.106
+
+ FEMALE   WITH
+    FAMCON          -0.008      -0.001       0.002       0.020       0.039       0.042       0.049
+    ABUSE           -0.054      -0.048      -0.044      -0.028      -0.011      -0.008      -0.002
+    SIBAGG           0.000       0.008       0.012       0.032       0.052       0.056       0.063
+    EMP_W1          -0.114      -0.106      -0.101      -0.079      -0.057      -0.053      -0.044
+
+ SCHBEL   WITH
+    FAMCON          -0.118      -0.106      -0.100      -0.068      -0.036      -0.030      -0.018
+    ABUSE           -0.098      -0.089      -0.084      -0.060      -0.035      -0.031      -0.021
+    SIBAGG          -0.021      -0.016      -0.014      -0.001       0.011       0.014       0.019
+    EMP_W1          -0.105      -0.097      -0.093      -0.073      -0.052      -0.048      -0.041
+    FEMALE           0.001       0.006       0.009       0.023       0.037       0.039       0.044
+
+ GRADES   WITH
+    FAMCON          -0.346      -0.289      -0.260      -0.109       0.043       0.072       0.129
+    ABUSE           -0.053      -0.038      -0.031       0.009       0.049       0.056       0.071
+    SIBAGG          -0.152      -0.122      -0.107      -0.027       0.052       0.067       0.097
+    EMP_W1          -0.251      -0.224      -0.211      -0.139      -0.068      -0.055      -0.028
+    FEMALE           0.013       0.023       0.028       0.055       0.083       0.088       0.098
+    SCHBEL           0.067       0.087       0.097       0.152       0.206       0.216       0.236
+
+ SBXFC    WITH
+    FAMCON           0.186       0.210       0.222       0.286       0.350       0.362       0.386
+    ABUSE           -0.001       0.009       0.014       0.041       0.069       0.074       0.084
+    SIBAGG           0.048       0.075       0.089       0.163       0.236       0.250       0.278
+    EMP_W1          -0.104      -0.091      -0.084      -0.049      -0.014      -0.007       0.006
+    FEMALE          -0.003       0.001       0.002       0.013       0.023       0.025       0.028
+    SCHBEL           0.100       0.106       0.109       0.125       0.140       0.143       0.149
+    GRADES          -0.016       0.004       0.014       0.066       0.119       0.129       0.148
+
+ SBXAB    WITH
+    FAMCON           0.022       0.030       0.035       0.058       0.081       0.086       0.094
+    ABUSE            0.165       0.173       0.177       0.199       0.220       0.225       0.233
+    SIBAGG          -0.022      -0.009      -0.002       0.033       0.068       0.075       0.088
+    EMP_W1          -0.042      -0.029      -0.022       0.012       0.046       0.053       0.065
+    FEMALE          -0.028      -0.025      -0.024      -0.016      -0.007      -0.006      -0.003
+    SCHBEL           0.047       0.050       0.051       0.059       0.067       0.068       0.071
+    GRADES          -0.031      -0.012      -0.002       0.049       0.100       0.110       0.129
+    SBXFC            0.058       0.069       0.075       0.106       0.137       0.143       0.155
+
+ SBXSA    WITH
+    FAMCON           0.036       0.060       0.073       0.138       0.203       0.215       0.240
+    ABUSE           -0.032      -0.023      -0.018       0.007       0.033       0.037       0.047
+    SIBAGG           0.556       0.586       0.602       0.682       0.762       0.777       0.807
+    EMP_W1          -0.083      -0.063      -0.053       0.000       0.053       0.063       0.082
+    FEMALE           0.001       0.006       0.009       0.023       0.037       0.040       0.045
+    SCHBEL           0.074       0.077       0.078       0.087       0.095       0.097       0.100
+    GRADES          -0.080      -0.053      -0.039       0.032       0.104       0.117       0.144
+    SBXFC            0.082       0.113       0.128       0.210       0.291       0.307       0.337
+    SBXAB           -0.002       0.012       0.018       0.054       0.090       0.096       0.110
+
+ AGXFC    WITH
+    FAMCON           1.801       1.954       2.032       2.440       2.848       2.926       3.079
+    ABUSE            0.348       0.429       0.471       0.687       0.903       0.945       1.026
+    SIBAGG           0.541       0.704       0.788       1.224       1.660       1.743       1.907
+    EMP_W1          -0.681      -0.563      -0.502      -0.186       0.131       0.191       0.310
+    FEMALE          -0.012       0.022       0.039       0.131       0.222       0.239       0.273
+    SCHBEL          -0.360      -0.311      -0.286      -0.155      -0.025       0.001       0.049
+    GRADES           0.489       0.635       0.710       1.101       1.492       1.567       1.714
+    SBXFC            0.728       0.853       0.918       1.252       1.586       1.650       1.775
+    SBXAB            0.077       0.115       0.134       0.236       0.337       0.357       0.395
+    SBXSA            0.167       0.274       0.330       0.617       0.905       0.961       1.068
+
+ AGXAB    WITH
+    FAMCON           0.317       0.396       0.436       0.648       0.859       0.899       0.978
+    ABUSE            1.204       1.378       1.466       1.930       2.394       2.483       2.656
+    SIBAGG           0.086       0.166       0.208       0.423       0.639       0.680       0.761
+    EMP_W1          -0.169      -0.082      -0.037       0.196       0.429       0.474       0.561
+    FEMALE          -0.210      -0.181      -0.166      -0.089      -0.011       0.004       0.033
+    SCHBEL          -0.411      -0.363      -0.338      -0.211      -0.083      -0.058      -0.011
+    GRADES           0.183       0.329       0.404       0.794       1.184       1.259       1.405
+    SBXFC           -0.039       0.005       0.028       0.146       0.264       0.286       0.330
+    SBXAB            0.757       0.799       0.820       0.931       1.043       1.064       1.106
+    SBXSA           -0.133      -0.099      -0.081       0.011       0.103       0.120       0.155
+    AGXFC            1.648       2.067       2.282       3.402       4.522       4.736       5.155
+
+ AGXSA    WITH
+    FAMCON           0.499       0.666       0.751       1.197       1.644       1.729       1.896
+    ABUSE            0.087       0.169       0.211       0.431       0.650       0.692       0.774
+    SIBAGG           3.019       3.279       3.413       4.109       4.806       4.939       5.200
+    EMP_W1          -0.660      -0.531      -0.466      -0.123       0.220       0.286       0.414
+    FEMALE           0.046       0.078       0.095       0.182       0.269       0.286       0.318
+    SCHBEL          -0.019      -0.004       0.004       0.045       0.086       0.094       0.109
+    GRADES          -0.009       0.160       0.247       0.698       1.150       1.236       1.405
+    SBXFC            0.217       0.334       0.394       0.707       1.020       1.080       1.197
+    SBXAB           -0.089      -0.039      -0.013       0.121       0.256       0.281       0.332
+    SBXSA            2.338       2.516       2.607       3.082       3.557       3.648       3.826
+    AGXFC            2.630       3.479       3.913       6.182       8.450       8.884       9.733
+    AGXAB            0.494       0.866       1.056       2.049       3.042       3.232       3.603
+
+ Means
+    FAMCON           0.487       0.526       0.546       0.649       0.752       0.771       0.810
+    ABUSE            0.271       0.292       0.303       0.360       0.416       0.427       0.448
+    SIBAGG           0.313       0.329       0.337       0.378       0.419       0.427       0.443
+    EMP_W1           2.462       2.492       2.507       2.586       2.665       2.681       2.710
+    FEMALE           0.431       0.444       0.450       0.483       0.515       0.522       0.534
+    SCHBEL           0.615       0.622       0.625       0.641       0.658       0.661       0.667
+    GRADES           3.626       3.785       3.867       4.294       4.721       4.803       4.963
+    SBXFC            0.266       0.286       0.297       0.350       0.403       0.413       0.433
+    SBXAB            0.144       0.150       0.154       0.171       0.188       0.191       0.198
+    SBXSA            0.201       0.211       0.216       0.241       0.267       0.272       0.282
+    AGXFC            2.008       2.169       2.252       2.683       3.115       3.198       3.359
+    AGXAB            1.057       1.176       1.237       1.556       1.875       1.936       2.055
+    AGXSA            1.211       1.302       1.349       1.592       1.836       1.883       1.974
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.137       0.010       0.085       0.478       0.871       0.946       1.093
+    S               -0.260      -0.054       0.051       0.600       1.149       1.254       1.459
+
+ Variances
+    FAMCON           0.425       0.473       0.498       0.628       0.757       0.782       0.830
+    ABUSE            0.294       0.330       0.349       0.446       0.543       0.562       0.598
+    SIBAGG           0.756       0.801       0.824       0.944       1.063       1.086       1.131
+    EMP_W1           0.565       0.615       0.641       0.776       0.911       0.936       0.987
+    FEMALE           0.248       0.248       0.249       0.250       0.251       0.251       0.252
+    SCHBEL           0.223       0.224       0.225       0.230       0.235       0.236       0.237
+    GRADES           1.112       1.369       1.501       2.188       2.875       3.007       3.264
+    SBXFC            0.271       0.299       0.314       0.390       0.466       0.480       0.509
+    SBXAB            0.186       0.196       0.201       0.228       0.255       0.260       0.270
+    SBXSA            0.583       0.615       0.631       0.715       0.799       0.815       0.847
+    AGXFC            8.488       9.354       9.797      12.110      14.424      14.867      15.733
+    AGXAB            5.715       6.635       7.106       9.564      12.021      12.492      13.412
+    AGXSA           13.011      14.646      15.483      19.851      24.219      25.056      26.691
+
+ Residual Variances
+    SH_W1            0.065       0.115       0.141       0.275       0.409       0.434       0.484
+    SH_W2            0.243       0.274       0.289       0.369       0.450       0.465       0.496
+    SH_W3            0.267       0.315       0.340       0.470       0.599       0.624       0.672
+    SH_W4            0.054       0.085       0.101       0.183       0.266       0.282       0.313
+    I                0.398       0.455       0.485       0.637       0.790       0.819       0.876
+    S                0.457       0.543       0.587       0.816       1.046       1.090       1.176
+
+
+RESIDUAL OUTPUT
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.235         0.256         0.298         0.340         0.649
+
+
+           Model Estimated Means
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+                0.360         0.378         2.586         0.483         0.641
+
+
+           Model Estimated Means
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+                4.294         0.350         0.171         0.241         2.683
+
+
+           Model Estimated Means
+              AGXAB         AGXSA
+              ________      ________
+                1.556         1.592
+
+
+           Residuals for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+               -0.025         0.034         0.040        -0.032         0.000
+
+
+           Residuals for Means
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+                0.000        -0.001        -0.001         0.000         0.000
+
+
+           Residuals for Means
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+                0.002         0.000         0.000         0.000         0.004
+
+
+           Residuals for Means
+              AGXAB         AGXSA
+              ________      ________
+                0.001         0.000
+
+
+           Standardized Residuals (z-scores) for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+               -1.116       999.000       999.000        -1.007         0.017
+
+
+           Standardized Residuals (z-scores) for Means
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+               -0.065       999.000       999.000       999.000         0.000
+
+
+           Standardized Residuals (z-scores) for Means
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+              999.000        -0.077       999.000       999.000       999.000
+
+
+           Standardized Residuals (z-scores) for Means
+              AGXAB         AGXSA
+              ________      ________
+                0.155       999.000
+
+
+           Normalized Residuals for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+               -0.442         1.031         1.440        -0.534         0.001
+
+
+           Normalized Residuals for Means
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+               -0.007        -0.024        -0.014         0.005         0.000
+
+
+           Normalized Residuals for Means
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+                0.009        -0.006        -0.008        -0.002         0.014
+
+
+           Normalized Residuals for Means
+              AGXAB         AGXSA
+              ________      ________
+                0.007         0.001
+
+
+           Model Estimated Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.476
+ SH_W2          0.189         0.561
+ SH_W3          0.166         0.198         0.732
+ SH_W4          0.142         0.204         0.328         0.635
+ FAMCON         0.100         0.093         0.080         0.066         0.628
+ ABUSE          0.148         0.122         0.070         0.018         0.176
+ SIBAGG         0.063         0.057         0.045         0.034         0.292
+ EMP_W1         0.018         0.022         0.031         0.039        -0.040
+ FEMALE        -0.022        -0.027        -0.036        -0.045         0.020
+ SCHBEL        -0.063        -0.065        -0.068        -0.072        -0.068
+ GRADES        -0.058        -0.053        -0.044        -0.035        -0.109
+ SBXFC         -0.015        -0.019        -0.026        -0.034         0.286
+ SBXAB          0.015         0.007        -0.009        -0.024         0.058
+ SBXSA         -0.006        -0.003         0.003         0.009         0.138
+ AGXFC          0.369         0.352         0.317         0.283         2.440
+ AGXAB          0.594         0.504         0.325         0.145         0.648
+ AGXSA          0.237         0.234         0.229         0.223         1.197
+
+
+           Model Estimated Covariances
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+ ABUSE          0.446
+ SIBAGG         0.115         0.944
+ EMP_W1         0.038        -0.014         0.776
+ FEMALE        -0.028         0.032        -0.079         0.250
+ SCHBEL        -0.060        -0.001        -0.073         0.023         0.230
+ GRADES         0.009        -0.027        -0.139         0.055         0.152
+ SBXFC          0.041         0.163        -0.049         0.013         0.125
+ SBXAB          0.199         0.033         0.012        -0.016         0.059
+ SBXSA          0.007         0.682         0.000         0.023         0.087
+ AGXFC          0.687         1.224        -0.186         0.131        -0.155
+ AGXAB          1.930         0.423         0.196        -0.089        -0.211
+ AGXSA          0.431         4.109        -0.123         0.182         0.045
+
+
+           Model Estimated Covariances
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+ GRADES         2.188
+ SBXFC          0.066         0.390
+ SBXAB          0.049         0.106         0.228
+ SBXSA          0.032         0.210         0.054         0.715
+ AGXFC          1.101         1.252         0.236         0.617        12.110
+ AGXAB          0.794         0.146         0.931         0.011         3.402
+ AGXSA          0.698         0.707         0.121         3.082         6.182
+
+
+           Model Estimated Covariances
+              AGXAB         AGXSA
+              ________      ________
+ AGXAB          9.564
+ AGXSA          2.049        19.851
+
+
+           Model Estimated Correlations
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          1.000
+ SH_W2          0.366         1.000
+ SH_W3          0.281         0.309         1.000
+ SH_W4          0.259         0.342         0.481         1.000
+ FAMCON         0.183         0.157         0.117         0.104         1.000
+ ABUSE          0.322         0.244         0.123         0.034         0.333
+ SIBAGG         0.094         0.078         0.055         0.043         0.380
+ EMP_W1         0.029         0.033         0.041         0.056        -0.058
+ FEMALE        -0.065        -0.072        -0.084        -0.114         0.052
+ SCHBEL        -0.191        -0.181        -0.166        -0.188        -0.179
+ GRADES        -0.056        -0.048        -0.035        -0.030        -0.093
+ SBXFC         -0.035        -0.040        -0.049        -0.068         0.578
+ SBXAB          0.047         0.021        -0.021        -0.064         0.153
+ SBXSA         -0.010        -0.004         0.004         0.013         0.206
+ AGXFC          0.154         0.135         0.107         0.102         0.885
+ AGXAB          0.279         0.218         0.123         0.059         0.264
+ AGXSA          0.077         0.070         0.060         0.063         0.339
+
+
+           Model Estimated Correlations
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+ ABUSE          1.000
+ SIBAGG         0.178         1.000
+ EMP_W1         0.064        -0.017         1.000
+ FEMALE        -0.083         0.065        -0.180         1.000
+ SCHBEL        -0.186        -0.002        -0.172         0.095         1.000
+ GRADES         0.009        -0.019        -0.107         0.075         0.214
+ SBXFC          0.099         0.268        -0.089         0.040         0.416
+ SBXAB          0.623         0.071         0.028        -0.065         0.258
+ SBXSA          0.013         0.830         0.000         0.055         0.214
+ AGXFC          0.296         0.362        -0.061         0.075        -0.093
+ AGXAB          0.935         0.141         0.072        -0.057        -0.142
+ AGXSA          0.145         0.949        -0.031         0.082         0.021
+
+
+           Model Estimated Correlations
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+ GRADES         1.000
+ SBXFC          0.072         1.000
+ SBXAB          0.069         0.357         1.000
+ SBXSA          0.026         0.397         0.134         1.000
+ AGXFC          0.214         0.576         0.142         0.210         1.000
+ AGXAB          0.174         0.075         0.631         0.004         0.316
+ AGXSA          0.106         0.254         0.057         0.818         0.399
+
+
+           Model Estimated Correlations
+              AGXAB         AGXSA
+              ________      ________
+ AGXAB          1.000
+ AGXSA          0.149         1.000
+
+
+           Residuals for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1         -0.023
+ SH_W2          0.002         0.041
+ SH_W3         -0.018         0.055         0.002
+ SH_W4         -0.055         0.024        -0.026        -0.027
+ FAMCON         0.000        -0.013         0.044        -0.017         0.000
+ ABUSE         -0.011         0.017         0.006        -0.019        -0.001
+ SIBAGG         0.012        -0.027         0.009         0.000         0.000
+ EMP_W1        -0.014         0.010         0.033        -0.014         0.000
+ FEMALE         0.005        -0.013         0.015         0.000         0.001
+ SCHBEL         0.014        -0.024        -0.014         0.014         0.000
+ GRADES        -0.019         0.042        -0.026         0.008         0.001
+ SBXFC          0.006        -0.014         0.003         0.003         0.000
+ SBXAB          0.009        -0.017        -0.001         0.004         0.000
+ SBXSA          0.010        -0.013        -0.018         0.008         0.000
+ AGXFC         -0.037         0.026         0.133        -0.065         0.001
+ AGXAB         -0.055         0.105         0.016        -0.082        -0.002
+ AGXSA          0.016        -0.049         0.043        -0.009         0.000
+
+
+           Residuals for Covariances
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+ ABUSE          0.000
+ SIBAGG        -0.001         0.000
+ EMP_W1         0.000        -0.001         0.000
+ FEMALE        -0.001         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.001         0.004         0.000         0.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         0.000
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC         -0.003         0.006        -0.001         0.001         0.000
+ AGXAB         -0.001         0.002        -0.002        -0.002         0.001
+ AGXSA         -0.003         0.005        -0.004         0.000         0.001
+
+
+           Residuals for Covariances
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+ GRADES        -0.001
+ SBXFC          0.001         0.000
+ SBXAB         -0.001         0.000         0.000
+ SBXSA          0.001         0.000         0.000         0.000
+ AGXFC          0.005        -0.001         0.000         0.002         0.013
+ AGXAB          0.001        -0.001         0.000        -0.001        -0.008
+ AGXSA          0.017        -0.001         0.000         0.002         0.033
+
+
+           Residuals for Covariances
+              AGXAB         AGXSA
+              ________      ________
+ AGXAB         -0.005
+ AGXSA          0.002         0.047
+
+
+           Residuals for Correlations
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.000
+ SH_W2          0.000         0.000
+ SH_W3         -0.024         0.072         0.000
+ SH_W4         -0.093         0.035        -0.029         0.000
+ FAMCON         0.004        -0.027         0.065        -0.026         0.000
+ ABUSE         -0.015         0.025         0.011        -0.035        -0.001
+ SIBAGG         0.021        -0.038         0.011         0.000         0.000
+ EMP_W1        -0.022         0.014         0.044        -0.019         0.000
+ FEMALE         0.013        -0.032         0.036        -0.002         0.002
+ SCHBEL         0.039        -0.057        -0.033         0.034        -0.001
+ GRADES        -0.020         0.039        -0.020         0.006         0.001
+ SBXFC          0.013        -0.027         0.006         0.006        -0.001
+ SBXAB          0.029        -0.046        -0.002         0.009         0.000
+ SBXSA          0.017        -0.019        -0.025         0.012         0.000
+ AGXFC         -0.012         0.005         0.044        -0.022         0.000
+ AGXAB         -0.019         0.036         0.006        -0.033        -0.001
+ AGXSA          0.007        -0.017         0.011        -0.001         0.000
+
+
+           Residuals for Correlations
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+ ABUSE          0.000
+ SIBAGG        -0.001         0.000
+ EMP_W1        -0.001        -0.001         0.000
+ FEMALE        -0.002         0.000         0.001         0.000
+ SCHBEL         0.001         0.001         0.001         0.000         0.000
+ GRADES         0.001         0.003         0.000        -0.001         0.000
+ SBXFC          0.000         0.000         0.000         0.001         0.000
+ SBXAB          0.001         0.000         0.000         0.001        -0.001
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC         -0.001         0.002         0.000         0.001         0.000
+ AGXAB          0.000         0.001        -0.001        -0.002         0.001
+ AGXSA         -0.001         0.000        -0.001         0.000         0.000
+
+
+           Residuals for Correlations
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+ GRADES         0.000
+ SBXFC          0.001         0.000
+ SBXAB         -0.001         0.000         0.000
+ SBXSA          0.001         0.000         0.000         0.000
+ AGXFC          0.001        -0.001         0.000         0.001         0.000
+ AGXAB          0.000         0.000         0.000         0.000        -0.001
+ AGXSA          0.002        -0.001         0.000        -0.001         0.001
+
+
+           Residuals for Correlations
+              AGXAB         AGXSA
+              ________      ________
+ AGXAB          0.000
+ AGXSA          0.000         0.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1        999.000
+ SH_W2          0.113         0.768
+ SH_W3         -0.601         3.720       999.000
+ SH_W4         -1.191         0.358       999.000        -0.398
+ FAMCON       999.000        -0.592         1.107       999.000       999.000
+ ABUSE        999.000         0.508         0.416        -3.622       999.000
+ SIBAGG         0.485       999.000         0.219       999.000       999.000
+ EMP_W1       999.000         0.334         1.866        -0.815        -0.035
+ FEMALE         0.547        -2.033         2.571         0.180       999.000
+ SCHBEL         1.529       999.000        -2.762         1.217       999.000
+ GRADES        -2.573         1.396        -0.608         0.811       999.000
+ SBXFC          0.358       999.000         0.221         0.215        -0.136
+ SBXAB          1.085        -1.773        -0.054         0.607         0.111
+ SBXSA          0.885        -2.447        -1.006         1.239         0.073
+ AGXFC        999.000         0.171         0.829       999.000       999.000
+ AGXAB        999.000         0.509         0.197       999.000       999.000
+ AGXSA          0.275       999.000         0.242       999.000       999.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+ ABUSE        999.000
+ SIBAGG       999.000        -0.069
+ EMP_W1       999.000       999.000       999.000
+ FEMALE        -0.236       999.000       999.000        -0.344
+ SCHBEL       999.000         0.748       999.000         0.057         0.000
+ GRADES         0.138         0.305         0.000        -0.253       999.000
+ SBXFC         -0.077       999.000         0.275         0.198       999.000
+ SBXAB        999.000         0.057        -0.008       999.000        -0.911
+ SBXSA        999.000         0.014       999.000         0.031         0.062
+ AGXFC        999.000       999.000        -0.058         0.343       999.000
+ AGXAB        999.000         0.215       999.000        -0.244       999.000
+ AGXSA        999.000       999.000       999.000        -0.038       999.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+ GRADES       999.000
+ SBXFC          0.254         0.075
+ SBXAB        999.000        -0.055       999.000
+ SBXSA        999.000       999.000       999.000         0.000
+ AGXFC          0.146        -0.326       999.000       999.000       999.000
+ AGXAB        999.000        -0.101         0.005       999.000       999.000
+ AGXSA          0.298       999.000         0.035         0.584       999.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              AGXAB         AGXSA
+              ________      ________
+ AGXAB        999.000
+ AGXSA        999.000       999.000
+
+
+           Normalized Residuals for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1         -0.166
+ SH_W2          0.028         0.465
+ SH_W3         -0.378         1.177         0.022
+ SH_W4         -0.914         0.281        -0.293        -0.179
+ FAMCON        -0.003        -0.403         1.040        -0.929        -0.002
+ ABUSE         -0.218         0.311         0.184        -0.654        -0.023
+ SIBAGG         0.291        -1.460         0.197        -0.017        -0.006
+ EMP_W1        -0.503         0.262         1.164        -0.488        -0.005
+ FEMALE         0.299        -0.764         0.648         0.008         0.065
+ SCHBEL         0.717        -2.436        -1.324         0.686        -0.013
+ GRADES        -0.655         1.030        -0.477         0.178         0.012
+ SBXFC          0.279        -1.732         0.179         0.150        -0.008
+ SBXAB          0.641        -1.353        -0.052         0.388         0.007
+ SBXSA          0.452        -0.703        -0.703         0.352         0.004
+ AGXFC         -0.307         0.126         0.703        -0.929         0.004
+ AGXAB         -0.240         0.341         0.085        -0.622        -0.012
+ AGXSA          0.111        -0.461         0.212        -0.082         0.000
+
+
+           Normalized Residuals for Covariances
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+ ABUSE         -0.008
+ SIBAGG        -0.016        -0.002
+ EMP_W1        -0.008        -0.014        -0.005
+ FEMALE        -0.053        -0.005         0.034        -0.017
+ SCHBEL         0.030         0.033         0.034         0.004         0.000
+ GRADES         0.023         0.084         0.000        -0.024         0.000
+ SBXFC         -0.013        -0.005         0.009         0.037         0.010
+ SBXAB          0.012         0.008        -0.001         0.069        -0.049
+ SBXSA         -0.015         0.001        -0.002         0.003         0.008
+ AGXFC         -0.025         0.023        -0.007         0.019        -0.006
+ AGXAB         -0.005         0.014        -0.011        -0.052         0.017
+ AGXSA         -0.024         0.013        -0.019        -0.004         0.043
+
+
+           Normalized Residuals for Covariances
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+ GRADES        -0.002
+ SBXFC          0.019         0.001
+ SBXAB         -0.035        -0.003        -0.007
+ SBXSA          0.033         0.001         0.007         0.000
+ AGXFC          0.022        -0.003        -0.004         0.013         0.010
+ AGXAB          0.002        -0.014         0.000        -0.013        -0.012
+ AGXSA          0.061        -0.003         0.004         0.006         0.024
+
+
+           Normalized Residuals for Covariances
+              AGXAB         AGXSA
+              ________      ________
+ AGXAB         -0.003
+ AGXSA          0.004         0.018
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              AGXAB         AGXSA
+              ________      ________
+                  0             0
+
+
+           LAMBDA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ EMP_W1             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ SCHBEL             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ SBXFC              0             0             0             0             0
+ SBXAB              0             0             0             0             0
+ SBXSA              0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           LAMBDA
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ EMP_W1             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ SCHBEL             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ SBXFC              0             0             0             0             0
+ SBXAB              0             0             0             0             0
+ SBXSA              0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           LAMBDA
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ EMP_W1             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ SCHBEL             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ SBXFC              0             0             0             0             0
+ SBXAB              0             0             0             0             0
+ SBXSA              0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1              1
+ SH_W2              0             2
+ SH_W3              0             0             3
+ SH_W4              0             0             0             4
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ EMP_W1             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ SCHBEL             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ SBXFC              0             0             0             0             0
+ SBXAB              0             0             0             0             0
+ SBXSA              0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           THETA
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+ ABUSE              0
+ SIBAGG             0             0
+ EMP_W1             0             0             0
+ FEMALE             0             0             0             0
+ SCHBEL             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ SBXFC              0             0             0             0             0
+ SBXAB              0             0             0             0             0
+ SBXSA              0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           THETA
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+ GRADES             0
+ SBXFC              0             0
+ SBXAB              0             0             0
+ SBXSA              0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           THETA
+              AGXAB         AGXSA
+              ________      ________
+ AGXAB              0
+ AGXSA              0             0
+
+
+           ALPHA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                  5             6             7             8             9
+
+
+           ALPHA
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+                 10            11            12            13            14
+
+
+           ALPHA
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+                 15            16            17            18            19
+
+
+           BETA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I                  0             0            20            21            22
+ S                  0             0            33            34            35
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ EMP_W1             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ SCHBEL             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ SBXFC              0             0             0             0             0
+ SBXAB              0             0             0             0             0
+ SBXSA              0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           BETA
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ I                 23            24            25            26            27
+ S                 36            37            38            39            40
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ EMP_W1             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ SCHBEL             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ SBXFC              0             0             0             0             0
+ SBXAB              0             0             0             0             0
+ SBXSA              0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           BETA
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ I                 28            29            30            31            32
+ S                 41            42            43            44            45
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ EMP_W1             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ SCHBEL             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ SBXFC              0             0             0             0             0
+ SBXAB              0             0             0             0             0
+ SBXSA              0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           PSI
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I                 46
+ S                 47            48
+ FAMCON             0             0            49
+ ABUSE              0             0            50            51
+ SIBAGG             0             0            52            53            54
+ EMP_W1             0             0            55            56            57
+ FEMALE             0             0            59            60            61
+ SCHBEL             0             0            64            65            66
+ GRADES             0             0            70            71            72
+ SBXFC              0             0            77            78            79
+ SBXAB              0             0            85            86            87
+ SBXSA              0             0            94            95            96
+ AGXFC              0             0           104           105           106
+ AGXAB              0             0           115           116           117
+ AGXSA              0             0           127           128           129
+
+
+           PSI
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1            58
+ FEMALE            62            63
+ SCHBEL            67            68            69
+ GRADES            73            74            75            76
+ SBXFC             80            81            82            83            84
+ SBXAB             88            89            90            91            92
+ SBXSA             97            98            99           100           101
+ AGXFC            107           108           109           110           111
+ AGXAB            118           119           120           121           122
+ AGXSA            130           131           132           133           134
+
+
+           PSI
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB             93
+ SBXSA            102           103
+ AGXFC            112           113           114
+ AGXAB            123           124           125           126
+ AGXSA            135           136           137           138           139
+
+
+     STARTING VALUES
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              AGXAB         AGXSA
+              ________      ________
+                0.000         0.000
+
+
+           LAMBDA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ SH_W1          1.000         0.000         0.000         0.000         0.000
+ SH_W2          1.000         0.500         0.000         0.000         0.000
+ SH_W3          1.000         1.500         0.000         0.000         0.000
+ SH_W4          1.000         2.500         0.000         0.000         0.000
+ FAMCON         0.000         0.000         1.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         1.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         1.000
+ EMP_W1         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         0.000
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ SH_W1          0.000         0.000         0.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         0.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         0.000
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ EMP_W1         1.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         1.000         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         1.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         1.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         1.000
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SH_W1          0.000         0.000         0.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         0.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         0.000
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ EMP_W1         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         0.000
+ SBXAB          1.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         1.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         1.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         1.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.226
+ SH_W2          0.000         0.301
+ SH_W3          0.000         0.000         0.371
+ SH_W4          0.000         0.000         0.000         0.282
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ EMP_W1         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         0.000
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              ABUSE         SIBAGG        EMP_W1        FEMALE        SCHBEL
+              ________      ________      ________      ________      ________
+ ABUSE          0.000
+ SIBAGG         0.000         0.000
+ EMP_W1         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         0.000
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              GRADES        SBXFC         SBXAB         SBXSA         AGXFC
+              ________      ________      ________      ________      ________
+ GRADES         0.000
+ SBXFC          0.000         0.000
+ SBXAB          0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              AGXAB         AGXSA
+              ________      ________
+ AGXAB          0.000
+ AGXSA          0.000         0.000
+
+
+           ALPHA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                0.252         0.023         0.000         0.000         0.000
+
+
+           ALPHA
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ EMP_W1         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         0.000
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ EMP_W1         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         0.000
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ EMP_W1         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         0.000
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.446
+ S              0.000         0.483
+ FAMCON         0.000         0.000         0.312
+ ABUSE          0.000         0.000         0.000         0.217
+ SIBAGG         0.000         0.000         0.000         0.000         0.472
+ EMP_W1         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ SCHBEL         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ SBXFC          0.000         0.000         0.000         0.000         0.000
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1         0.388
+ FEMALE         0.000         0.125
+ SCHBEL         0.000         0.000         0.115
+ GRADES         0.000         0.000         0.000         1.094
+ SBXFC          0.000         0.000         0.000         0.000         0.195
+ SBXAB          0.000         0.000         0.000         0.000         0.000
+ SBXSA          0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB          0.114
+ SBXSA          0.000         0.358
+ AGXFC          0.000         0.000         6.017
+ AGXAB          0.000         0.000         0.000         4.884
+ AGXSA          0.000         0.000         0.000         0.000         9.451
+
+
+TECHNICAL 4 OUTPUT
+
+
+     ESTIMATES DERIVED FROM THE MODEL
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                0.235         0.042         0.649         0.360         0.378
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+                2.586         0.483         0.641         4.294         0.350
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+                0.171         0.241         2.683         1.556         1.592
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                0.052         0.033         0.063         0.035         0.025
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+                0.048         0.020         0.010         0.260         0.032
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+                0.010         0.016         0.262         0.194         0.148
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                4.526         1.260        10.361        10.420        14.998
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+               53.724        24.267        63.962        16.546        10.838
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+               16.278        15.448        10.229         8.032        10.754
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                0.000         0.208         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.201
+ S             -0.023         0.059
+ FAMCON         0.100        -0.014         0.628
+ ABUSE          0.148        -0.052         0.176         0.446
+ SIBAGG         0.063        -0.012         0.292         0.115         0.944
+ EMP_W1         0.018         0.009        -0.040         0.038        -0.014
+ FEMALE        -0.022        -0.009         0.020        -0.028         0.032
+ SCHBEL        -0.063        -0.003        -0.068        -0.060        -0.001
+ GRADES        -0.058         0.009        -0.109         0.009        -0.027
+ SBXFC         -0.015        -0.008         0.286         0.041         0.163
+ SBXAB          0.015        -0.016         0.058         0.199         0.033
+ SBXSA         -0.006         0.006         0.138         0.007         0.682
+ AGXFC          0.369        -0.035         2.440         0.687         1.224
+ AGXAB          0.594        -0.179         0.648         1.930         0.423
+ AGXSA          0.237        -0.005         1.197         0.431         4.109
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1         0.776
+ FEMALE        -0.079         0.250
+ SCHBEL        -0.073         0.023         0.230
+ GRADES        -0.139         0.055         0.152         2.188
+ SBXFC         -0.049         0.013         0.125         0.066         0.390
+ SBXAB          0.012        -0.016         0.059         0.049         0.106
+ SBXSA          0.000         0.023         0.087         0.032         0.210
+ AGXFC         -0.186         0.131        -0.155         1.101         1.252
+ AGXAB          0.196        -0.089        -0.211         0.794         0.146
+ AGXSA         -0.123         0.182         0.045         0.698         0.707
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB          0.228
+ SBXSA          0.054         0.715
+ AGXFC          0.236         0.617        12.110
+ AGXAB          0.931         0.011         3.402         9.564
+ AGXSA          0.121         3.082         6.182         2.049        19.851
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.082
+ S              0.039         0.028
+ FAMCON         0.033         0.019         0.079
+ ABUSE          0.053         0.021         0.033         0.059
+ SIBAGG         0.033         0.018         0.071         0.035         0.073
+ EMP_W1         0.027         0.009         0.047         0.040         0.047
+ FEMALE         0.014         0.009         0.011         0.010         0.012
+ SCHBEL         0.017         0.012         0.019         0.015         0.008
+ GRADES         0.028         0.015         0.092         0.024         0.048
+ SBXFC          0.013         0.009         0.039         0.017         0.045
+ SBXAB          0.011         0.007         0.014         0.013         0.021
+ SBXSA          0.019         0.008         0.040         0.015         0.049
+ AGXFC          0.168         0.064         0.248         0.132         0.265
+ AGXAB          0.260         0.080         0.128         0.282         0.131
+ AGXSA          0.130         0.070         0.271         0.133         0.423
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1         0.082
+ FEMALE         0.014         0.001
+ SCHBEL         0.012         0.008         0.003
+ GRADES         0.043         0.017         0.033         0.418
+ SBXFC          0.022         0.006         0.010         0.032         0.046
+ SBXAB          0.021         0.005         0.005         0.031         0.019
+ SBXSA          0.032         0.009         0.005         0.043         0.050
+ AGXFC          0.192         0.055         0.080         0.238         0.203
+ AGXAB          0.142         0.047         0.078         0.237         0.072
+ AGXSA          0.208         0.053         0.025         0.275         0.190
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB          0.016
+ SBXSA          0.022         0.051
+ AGXFC          0.062         0.175         1.406
+ AGXAB          0.068         0.056         0.681         1.494
+ AGXSA          0.082         0.289         1.379         0.604         2.656
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              2.437
+ S             -0.595         2.063
+ FAMCON         3.057        -0.709         7.970
+ ABUSE          2.791        -2.433         5.276         7.554
+ SIBAGG         1.905        -0.649         4.101         3.315        12.985
+ EMP_W1         0.656         0.970        -0.861         0.936        -0.307
+ FEMALE        -1.648        -1.054         1.851        -2.731         2.600
+ SCHBEL        -3.626        -0.279        -3.494        -4.009        -0.151
+ GRADES        -2.086         0.602        -1.178         0.375        -0.563
+ SBXFC         -1.125        -0.835         7.332         2.503         3.647
+ SBXAB          1.354        -2.231         4.104        15.135         1.536
+ SBXSA         -0.306         0.749         3.483         0.474        13.993
+ AGXFC          2.198        -0.536         9.837         5.223         4.615
+ AGXAB          2.283        -2.249         5.041         6.847         3.231
+ AGXSA          1.821        -0.075         4.414         3.228         9.705
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1         9.469
+ FEMALE        -5.855       360.248
+ SCHBEL        -5.834         2.692        81.168
+ GRADES        -3.220         3.352         4.607         5.238
+ SBXFC         -2.277         2.050        13.080         2.087         8.422
+ SBXAB          0.573        -3.140        12.623         1.565         5.614
+ SBXSA         -0.005         2.710        17.138         0.740         4.230
+ AGXFC         -0.965         2.354        -1.953         4.633         6.160
+ AGXAB          1.382        -1.881        -2.712         3.345         2.031
+ AGXSA         -0.590         3.441         1.812         2.543         3.715
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB         13.968
+ SBXSA          2.498        13.963
+ AGXFC          3.823         3.528         8.611
+ AGXAB         13.750         0.196         4.997         6.401
+ AGXSA          1.484        10.669         4.483         3.395         7.475
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.015
+ S              0.552         0.039
+ FAMCON         0.002         0.478         0.000
+ ABUSE          0.005         0.015         0.000         0.000
+ SIBAGG         0.057         0.516         0.000         0.001         0.000
+ EMP_W1         0.512         0.332         0.389         0.349         0.759
+ FEMALE         0.099         0.292         0.064         0.006         0.009
+ SCHBEL         0.000         0.781         0.000         0.000         0.880
+ GRADES         0.037         0.547         0.239         0.708         0.573
+ SBXFC          0.260         0.404         0.000         0.012         0.000
+ SBXAB          0.176         0.026         0.000         0.000         0.125
+ SBXSA          0.760         0.454         0.000         0.635         0.000
+ AGXFC          0.028         0.592         0.000         0.000         0.000
+ AGXAB          0.022         0.025         0.000         0.000         0.001
+ AGXSA          0.069         0.940         0.000         0.001         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1         0.000
+ FEMALE         0.000         0.000
+ SCHBEL         0.000         0.007         0.000
+ GRADES         0.001         0.001         0.000         0.000
+ SBXFC          0.023         0.040         0.000         0.037         0.000
+ SBXAB          0.566         0.002         0.000         0.118         0.000
+ SBXSA          0.996         0.007         0.000         0.459         0.000
+ AGXFC          0.334         0.019         0.051         0.000         0.000
+ AGXAB          0.167         0.060         0.007         0.001         0.042
+ AGXSA          0.555         0.001         0.070         0.011         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB          0.000
+ SBXSA          0.012         0.000
+ AGXFC          0.000         0.000         0.000
+ AGXAB          0.000         0.845         0.000         0.000
+ AGXSA          0.138         0.000         0.000         0.001         0.000
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              1.000
+ S             -0.215         1.000
+ FAMCON         0.282        -0.071         1.000
+ ABUSE          0.496        -0.322         0.333         1.000
+ SIBAGG         0.144        -0.050         0.380         0.178         1.000
+ EMP_W1         0.045         0.041        -0.058         0.064        -0.017
+ FEMALE        -0.100        -0.076         0.052        -0.083         0.065
+ SCHBEL        -0.294        -0.029        -0.179        -0.186        -0.002
+ GRADES        -0.087         0.025        -0.093         0.009        -0.019
+ SBXFC         -0.054        -0.050         0.578         0.099         0.268
+ SBXAB          0.072        -0.137         0.153         0.623         0.071
+ SBXSA         -0.015         0.029         0.206         0.013         0.830
+ AGXFC          0.237        -0.041         0.885         0.296         0.362
+ AGXAB          0.429        -0.239         0.264         0.935         0.141
+ AGXSA          0.119        -0.005         0.339         0.145         0.949
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1         1.000
+ FEMALE        -0.180         1.000
+ SCHBEL        -0.172         0.095         1.000
+ GRADES        -0.107         0.075         0.214         1.000
+ SBXFC         -0.089         0.040         0.416         0.072         1.000
+ SBXAB          0.028        -0.065         0.258         0.069         0.357
+ SBXSA          0.000         0.055         0.214         0.026         0.397
+ AGXFC         -0.061         0.075        -0.093         0.214         0.576
+ AGXAB          0.072        -0.057        -0.142         0.174         0.075
+ AGXSA         -0.031         0.082         0.021         0.106         0.254
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB          1.000
+ SBXSA          0.134         1.000
+ AGXFC          0.142         0.210         1.000
+ AGXAB          0.631         0.004         0.316         1.000
+ AGXSA          0.057         0.818         0.399         0.149         1.000
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.285         0.000
+ FAMCON         0.035         0.086         0.000
+ ABUSE          0.064         0.110         0.041         0.000
+ SIBAGG         0.074         0.073         0.068         0.044         0.000
+ EMP_W1         0.072         0.044         0.065         0.068         0.055
+ FEMALE         0.046         0.068         0.029         0.027         0.024
+ SCHBEL         0.028         0.108         0.042         0.038         0.016
+ GRADES         0.050         0.041         0.066         0.024         0.034
+ SBXFC          0.038         0.069         0.052         0.039         0.063
+ SBXAB          0.054         0.056         0.033         0.038         0.046
+ SBXSA          0.047         0.035         0.049         0.027         0.016
+ AGXFC          0.059         0.067         0.053         0.039         0.063
+ AGXAB          0.078         0.078         0.045         0.022         0.036
+ AGXSA          0.064         0.065         0.055         0.036         0.012
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1         0.000
+ FEMALE         0.024         0.000
+ SCHBEL         0.025         0.035         0.000
+ GRADES         0.037         0.025         0.037         0.000
+ SBXFC          0.037         0.020         0.032         0.035         0.000
+ SBXAB          0.049         0.020         0.012         0.038         0.041
+ SBXSA          0.043         0.019         0.010         0.033         0.079
+ AGXFC          0.062         0.035         0.045         0.037         0.060
+ AGXAB          0.050         0.028         0.044         0.035         0.040
+ AGXSA          0.053         0.020         0.012         0.034         0.057
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB          0.000
+ SBXSA          0.053         0.000
+ AGXFC          0.035         0.056         0.000
+ AGXAB          0.038         0.021         0.046         0.000
+ AGXSA          0.038         0.019         0.067         0.035         0.000
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I            999.000
+ S             -0.755       999.000
+ FAMCON         7.981        -0.822       999.000
+ ABUSE          7.700        -2.924         8.083       999.000
+ SIBAGG         1.962        -0.682         5.595         4.005       999.000
+ EMP_W1         0.626         0.929        -0.888         0.947        -0.307
+ FEMALE        -2.162        -1.107         1.805        -3.102         2.701
+ SCHBEL       -10.435        -0.269        -4.258        -4.937        -0.151
+ GRADES        -1.724         0.609        -1.399         0.384        -0.563
+ SBXFC         -1.413        -0.719        11.225         2.554         4.292
+ SBXAB          1.322        -2.444         4.710        16.245         1.533
+ SBXSA         -0.318         0.823         4.210         0.478        51.766
+ AGXFC          4.000        -0.612        16.848         7.499         5.707
+ AGXAB          5.490        -3.049         5.812        42.072         3.896
+ AGXSA          1.840        -0.076         6.136         4.040        76.464
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1       999.000
+ FEMALE        -7.618       999.000
+ SCHBEL        -7.010         2.673       999.000
+ GRADES        -2.859         3.002         5.819       999.000
+ SBXFC         -2.419         2.039        13.203         2.026       999.000
+ SBXAB          0.579        -3.224        20.717         1.814         8.772
+ SBXSA         -0.005         2.854        22.479         0.776         5.002
+ AGXFC         -0.977         2.142        -2.063         5.712         9.655
+ AGXAB          1.430        -2.071        -3.245         4.899         1.893
+ AGXSA         -0.587         4.167         1.727         3.086         4.468
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB        999.000
+ SBXSA          2.505       999.000
+ AGXFC          4.081         3.756       999.000
+ AGXAB         16.721         0.196         6.826       999.000
+ AGXSA          1.498        43.092         5.941         4.255       999.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.450         0.000
+ FAMCON         0.000         0.411         0.000
+ ABUSE          0.000         0.003         0.000         0.000
+ SIBAGG         0.050         0.495         0.000         0.000         0.000
+ EMP_W1         0.531         0.353         0.374         0.344         0.759
+ FEMALE         0.031         0.268         0.071         0.002         0.007
+ SCHBEL         0.000         0.788         0.000         0.000         0.880
+ GRADES         0.085         0.543         0.162         0.701         0.573
+ SBXFC          0.158         0.472         0.000         0.011         0.000
+ SBXAB          0.186         0.015         0.000         0.000         0.125
+ SBXSA          0.751         0.411         0.000         0.632         0.000
+ AGXFC          0.000         0.541         0.000         0.000         0.000
+ AGXAB          0.000         0.002         0.000         0.000         0.000
+ AGXSA          0.066         0.939         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              EMP_W1        FEMALE        SCHBEL        GRADES        SBXFC
+              ________      ________      ________      ________      ________
+ EMP_W1         0.000
+ FEMALE         0.000         0.000
+ SCHBEL         0.000         0.008         0.000
+ GRADES         0.004         0.003         0.000         0.000
+ SBXFC          0.016         0.041         0.000         0.043         0.000
+ SBXAB          0.563         0.001         0.000         0.070         0.000
+ SBXSA          0.996         0.004         0.000         0.438         0.000
+ AGXFC          0.329         0.032         0.039         0.000         0.000
+ AGXAB          0.153         0.038         0.001         0.000         0.058
+ AGXSA          0.557         0.000         0.084         0.002         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SBXAB         SBXSA         AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________      ________
+ SBXAB          0.000
+ SBXSA          0.012         0.000
+ AGXFC          0.000         0.000         0.000
+ AGXAB          0.000         0.845         0.000         0.000
+ AGXSA          0.134         0.000         0.000         0.000         0.000
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    c:\users\kylenick\onedrive - university of north carolina at chapel hill\dorothy\ipa\paper_1_ace_sv\mplus files\hisp
+
+     Beginning Time:  11:09:07
+        Ending Time:  11:09:07
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen

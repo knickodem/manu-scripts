@@ -1,0 +1,272 @@
+---
+title: "Tables"
+author: "KN"
+date: "7/2/2021"
+output:
+  word_document:
+    toc: TRUE
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, results = "asis")
+flextable::set_flextable_defaults(fonts_ignore = TRUE)
+library(knitr)
+library(flextable)
+library(magrittr)
+
+load("Tables_and_Contrasts.RData")
+```
+
+
+```{r}
+cat("# Gender")
+cat("\n\n")
+by_gender1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.gen %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.gender %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>%
+  knit_print()
+
+```
+
+
+```{r}
+cat("# Race")
+cat("\n\n")
+by_race1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.race %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.race %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>%
+  knit_print()
+
+```
+
+
+```{r}
+cat("# Sexual Orientation")
+cat("\n\n")
+by_so1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.so %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.so %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>%
+  knit_print()
+
+```
+
+
+```{r}
+cat("# Transgender")
+cat("\n\n")
+by_trans1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.trans %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.trans %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>%
+  knit_print()
+
+```
+
+
+```{r}
+cat("# Gender x Race")
+cat("\n\n")
+by_gxr1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.gxr %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.gxr %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>%
+  knit_print()
+
+```
+
+
+
+```{r}
+cat("# Gender x Sexual Orientation")
+cat("\n\n")
+by_gxs1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.gxs %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.gxs %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% 
+  knit_print()
+
+```
+
+
+
+```{r}
+cat("# Gender x Transgender")
+cat("\n\n")
+by_gxt1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.gxt %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.gxt %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% 
+  knit_print()
+
+```
+
+
+```{r}
+cat("# Race x Sexual Orientation")
+cat("\n\n")
+by_rxs1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.rxs %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.rxs %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% 
+  knit_print()
+
+```
+
+
+
+```{r}
+cat("# Race x Transgender")
+cat("\n\n")
+by_rxt1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.rxt %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.rxt %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% 
+  knit_print()
+
+```
+
+
+```{r}
+cat("# Sexual Orientation x Transgender")
+cat("\n\n")
+by_sxt1a %>% flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**N = Daters**")
+cat("\n\n")
+tb2a.sxt %>% gtsummary::as_flex_table() %>%
+  flextable::font(., fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% #fit_to_width(9.5) %>%
+  knit_print()
+cat("\n\n")
+cat("**Contrasts**")
+cat("\n\n")
+con.sxt %>% flextable() %>%
+  padding(padding = 1, part = "all") %>%
+  font(fontname = "Times New Roman", part = "all") %>%
+  autofit() %>% 
+  knit_print()
+
+```

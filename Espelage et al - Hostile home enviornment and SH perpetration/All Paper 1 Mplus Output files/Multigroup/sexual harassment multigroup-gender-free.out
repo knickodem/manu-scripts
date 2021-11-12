@@ -1,0 +1,1168 @@
+Mplus VERSION 8.4
+MUTHEN & MUTHEN
+06/25/2021  12:38 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Sexual Harassment LGM Multigroup-Gender Free
+
+  DATA: FILE = mpluswide.csv;
+
+  VARIABLE:
+  NAMES = subjno School Gender Female Race Race4
+  Black Hispanic White OtherR SchBel
+  Age Grades FamCon Abuse SibAgg
+  del_w1 del_w2 del_w3 del_w4
+  dep_w1 dep_w2 dep_w3 dep_w4
+  emp_w1 emp_w2 emp_w3 emp_w4
+  schb_w1 schb_w2 schb_w3 schb_w4
+  sh_w1 sh_w2 sh_w3 sh_w4;
+
+  USEVARIABLES = sh_w1-sh_w4;
+  IDVARIABLE = subjno;
+  CLUSTER = School;
+  GROUPING = Female (0 = Male 1 = Female);
+
+  MISSING = ALL (-999);
+
+  ANALYSIS:
+  TYPE = COMPLEX;
+
+  PLOT:
+  TYPE = PLOT2;
+  SERIES = sh_w1-sh_w4(*); !equivalent to dep_w1(0) dep_w2(1) dep_w3(2) dep_w4(3);
+  SERIES = sh_w1-sh_w4(s);
+
+  MODEL:
+  i s | sh_w1@0 sh_w2@.5 sh_w3@1.5 sh_w4@2.5;
+
+  MODEL Male:
+  [i] (mi);
+  [s] (ms);
+
+  MODEL Female:
+  [i] (fi);
+  [s] (fs);
+
+  MODEL TEST:
+  mi = fi;
+  ms = fs;
+  ![i] (1); [s] (2);
+  !i (3); s (4);
+  !sh_w1-sh_w4 (5-8);
+  !i WITH s(9)
+
+
+  OUTPUT:
+  STANDARDIZED CINTERVAL;
+
+  !Need to calculate difference test by hand: https://statmodel.com/chidiff.shtml
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  6
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  1
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Sexual Harassment LGM Multigroup-Gender Free
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 2
+Number of observations
+   Group MALE                                                  796
+   Group FEMALE                                                761
+   Total sample size                                          1557
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   SH_W1       SH_W2       SH_W3       SH_W4
+
+Continuous latent variables
+   I           S
+
+Variables with special functions
+
+  Grouping variable     FEMALE
+  Cluster variable      SCHOOL
+  ID variable           SUBJNO
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  mpluswide.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group MALE
+     Number of missing data patterns            12
+     Number of clusters                         18
+
+
+   Group FEMALE
+     Number of missing data patterns            13
+     Number of clusters                         17
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR MALE
+
+
+           Covariance Coverage
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+ SH_W1          0.991
+ SH_W2          0.906         0.915
+ SH_W3          0.736         0.685         0.742
+ SH_W4          0.622         0.572         0.557         0.627
+
+
+     PROPORTION OF DATA PRESENT FOR FEMALE
+
+
+           Covariance Coverage
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+ SH_W1          0.992
+ SH_W2          0.920         0.926
+ SH_W3          0.750         0.702         0.756
+ SH_W4          0.650         0.606         0.586         0.656
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR MALE
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     SH_W1                 0.261       3.841       0.000   84.66%       0.000      0.000      0.000
+             789.000       0.558      17.809       6.000    0.25%       0.000      0.000
+     SH_W2                 0.345       3.054       0.000   79.40%       0.000      0.000      0.000
+             728.000       0.685      10.449       6.000    0.14%       0.000      1.000
+     SH_W3                 0.411       3.027       0.000   77.33%       0.000      0.000      0.000
+             591.000       0.888      10.657       6.000    0.51%       0.000      1.000
+     SH_W4                 0.437       3.266       0.000   75.75%       0.000      0.000      0.000
+             499.000       1.048      11.849       6.000    1.00%       0.000      1.000
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR FEMALE
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     SH_W1                 0.187       4.838       0.000   90.20%       0.000      0.000      0.000
+             755.000       0.478      27.005       6.000    0.26%       0.000      0.000
+     SH_W2                 0.189       4.217       0.000   88.37%       0.000      0.000      0.000
+             705.000       0.374      21.961       6.000    0.14%       0.000      0.000
+     SH_W3                 0.277       3.350       0.000   84.00%       0.000      0.000      0.000
+             575.000       0.572      12.128       5.000    0.35%       0.000      0.000
+     SH_W4                 0.311       3.321       0.000   81.56%       0.000      0.000      0.000
+             499.000       0.631      12.866       6.000    0.20%       0.000      0.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.171D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 18, Group FEMALE: S
+
+     THIS IS MOST LIKELY DUE TO HAVING MORE PARAMETERS THAN THE NUMBER
+     OF CLUSTERS MINUS THE NUMBER OF STRATA WITH MORE THAN ONE CLUSTER.
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       18
+
+Loglikelihood
+
+          H0 Value                       -5696.946
+          H0 Scaling Correction Factor      6.4955
+            for MLR
+          H1 Value                       -5687.243
+          H1 Scaling Correction Factor      5.2807
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   11429.892
+          Bayesian (BIC)                 11526.202
+          Sample-Size Adjusted BIC       11469.020
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                              6.272*
+          Degrees of Freedom                    10
+          P-Value                           0.7919
+          Scaling Correction Factor         3.0940
+            for MLR
+
+Chi-Square Contribution From Each Group
+
+          MALE                               2.910
+          FEMALE                             3.362
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+          90 Percent C.I.                    0.000  0.026
+          Probability RMSEA <= .05           0.999
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.000
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                            158.473
+          Degrees of Freedom                    12
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.032
+
+Wald Test of Parameter Constraints
+
+          Value                             13.329
+          Degrees of Freedom                     2
+          P-Value                           0.0013
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MALE
+
+ I        |
+    SH_W1              1.000      0.000    999.000    999.000
+    SH_W2              1.000      0.000    999.000    999.000
+    SH_W3              1.000      0.000    999.000    999.000
+    SH_W4              1.000      0.000    999.000    999.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.500      0.000    999.000    999.000
+    SH_W3              1.500      0.000    999.000    999.000
+    SH_W4              2.500      0.000    999.000    999.000
+
+ S        WITH
+    I                 -0.006      0.038     -0.161      0.872
+
+ Means
+    I                  0.282      0.035      8.050      0.000
+    S                  0.078      0.025      3.097      0.002
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+
+ Variances
+    I                  0.236      0.064      3.687      0.000
+    S                  0.053      0.037      1.436      0.151
+
+ Residual Variances
+    SH_W1              0.334      0.101      3.303      0.001
+    SH_W2              0.435      0.068      6.413      0.000
+    SH_W3              0.548      0.086      6.367      0.000
+    SH_W4              0.535      0.184      2.908      0.004
+
+Group FEMALE
+
+ I        |
+    SH_W1              1.000      0.000    999.000    999.000
+    SH_W2              1.000      0.000    999.000    999.000
+    SH_W3              1.000      0.000    999.000    999.000
+    SH_W4              1.000      0.000    999.000    999.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.500      0.000    999.000    999.000
+    SH_W3              1.500      0.000    999.000    999.000
+    SH_W4              2.500      0.000    999.000    999.000
+
+ S        WITH
+    I                 -0.019      0.025     -0.758      0.449
+
+ Means
+    I                  0.171      0.024      7.223      0.000
+    S                  0.069      0.022      3.109      0.002
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+
+ Variances
+    I                  0.175      0.048      3.635      0.000
+    S                  0.048      0.022      2.248      0.025
+
+ Residual Variances
+    SH_W1              0.302      0.077      3.940      0.000
+    SH_W2              0.212      0.052      4.066      0.000
+    SH_W3              0.332      0.055      6.064      0.000
+    SH_W4              0.305      0.085      3.598      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MALE
+
+ I        |
+    SH_W1              0.643      0.077      8.366      0.000
+    SH_W2              0.590      0.067      8.831      0.000
+    SH_W3              0.516      0.076      6.800      0.000
+    SH_W4              0.469      0.076      6.139      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.140      0.046      3.026      0.002
+    SH_W3              0.367      0.127      2.883      0.004
+    SH_W4              0.556      0.182      3.053      0.002
+
+ S        WITH
+    I                 -0.054      0.317     -0.172      0.864
+
+ Means
+    I                  0.581      0.047     12.245      0.000
+    S                  0.339      0.169      2.002      0.045
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+
+ Variances
+    I                  1.000      0.000    999.000    999.000
+    S                  1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.586      0.099      5.921      0.000
+    SH_W2              0.642      0.053     12.142      0.000
+    SH_W3              0.619      0.051     12.250      0.000
+    SH_W4              0.499      0.122      4.106      0.000
+
+Group FEMALE
+
+ I        |
+    SH_W1              0.605      0.070      8.610      0.000
+    SH_W2              0.678      0.056     12.013      0.000
+    SH_W3              0.558      0.083      6.765      0.000
+    SH_W4              0.504      0.088      5.727      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.178      0.031      5.823      0.000
+    SH_W3              0.441      0.077      5.730      0.000
+    SH_W4              0.663      0.121      5.475      0.000
+
+ S        WITH
+    I                 -0.202      0.221     -0.917      0.359
+
+ Means
+    I                  0.409      0.043      9.470      0.000
+    S                  0.315      0.106      2.981      0.003
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+
+ Variances
+    I                  1.000      0.000    999.000    999.000
+    S                  1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.634      0.085      7.451      0.000
+    SH_W2              0.558      0.044     12.689      0.000
+    SH_W3              0.593      0.052     11.456      0.000
+    SH_W4              0.442      0.092      4.807      0.000
+
+
+STDY Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MALE
+
+ I        |
+    SH_W1              0.643      0.077      8.366      0.000
+    SH_W2              0.590      0.067      8.831      0.000
+    SH_W3              0.516      0.076      6.800      0.000
+    SH_W4              0.469      0.076      6.139      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.140      0.046      3.026      0.002
+    SH_W3              0.367      0.127      2.883      0.004
+    SH_W4              0.556      0.182      3.053      0.002
+
+ S        WITH
+    I                 -0.054      0.317     -0.172      0.864
+
+ Means
+    I                  0.581      0.047     12.245      0.000
+    S                  0.339      0.169      2.002      0.045
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+
+ Variances
+    I                  1.000      0.000    999.000    999.000
+    S                  1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.586      0.099      5.921      0.000
+    SH_W2              0.642      0.053     12.142      0.000
+    SH_W3              0.619      0.051     12.250      0.000
+    SH_W4              0.499      0.122      4.106      0.000
+
+Group FEMALE
+
+ I        |
+    SH_W1              0.605      0.070      8.610      0.000
+    SH_W2              0.678      0.056     12.013      0.000
+    SH_W3              0.558      0.083      6.765      0.000
+    SH_W4              0.504      0.088      5.727      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.178      0.031      5.823      0.000
+    SH_W3              0.441      0.077      5.730      0.000
+    SH_W4              0.663      0.121      5.475      0.000
+
+ S        WITH
+    I                 -0.202      0.221     -0.917      0.359
+
+ Means
+    I                  0.409      0.043      9.470      0.000
+    S                  0.315      0.106      2.981      0.003
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+
+ Variances
+    I                  1.000      0.000    999.000    999.000
+    S                  1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.634      0.085      7.451      0.000
+    SH_W2              0.558      0.044     12.689      0.000
+    SH_W3              0.593      0.052     11.456      0.000
+    SH_W4              0.442      0.092      4.807      0.000
+
+
+STD Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MALE
+
+ I        |
+    SH_W1              0.486      0.066      7.373      0.000
+    SH_W2              0.486      0.066      7.373      0.000
+    SH_W3              0.486      0.066      7.373      0.000
+    SH_W4              0.486      0.066      7.373      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.115      0.040      2.871      0.004
+    SH_W3              0.345      0.120      2.871      0.004
+    SH_W4              0.576      0.201      2.871      0.004
+
+ S        WITH
+    I                 -0.054      0.317     -0.172      0.864
+
+ Means
+    I                  0.581      0.047     12.245      0.000
+    S                  0.339      0.169      2.002      0.045
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+
+ Variances
+    I                  1.000      0.000    999.000    999.000
+    S                  1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.334      0.101      3.303      0.001
+    SH_W2              0.435      0.068      6.413      0.000
+    SH_W3              0.548      0.086      6.367      0.000
+    SH_W4              0.535      0.184      2.908      0.004
+
+Group FEMALE
+
+ I        |
+    SH_W1              0.418      0.057      7.271      0.000
+    SH_W2              0.418      0.057      7.271      0.000
+    SH_W3              0.418      0.057      7.271      0.000
+    SH_W4              0.418      0.057      7.271      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.110      0.024      4.496      0.000
+    SH_W3              0.330      0.073      4.496      0.000
+    SH_W4              0.550      0.122      4.496      0.000
+
+ S        WITH
+    I                 -0.202      0.221     -0.917      0.359
+
+ Means
+    I                  0.409      0.043      9.470      0.000
+    S                  0.315      0.106      2.981      0.003
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+
+ Variances
+    I                  1.000      0.000    999.000    999.000
+    S                  1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.302      0.077      3.940      0.000
+    SH_W2              0.212      0.052      4.066      0.000
+    SH_W3              0.332      0.055      6.064      0.000
+    SH_W4              0.305      0.085      3.598      0.000
+
+
+R-SQUARE
+
+Group MALE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    SH_W1              0.414      0.099      4.183      0.000
+    SH_W2              0.358      0.053      6.782      0.000
+    SH_W3              0.381      0.051      7.535      0.000
+    SH_W4              0.501      0.122      4.120      0.000
+
+Group FEMALE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    SH_W1              0.366      0.085      4.305      0.000
+    SH_W2              0.442      0.044     10.070      0.000
+    SH_W3              0.407      0.052      7.855      0.000
+    SH_W4              0.558      0.092      6.067      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.459E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MALE
+
+ I        |
+    SH_W1            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W2            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W3            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W4            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.500       0.500       0.500       0.500       0.500       0.500       0.500
+    SH_W3            1.500       1.500       1.500       1.500       1.500       1.500       1.500
+    SH_W4            2.500       2.500       2.500       2.500       2.500       2.500       2.500
+
+ S        WITH
+    I               -0.104      -0.080      -0.068      -0.006       0.056       0.068       0.091
+
+ Means
+    I                0.192       0.214       0.225       0.282       0.340       0.351       0.373
+    S                0.013       0.029       0.037       0.078       0.119       0.127       0.143
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    I                0.071       0.111       0.131       0.236       0.341       0.362       0.401
+    S               -0.042      -0.019      -0.008       0.053       0.114       0.125       0.148
+
+ Residual Variances
+    SH_W1            0.074       0.136       0.168       0.334       0.501       0.532       0.595
+    SH_W2            0.261       0.302       0.324       0.435       0.547       0.569       0.610
+    SH_W3            0.326       0.379       0.407       0.548       0.690       0.717       0.770
+    SH_W4            0.061       0.174       0.232       0.535       0.838       0.896       1.010
+
+Group FEMALE
+
+ I        |
+    SH_W1            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W2            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W3            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W4            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.500       0.500       0.500       0.500       0.500       0.500       0.500
+    SH_W3            1.500       1.500       1.500       1.500       1.500       1.500       1.500
+    SH_W4            2.500       2.500       2.500       2.500       2.500       2.500       2.500
+
+ S        WITH
+    I               -0.082      -0.067      -0.059      -0.019       0.022       0.030       0.045
+
+ Means
+    I                0.110       0.125       0.132       0.171       0.210       0.217       0.232
+    S                0.012       0.026       0.033       0.069       0.106       0.113       0.127
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    I                0.051       0.081       0.096       0.175       0.254       0.269       0.298
+    S               -0.007       0.006       0.013       0.048       0.084       0.091       0.104
+
+ Residual Variances
+    SH_W1            0.105       0.152       0.176       0.302       0.429       0.453       0.500
+    SH_W2            0.078       0.110       0.126       0.212       0.298       0.314       0.346
+    SH_W3            0.191       0.225       0.242       0.332       0.422       0.440       0.473
+    SH_W4            0.087       0.139       0.165       0.305       0.444       0.470       0.523
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MALE
+
+ I        |
+    SH_W1            0.445       0.493       0.517       0.643       0.770       0.794       0.842
+    SH_W2            0.418       0.459       0.480       0.590       0.700       0.721       0.762
+    SH_W3            0.321       0.368       0.391       0.516       0.641       0.665       0.712
+    SH_W4            0.272       0.319       0.343       0.469       0.595       0.619       0.666
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.021       0.049       0.064       0.140       0.216       0.230       0.259
+    SH_W3            0.039       0.118       0.158       0.367       0.577       0.617       0.695
+    SH_W4            0.087       0.199       0.256       0.556       0.856       0.913       1.025
+
+ S        WITH
+    I               -0.870      -0.675      -0.575      -0.054       0.467       0.566       0.761
+
+ Means
+    I                0.459       0.488       0.503       0.581       0.659       0.674       0.703
+    S               -0.097       0.007       0.060       0.339       0.617       0.670       0.775
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    I                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    S                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.331       0.392       0.423       0.586       0.749       0.780       0.841
+    SH_W2            0.505       0.538       0.555       0.642       0.729       0.745       0.778
+    SH_W3            0.489       0.520       0.536       0.619       0.702       0.718       0.749
+    SH_W4            0.186       0.261       0.299       0.499       0.699       0.737       0.812
+
+Group FEMALE
+
+ I        |
+    SH_W1            0.424       0.467       0.490       0.605       0.721       0.743       0.786
+    SH_W2            0.533       0.567       0.585       0.678       0.771       0.789       0.823
+    SH_W3            0.346       0.397       0.423       0.558       0.694       0.720       0.771
+    SH_W4            0.277       0.331       0.359       0.504       0.648       0.676       0.730
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.100       0.118       0.128       0.178       0.229       0.239       0.257
+    SH_W3            0.243       0.290       0.314       0.441       0.568       0.592       0.639
+    SH_W4            0.351       0.426       0.464       0.663       0.862       0.900       0.975
+
+ S        WITH
+    I               -0.770      -0.635      -0.565      -0.202       0.161       0.230       0.366
+
+ Means
+    I                0.298       0.324       0.338       0.409       0.480       0.494       0.520
+    S                0.043       0.108       0.141       0.315       0.489       0.522       0.587
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    I                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    S                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.415       0.467       0.494       0.634       0.774       0.801       0.853
+    SH_W2            0.444       0.471       0.485       0.558       0.630       0.644       0.671
+    SH_W3            0.460       0.492       0.508       0.593       0.678       0.695       0.727
+    SH_W4            0.205       0.262       0.291       0.442       0.593       0.622       0.679
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MALE
+
+ I        |
+    SH_W1            0.445       0.493       0.517       0.643       0.770       0.794       0.842
+    SH_W2            0.418       0.459       0.480       0.590       0.700       0.721       0.762
+    SH_W3            0.321       0.368       0.391       0.516       0.641       0.665       0.712
+    SH_W4            0.272       0.319       0.343       0.469       0.595       0.619       0.666
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.021       0.049       0.064       0.140       0.216       0.230       0.259
+    SH_W3            0.039       0.118       0.158       0.367       0.577       0.617       0.695
+    SH_W4            0.087       0.199       0.256       0.556       0.856       0.913       1.025
+
+ S        WITH
+    I               -0.870      -0.675      -0.575      -0.054       0.467       0.566       0.761
+
+ Means
+    I                0.459       0.488       0.503       0.581       0.659       0.674       0.703
+    S               -0.097       0.007       0.060       0.339       0.617       0.670       0.775
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    I                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    S                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.331       0.392       0.423       0.586       0.749       0.780       0.841
+    SH_W2            0.505       0.538       0.555       0.642       0.729       0.745       0.778
+    SH_W3            0.489       0.520       0.536       0.619       0.702       0.718       0.749
+    SH_W4            0.186       0.261       0.299       0.499       0.699       0.737       0.812
+
+Group FEMALE
+
+ I        |
+    SH_W1            0.424       0.467       0.490       0.605       0.721       0.743       0.786
+    SH_W2            0.533       0.567       0.585       0.678       0.771       0.789       0.823
+    SH_W3            0.346       0.397       0.423       0.558       0.694       0.720       0.771
+    SH_W4            0.277       0.331       0.359       0.504       0.648       0.676       0.730
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.100       0.118       0.128       0.178       0.229       0.239       0.257
+    SH_W3            0.243       0.290       0.314       0.441       0.568       0.592       0.639
+    SH_W4            0.351       0.426       0.464       0.663       0.862       0.900       0.975
+
+ S        WITH
+    I               -0.770      -0.635      -0.565      -0.202       0.161       0.230       0.366
+
+ Means
+    I                0.298       0.324       0.338       0.409       0.480       0.494       0.520
+    S                0.043       0.108       0.141       0.315       0.489       0.522       0.587
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    I                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    S                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.415       0.467       0.494       0.634       0.774       0.801       0.853
+    SH_W2            0.444       0.471       0.485       0.558       0.630       0.644       0.671
+    SH_W3            0.460       0.492       0.508       0.593       0.678       0.695       0.727
+    SH_W4            0.205       0.262       0.291       0.442       0.593       0.622       0.679
+
+
+STD Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MALE
+
+ I        |
+    SH_W1            0.316       0.357       0.377       0.486       0.594       0.615       0.656
+    SH_W2            0.316       0.357       0.377       0.486       0.594       0.615       0.656
+    SH_W3            0.316       0.357       0.377       0.486       0.594       0.615       0.656
+    SH_W4            0.316       0.357       0.377       0.486       0.594       0.615       0.656
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.012       0.037       0.049       0.115       0.181       0.194       0.218
+    SH_W3            0.036       0.110       0.148       0.345       0.543       0.581       0.655
+    SH_W4            0.059       0.183       0.246       0.576       0.906       0.969       1.092
+
+ S        WITH
+    I               -0.870      -0.675      -0.575      -0.054       0.467       0.566       0.761
+
+ Means
+    I                0.459       0.488       0.503       0.581       0.659       0.674       0.703
+    S               -0.097       0.007       0.060       0.339       0.617       0.670       0.775
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    I                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    S                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.074       0.136       0.168       0.334       0.501       0.532       0.595
+    SH_W2            0.261       0.302       0.324       0.435       0.547       0.569       0.610
+    SH_W3            0.326       0.379       0.407       0.548       0.690       0.717       0.770
+    SH_W4            0.061       0.174       0.232       0.535       0.838       0.896       1.010
+
+Group FEMALE
+
+ I        |
+    SH_W1            0.270       0.305       0.323       0.418       0.513       0.531       0.566
+    SH_W2            0.270       0.305       0.323       0.418       0.513       0.531       0.566
+    SH_W3            0.270       0.305       0.323       0.418       0.513       0.531       0.566
+    SH_W4            0.270       0.305       0.323       0.418       0.513       0.531       0.566
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.047       0.062       0.070       0.110       0.150       0.158       0.173
+    SH_W3            0.141       0.186       0.209       0.330       0.451       0.474       0.519
+    SH_W4            0.235       0.310       0.349       0.550       0.752       0.790       0.865
+
+ S        WITH
+    I               -0.770      -0.635      -0.565      -0.202       0.161       0.230       0.366
+
+ Means
+    I                0.298       0.324       0.338       0.409       0.480       0.494       0.520
+    S                0.043       0.108       0.141       0.315       0.489       0.522       0.587
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ Variances
+    I                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    S                1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.105       0.152       0.176       0.302       0.429       0.453       0.500
+    SH_W2            0.078       0.110       0.126       0.212       0.298       0.314       0.346
+    SH_W3            0.191       0.225       0.242       0.332       0.422       0.440       0.473
+    SH_W4            0.087       0.139       0.165       0.305       0.444       0.470       0.523
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR MALE
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+                  0             0             0             0
+
+
+           LAMBDA
+              I             S
+              ________      ________
+ SH_W1              0             0
+ SH_W2              0             0
+ SH_W3              0             0
+ SH_W4              0             0
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+ SH_W1              1
+ SH_W2              0             2
+ SH_W3              0             0             3
+ SH_W4              0             0             0             4
+
+
+           ALPHA
+              I             S
+              ________      ________
+                  5             6
+
+
+           BETA
+              I             S
+              ________      ________
+ I                  0             0
+ S                  0             0
+
+
+           PSI
+              I             S
+              ________      ________
+ I                  7
+ S                  8             9
+
+
+     PARAMETER SPECIFICATION FOR FEMALE
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+                  0             0             0             0
+
+
+           LAMBDA
+              I             S
+              ________      ________
+ SH_W1              0             0
+ SH_W2              0             0
+ SH_W3              0             0
+ SH_W4              0             0
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+ SH_W1             10
+ SH_W2              0            11
+ SH_W3              0             0            12
+ SH_W4              0             0             0            13
+
+
+           ALPHA
+              I             S
+              ________      ________
+                 14            15
+
+
+           BETA
+              I             S
+              ________      ________
+ I                  0             0
+ S                  0             0
+
+
+           PSI
+              I             S
+              ________      ________
+ I                 16
+ S                 17            18
+
+
+     STARTING VALUES FOR MALE
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              I             S
+              ________      ________
+ SH_W1          1.000         0.000
+ SH_W2          1.000         0.500
+ SH_W3          1.000         1.500
+ SH_W4          1.000         2.500
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+ SH_W1          0.279
+ SH_W2          0.000         0.342
+ SH_W3          0.000         0.000         0.444
+ SH_W4          0.000         0.000         0.000         0.524
+
+
+           ALPHA
+              I             S
+              ________      ________
+                0.288         0.070
+
+
+           BETA
+              I             S
+              ________      ________
+ I              0.000         0.000
+ S              0.000         0.000
+
+
+           PSI
+              I             S
+              ________      ________
+ I              0.539
+ S              0.000         0.616
+
+
+     STARTING VALUES FOR FEMALE
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              I             S
+              ________      ________
+ SH_W1          1.000         0.000
+ SH_W2          1.000         0.500
+ SH_W3          1.000         1.500
+ SH_W4          1.000         2.500
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4
+              ________      ________      ________      ________
+ SH_W1          0.279
+ SH_W2          0.000         0.342
+ SH_W3          0.000         0.000         0.444
+ SH_W4          0.000         0.000         0.000         0.524
+
+
+           ALPHA
+              I             S
+              ________      ________
+                0.288         0.070
+
+
+           BETA
+              I             S
+              ________      ________
+ I              0.000         0.000
+ S              0.000         0.000
+
+
+           PSI
+              I             S
+              ________      ________
+ I              0.539
+ S              0.000         0.616
+
+
+PLOT INFORMATION
+
+The following plots are available:
+
+  Sample means
+  Estimated means
+  Sample and estimated means
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    c:\users\kylenick\onedrive - university of north carolina at chapel hill\dorothy\ipa\paper_1_ace_sv\mplus files\mult
+
+     Beginning Time:  00:38:00
+        Ending Time:  00:38:00
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen

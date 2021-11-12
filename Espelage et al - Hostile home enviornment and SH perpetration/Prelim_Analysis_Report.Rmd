@@ -1,0 +1,285 @@
+---
+title: "Scale Psychometrics and Preliminary Analyses"
+author: "KN"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  word_document:
+    reference_docx: IPA R Template.docx
+    toc: TRUE
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE, results = "asis")
+library(knitr)
+library(rmarkdown)
+library(flextable)
+library(magrittr)
+
+source("0-PnF.R")
+load("../Output/SS_Data_Prep.RData")
+load("../Output/Abuse_SH_CFA.RData")
+load("../Output/Abuse_SH_MeasInv.RData")
+load("../Output/Table_1_Info.RData")
+
+format_flex <- function(df, bold = TRUE, digits = 2, width = 8){
+  
+  numericcols <- which(unlist(lapply(df, is.numeric)))
+  
+  ftab <- flextable(df)
+  ftab <- colformat_double(ftab, j = numericcols, digits = digits)
+  ftab <- flextable::font(ftab, fontname = "Times New Roman", part = "all")
+  ftab <- flextable::padding(ftab, padding = 3, part = "all")
+  
+  if(bold == TRUE){
+  ftab <- bold(ftab, i = ~ pvalue < .05, part =  "body")
+  # ftab <- bold(ftab, i = ~ est.std > .20, part = "body")
+  }
+  
+  ftab <- autofit(ftab)
+  ftab <- fit_to_width(ftab, width)
+  
+  return(ftab)
+}
+
+```
+
+# Sample
+
+## Wave 1 Demographics
+
+```{r demos}
+w1demos.flex <- flextable(w1demos) %>% font(fontname = "Times New Roman", part = "all") %>%
+  padding(padding = 3, part = "all") %>% autofit()
+knit_print(w1demos.flex)
+```
+
+
+## Attrition
+
+**Completed Surveys by Wave**
+
+```{r wavcount}
+wavecount.flex <- format_flex(wavecount, bold = FALSE)
+knit_print(wavecount.flex)
+```
+
+
+**Youth Participation Pattern**  
+
+In the Pattern column, the four values represent, in order, participation in Waves 1 - 4 with 1 = took survey, 0 = attrition.  
+
+```{r participation}
+sp.flex <- format_flex(sp.summary, bold = FALSE)
+knit_print(sp.flex)
+```
+
+
+# Observed Scales
+
+We are proposing three sources of hostility at home:
+
+ - Family Conflict - 3 items each on a 5-point scale
+ - Abuse - 3 dichotomous items (1/0)
+ - Sibling Aggression - 2 items each on a 6-point scale
+ 
+All three sources have too few items to create a meaningful latent variable. A scale score was created for each hostility source. The mean score was calculated for Family Conflict and Sibling Aggression scales whereas the sum score was calculated for the Abuse scale. Participants must respond to all items in a scale in order to receive a score.
+ 
+The home hostility scales are based on an underlying continuum of no experiences to many experiences, so the scale scores will be treated as continuous variables in the analysis. The distribution and reliability information for each source is presented below.
+ 
+## Family Conflict
+
+The Family Conflict scale consists of 3 items, each with response codes 0 = never, 1 = seldom, 2 = sometimes, 3 = often, 4 = always.
+
+ - How often is there yelling, quarreling, or arguing in your household?
+ - How often do family members lose their temper or blow up for no good reason?
+ - How often are there physical fights in the household, like people hitting, shoving, throwing?
+ 
+**Score Distribution**
+ 
+Due to missing data on all 3 items, `r hh.dist.tab$Family_Conflict[is.na(hh.dist.tab$Family_Conflict$Score),]$n` (`r hh.dist.tab$Family_Conflict[is.na(hh.dist.tab$Family_Conflict$Score),]$Percent`%) students did not receive a scale score.
+ 
+```{r fv dist, fig.width = 4, fig.height = 3, warning=FALSE}
+print(hh.dist.plot$Family_Conflict)
+```
+
+
+**Reliability**
+
+ - $\alpha$ = `r format(round(fv.cfa.out$reliability$alpha, 2), nsmall = 2)`
+ - $\omega$ = `r format(round(fv.cfa.out$reliability$omega, 2), nsmall = 2)`
+ 
+
+## Exposure to and Victim of Abuse
+
+The Abuse scale consists of 3 items with response codes 0 = no and 1 = yes.
+
+ - Before you were 10 years old, did you ever have injuries such as bruises, cuts or broken bones, as a result of being spanked, struck, or shoved by your parents, guardians or parent’s partner?
+ - Before you were 10 years old, did you see or hear one of your parents or guardians being hit, slapped, punched, shoved, kicked, or otherwise physically hurt by their spouse or partner?
+ - Before you were 10 years old, did anyone ever force you to have sex or do something sexual that you did not want to do?
+ 
+**Score Distribution**
+ 
+Due to missing data on all 3 items, `r hh.dist.tab$Abuse[is.na(hh.dist.tab$Abuse$Score),]$n` (`r hh.dist.tab$Abuse[is.na(hh.dist.tab$Abuse$Score),]$Percent`%) students did not receive a scale score.
+ 
+```{r ab dist, fig.width = 4, fig.height = 3, warning=FALSE}
+print(hh.dist.plot$Abuse)
+```
+
+
+**Reliability**
+
+ - $\alpha$ = `r format(round(ab.cfa.out$reliability$alpha, 2), nsmall = 2)`
+ - $\omega$ = `r format(round(ab.cfa.out$reliability$omega, 2), nsmall = 2)`
+ 
+## Sibling Aggression
+
+The Sibling Aggression scale consists of 2 items with response codes 0 = never, 1 = once in a while, 2 = about once a week, 3 = 1 or 2 days a week, 4 = Most days, 5 = Everyday
+
+ - I am scared that my sister or brother will hurt me bad someday.
+ - My sister or brother beats me up.
+ 
+**Score Distribution**
+  
+Students were instructed to skip the sibling questions if they did not have a sibling. Nonetheless, only `r hh.dist.tab$Sibling_Aggression[is.na(hh.dist.tab$Sibling_Aggression$Score),]$n` (`r hh.dist.tab$Sibling_Aggression[is.na(hh.dist.tab$Sibling_Aggression$Score),]$Percent`%) students did not receive a total score.
+ 
+```{r sib dist, fig.width = 4, fig.height = 3, warning=FALSE}
+print(hh.dist.plot$Sibling_Aggression)
+```
+
+
+**Reliability**
+
+ - $\alpha$ = `r format(round(sib.cfa.out$reliability$alpha, 2), nsmall = 2)`
+ - $\omega$ = `r format(round(sib.cfa.out$reliability$omega, 2), nsmall = 2)`
+ 
+ 
+# Latent Variable Scales
+
+In contrast to the Hostility at Home scales where we use the observed responses, the other scales are incorporated into the final model as latent variables.
+
+ - Sexual Harassment - 6 items, all dichotomoized (1/0); removed items 5 (poor conceptual fit) and 8-12 (low frequencies)
+ - Depression - 8 items (removed item 6 [happy])
+ - Lack of Empathy - 5 items (all reverse coded)
+ - Delinquent Behavior - 7 items (response categories collapsed to dichotomized to Never and 1+)
+ - Substance Use - 8 items (response categories collapsed to Never, 1-2, 3+)
+ - School Belonging - 4 items
+
+To use these scales in our model, we need to demonstrate the survey items 1) measured the constructs adequately and 2) did so consistently over time. For each scale, a one-factor confirmatory factor model was fit at each wave for each scale to assess overall model fit and identify any problematic items. Additionally, alpha and omega reliabilities were calculated based on the CFA models. 
+
+Building on the preliminary CFAs, we establish longitudinal measurement invariance by fitting models that sequentially impose stricter constraints. The configural model estimates all parameters freely across time, except those described in the next paragraph to identify the model. The metric model is the same as the configural but the factor loadings are constrained to be equal over time. The scalar model constrains both the factor loadings and the item thresholds. Finally, the strict model constrains the loadings, thresholds, and unique variances (i.e. item residual variances). Only when strict invariance is achieved can we conclude that changes in the latent means over time are due to changes in the population rather than the product of measurement error.
+
+There are a variety of common indicators to evaluate overall model fit for both the CFA and the measurement invariance models. One caveat is these are guidelines, not definitive cutoffs, and were derived with continuous indicators and maximum likelihood estimation (Kline, 2016). More guidance is needed for ordinal items and WLSMV estimation, which is what we use.
+
+ - Non-significant $\chi^2$ test ($\alpha$ > .05), with larger sample sizes, such as ours, the $\chi^2$ test is commonly significant  
+ - CFI and TLI > .95
+ - RMSEA < .06
+ - SRMR < .08 
+
+For comparing between the configural, metric, scalar, and strict models to establish measurement invariance, a $\chi^2$ difference test is the traditional, albeit overly conservative, approach. Criteria for differences in the fit indices have also been suggested (Chen, 2007; Rutkowski & Svetina, 2014). As with the overall fit measures, more research is needed in this area with ordinal items, such as those in our scales.
+ 
+ - Non-significant $\chi^2$ difference test ($\alpha$ > .05)
+ - $\Delta$CFI and $\Delta$TLI < - .01
+ - $\Delta$RMSEA < .01
+ - $\Delta$SRMR < .01
+
+We use guidance from Liu et al. (2017) for identifying and estimating the models. To identify the location and scale of the common factor (e.g., Depression) at each time point, the first item's intercept and factor loading were fixed to 0 and 1, respectively. The location and scale of each latent item-response underlying the ordinal responses were identified using the "theta" parameterization, and the identification constraints proposed by Millsap & Tein (2004). Lastly, we used a DWLS estimator with robust standard errors and a mean and variance adjusted test statistic (i.e., WLSMV). The models were fit in R using the lavaan package and pairwise deletion for missing data.
+
+## Finding Summary
+
+ - Sexual Harassment - Of the original 12 items, item 5 was removed as a poor conceptual fit (homophobic name calling) and items 8-12 were removed due to low frequencies overall or by group. The remaining 6 items had good CFA model fit and reliabiliy > .70 at each wave. With dichotomous items the metric and scalar models are equivalent. SRMR is a bit high even in the configural model. This could be corrected by estimating additional parameters. Which parameter, however, would be empirically driven which limits generalizability. Nonetheless, the consistency over the models suggests measurement invariance.
+ - Depression - Item 6 (happy) had a loading near 0 and was removed. The configural model had trouble converging at first. Using different identification constraints I determined that 1) Item 3 (worried) had a much higher frequency of 0 responses at Wave 1 than the other waves and 2) Item 1 (sad) is a poor marker variable. The model converged after adjusting the model to use item 2 as the marker and constrain threshold 4 instead of threshold 1. There is evidence of good model fit and measurment invariance. These adjustments were also made to the CFAs, which produced adequate model fit and reliability > .85 at each wave.
+ - Lack of Empathy - RMSEA is a bit high at each wave, but the other indices suggest good fit and reliability > .70 The most constrained model ("strict") showed good fit based on the fit indices, and there was no change in fit as the models became more constrained. This suggests measurement invariance. However, the $\chi^2$ tests were significant for overall fit and the $\chi^2$ difference tests were ambiguous.
+ - Substance Use - The models converged after collapsing response categories to Never, 1-2, and 3+. Like the sexual harassment scale the SRMR is a bit high, but model fit is consistent as constraints are added.
+ - Delinquent Behavior - Initially collapsed response categories to Never, 1-2 and 3+ due to low frequencies in certain groups of students (e.g., Black). The latent growth models, however, showed poor fit so the items were dichotomized.
+ - School Belonging - Same as Lack of Empathy
+ 
+ 
+```{r}
+MIs <- list(`Sexual Harassment` = list(sh.cfa.out, sh.fits, sh.mi),
+            `Depression` = list(dep.cfa.out, dep.fits, dep.mi),
+            `Lack of Empathy` = list(emp.cfa.out, emp.fits, emp.mi),
+            `Substance Use` = list(su.cfa.out, su.fits, su.mi),
+            `Delinquent Behavior` = list(del.cfa.out, del.fits, del.mi),
+            `School Belonging` = list(schb.cfa.out, schb.fits, schb.mi))
+
+for (i in names(MIs)){
+        
+        cat("##", i)
+        cat("\n\n")
+        cat("**CFA Model Fit**")
+        cat("\n\n")
+        format_flex(MIs[[i]][[1]]$fits, bold = FALSE) %>% knit_print() %>% cat()
+        cat("**Reliability**")
+        cat("\n\n")
+        format_flex(MIs[[i]][[1]]$reliability, bold = FALSE) %>% knit_print() %>% cat()
+        cat("**Measurement Invariance Model Fit**")
+        cat("\n\n")
+        format_flex(MIs[[i]][[2]], bold = FALSE) %>% knit_print() %>% cat()
+        cat("\n\n")
+        cat("**Measurement Invariance Model Comparison**")
+        cat("\n\n")
+        format_flex(MIs[[i]][[3]], bold = FALSE) %>% knit_print() %>% cat()
+        cat("\n\n")
+}
+```
+ 
+# School Belonging
+
+Three approaches were examined to categorize students' pattern of school belongingness over the 4 waves of data. *k*-means clustering is a common approach, but requires complete (or imputed) data. *k*-POD (Chi et al., 2016) is a recent development for conducing k-means clustering with partially observed data (i.e., missing data). *k*-medoid is an alternative clustering method that selects an exemplar data point to center each cluster rather than a mean value.
+
+There is no definitive method for selecting the optimal *k*. Utilizing the factoextra package in R, we employed 3 methods 1) within sum of squares (wss) - similar to a scree plot, visual inspection of an "elbow" indicates the optimal *k* given the variance explained, 2) silhouette - incorporates average distance of observations to cluster center and distance between cluster centers with the optimal *k* maximizing the silhouette score, and 3) gap stat - compares the within cluster variation from the proposed clustering and a reference distribution with no clustering with the optimal *k* maximizing the gap.
+
+
+```{r k diagnose, fig.width = 15, fig.height = 4}
+cowplot::plot_grid(wss_plot, silhouette_plot, gapstat_plot, labels = c("wss", "silhouette", "gap stat"), nrow = 1)
+```
+
+
+All 3 *k* selection methods suggest 2 as the optimal *k*. Running each of the 3 clustering approaches with *k* set to 2, 3, and 4 clusters produce the following cluster means at each time point.
+
+```{r k, fig.width = 7, fig.height = 12}
+cowplot::plot_grid(kmean_plot, kpod_plot, kmedoid_plot, labels = c("k-mean", "k-pod", "k-medoid"), nrow = 3)
+```
+
+
+**Conclusion**
+In addition to optimal cluster metrics suggesting 2 clusters, the 3 selection methods only produced similar trends with 2 clusters. Furthermore, 3 and 4 cluster patterns are highly unstable as evidenced by different patterns produced when varying the starting seed for the *k*-pod or *k*-medoid methods. Clusters identified from the *k*-pod method were added to the dataset as this method is designed explicitly to work with missing data.
+
+Later models suggest no variation in sexual harassment perpetration slopes for students with high school belonging. All High Belonging students are included in the plot below. While there multiple lines show a variety of trends, the vast majority are along the zero line. Additionally, the plot includes a 90% confidence interval in grey around the blue trendline, but cannot be seen because it is so small, indicating minimal variation.
+
+```{r sh.ghetti, fig.width = 5, fig.height = 5, warning=FALSE}
+print(sh.highschb.spaghetti)
+```
+
+
+# Delinquency
+
+To explore the variability and trend in delinquency, 4 random samples of 25 students were drawn from the data to produce the spaghetti plot below. A loess trendline is highlighted in Blue.
+
+
+```{r del.ghetti, fig.width = 5, fig.height = 5, warning=FALSE}
+print(del.spaghetti)
+```
+
+
+
+# Model Variables
+
+## Table 1. Correlations and Descriptive Statistics
+
+```{r table1}
+tab1.flex <- format_flex(raw.tab1, bold = FALSE, width = 10)
+knit_print(tab1.flex)
+```
+
+
+## Intraclass Correlations
+
+Our data is clustered with time nested within youth and youth nested within school. The ICC measures the % of total variation in construct scores explained by differences within youth over time compared to between youth within school or between schools. The latent growth models address the clustering of observations (i.e., time) within youth with a random intercept for youth. We account for the clustering of youth within schools by estimating cluster robust standard errors.
+
+
+```{r icc}
+icc.flex <- format_flex(all_icc, bold = FALSE)
+knit_print(icc.flex)
+```
+

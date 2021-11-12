@@ -1,0 +1,289 @@
+---
+title: "Paper 2 Regression Results"
+author: "KN"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  word_document:
+    toc: TRUE
+    reference_docx: "Markdown Template.docx"
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, results = "asis", warning = FALSE, message = FALSE)
+flextable::set_flextable_defaults(fonts_ignore = TRUE)
+
+library(knitr)
+library(flextable)
+library(dplyr)
+
+load("../Output/Regression_Results.RData")
+load("../Output/Prep_and_Descriptives.RData")
+
+format_flex <- function(df, bold = FALSE, digits = 2){
+  
+  numericcols <- which(unlist(lapply(df, is.numeric)))
+  
+  if("flextable" %in% class(df)){
+  ftab <- df
+  } else {
+  ftab <- flextable(df)  
+  }
+  ftab <- colformat_double(ftab, j = numericcols, digits = digits)
+  ftab <- flextable::font(ftab, fontname = "Times New Roman", part = "all")
+  ftab <- flextable::padding(ftab, padding = 0, part = "all")
+  
+  if(bold == TRUE){
+  ftab <- bold(ftab, i = ~ p < .05, part =  "body")
+  # ftab <- bold(ftab, i = ~ est.std > .20, part = "body")
+  }
+  
+  ftab <- autofit(ftab)
+  ftab <- fit_to_width(ftab, 6.5)
+  
+  return(ftab)
+}
+
+two_level_flex <- function(flex, mapping, vert.cols, border){
+
+  flex <- flextable::set_header_df(flex, mapping = mapping)
+  flex <- flextable::merge_h(flex, part = "header")
+  flex <- flextable::merge_v(flex, j = vert.cols, part = "header")
+  flex <- flextable::fix_border_issues(flex)
+  flex <- flextable::border_inner_h(flex, border = border, part = "header")
+  flex <- flextable::hline_top(flex, border = border, part = "all")
+  # flex <- flextable::theme_vanilla(flex)
+  flex <- flextable::align(flex, align = "left", part = "body")
+  flex <- flextable::align(flex, align = "center", part = "header")
+  flex <- flextable::font(flex, fontname = "Times New Roman", part = "all")
+  flex <- flextable::padding(flex, padding = 0, part = "all")
+  flex <- flextable::autofit(flex)
+}
+
+border <- officer::fp_border(width = 2) # manual horizontal flextable border width
+param.header <- data.frame(col_keys = names(a1.mi.out),
+                      top = c("Variable",rep(c("Sexual Harassment", "Sexual Violence"), each = 2)),
+                      bottom = c("Variable", rep(c("Model 1", "Model 2"), times = 2)))
+
+```
+
+
+# Overall Sample Characteristics
+
+```{r}
+flextable::font(sample.chars, fontname = "Times New Roman", part = "all") %>%
+  flextable::padding(padding = 0, part = "all") %>%
+  autofit() %>% #fit_to_width(6.5) %>%
+  knit_print()
+```
+
+
+# Analysis 1
+
+Analysis 1 includes all students in the sample and regresses SH and SV perpetration on sport, peer network, trusted adult, risky behavior, and demographic variables.
+
+## Descriptive Statistics
+
+### Listwise Deletion
+
+```{r a1 descrips ld}
+flextable::font(a1descrips.ld, fontname = "Times New Roman", part = "all") %>%
+  flextable::padding(padding = 0, part = "all") %>%
+  autofit() %>% #fit_to_width(6.5) %>%
+  knit_print()
+```
+
+
+### Multiple Imputation
+
+Average n for each contact category: `r paste(paste(a1contactcatn$Contact_Cat, a1contactcatn$total, sep = " = "), collapse = ", ")`
+
+```{r a1 descrips mi}
+format_flex(select(a1descrips.mi, -`P(>F)`)) %>%
+  knit_print()
+```
+
+
+## Logistic Regression
+
+Two models were run on each outcome (4 total models) - once including and once excluding prior perpetration.
+
+### Model Checks
+
+Checks were only conducted on the listwise deleted models. Checks were conducted on all four models but only the checks for Sexual Harassment without prior perpetration are included here, with the exception of variance inflation factors > 5.
+
+```{r a1modcheck, fig.height=3, fig.width=5}
+
+for(i in 1:3){
+  cat("**", gsub("_", " ", names(a1.ld.checks$Harassment_R)[[i]]), "**", sep = "")
+  cat("\n\n")
+  print(a1.ld.checks$Harassment_R[[i]])
+  cat("\n\n")
+}
+
+cat("**Model Performance**")
+cat("\n\n")
+format_flex(a1.ld.checks$Harassment_R$performance) %>% knit_print()
+cat("\n\n")
+
+cat("**VIF**")
+cat("\n\n")
+purrr::map_dfr(names(a1.ld.checks), ~filter(a1.ld.checks[[.x]]$collinearity, VIF > 5) %>%
+          mutate(Model = .x)) %>%
+  format_flex() %>% knit_print()
+
+
+```
+
+
+### Listwise Deletion Parameters
+
+```{r a1.ld.out}
+a1.ld.flex <- flextable(a1.ld.out) %>% two_level_flex(mapping = param.header, vert.cols = "Variable", border = border) %>%
+  autofit() %>% fit_to_width(7.5)
+knit_print(a1.ld.flex)
+```
+
+
+### Multiple Imputation Parameters
+
+```{r a1.mi.out}
+a1.mi.flex <- flextable(a1.mi.out) %>% two_level_flex(mapping = param.header, vert.cols = "Variable", border = border) %>%
+  autofit() %>% fit_to_width(7.5)
+knit_print(a1.mi.flex)
+```
+
+
+# Analysis 2
+
+Analysis 2 includes only students who named a friend. SH and SV perpetration are regressed on friend characteristics and some analysis 1 variables.
+
+## Descriptive Statistics
+
+### Listwise Deletion
+
+```{r a2 descrips ld}
+flextable::font(a2descrips.ld, fontname = "Times New Roman", part = "all") %>%
+  flextable::padding(padding = 0, part = "all") %>%
+  autofit() %>% #fit_to_width(6.5) %>%
+  knit_print()
+```
+
+
+### Multiple Imputation
+
+Average n for each contact category: `r paste(paste(a2contactcatn$Contact_Cat, a2contactcatn$total, sep = " = "), collapse = ", ")`
+
+```{r a2 descrips mi}
+format_flex(select(a2descrips.mi, -`P(>F)`)) %>%
+  knit_print()
+```
+
+
+## Logistic Regression
+
+Two models were run on each outcome (4 total models) - once including and once excluding prior perpetration.
+
+### Model Checks
+
+Checks were only conducted on the listwise deleted models. Checks were conducted on all four models but only the checks for Sexual Harassment without prior perpetration are included here, with the exception of variance inflation factors > 5.
+
+```{r a2modcheck, fig.height=3, fig.width=5}
+
+for(i in 1:3){
+  cat("**", gsub("_", " ", names(a2.ld.checks$Harassment_R)[[i]]), "**", sep = "")
+  cat("\n\n")
+  print(a2.ld.checks$Harassment_R[[i]])
+  cat("\n\n")
+}
+
+cat("**Model Performance**")
+cat("\n\n")
+format_flex(a2.ld.checks$Harassment_R$performance) %>% knit_print()
+cat("\n\n")
+
+cat("**VIF**")
+cat("\n\n")
+purrr::map_dfr(names(a2.ld.checks), ~filter(a2.ld.checks[[.x]]$collinearity, VIF > 5) %>%
+          mutate(Model = .x)) %>%
+  format_flex() %>% knit_print()
+
+
+```
+
+
+### Listwise Deletion Parameters
+
+```{r a2.ld.out}
+a2.ld.flex <- flextable(a2.ld.out) %>% two_level_flex(mapping = param.header, vert.cols = "Variable", border = border) %>%
+  autofit() %>% fit_to_width(7.5)
+knit_print(a2.ld.flex)
+```
+
+
+### Multiple Imputation Parameters
+
+```{r a2.mi.out}
+a2.mi.flex <- flextable(a2.mi.out) %>% two_level_flex(mapping = param.header, vert.cols = "Variable", border = border) %>%
+  autofit() %>% fit_to_width(7.5)
+knit_print(a2.mi.flex)
+```
+
+
+
+
+
+```{r sh.a2, fig.height=3, fig.width=5, eval = FALSE}
+
+cat("## Sexual Harassment Perpetration")
+
+for(i in 1:3){
+  cat("**", names(sh.a2.checks)[[i]], "**", sep = "")
+  cat("\n\n")
+  print(sh.a2.checks[[i]])
+  cat("\n\n")
+}
+
+cat("**Model Performance**")
+cat("\n\n")
+format_flex(sh.a2.checks$performance) %>% knit_print()
+cat("\n\n")
+cat("**Parameter Estimates - Listwise Deletion**")
+cat("\n\n")
+format_flex(sh.a2.params, bold = TRUE) %>% knit_print()
+cat("\n\n")
+cat("**Parameter Estimates - Multiple Imputation**")
+cat("\n\n")
+format_flex(sh.a2.mi.params, bold = TRUE) %>% knit_print()
+
+```
+
+
+
+
+```{r sv.a2, fig.height=3, fig.width=5, eval = FALSE}
+
+cat("## Sexual Violence Perpetration")
+
+for(i in 1:3){
+  cat("**", names(sv.a2.checks)[[i]], "**", sep = "")
+  cat("\n\n")
+  print(sv.a2.checks[[i]])
+  cat("\n\n")
+}
+
+cat("**Model Performance**")
+cat("\n\n")
+format_flex(sv.a2.checks$performance) %>% knit_print()
+cat("\n\n")
+cat("**Parameter Estimates - Listwise Deletion**")
+cat("\n\n")
+format_flex(sv.a2.params, bold = TRUE) %>% knit_print()
+cat("\n\n")
+cat("**Parameter Estimates - Multiple Imputation**")
+cat("\n\n")
+format_flex(sv.a2.mi.params, bold = TRUE) %>% knit_print()
+
+```
+
+
