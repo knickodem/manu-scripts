@@ -1,6 +1,6 @@
 Mplus VERSION 8.4
 MUTHEN & MUTHEN
-05/12/2021   9:52 AM
+01/05/2022  12:57 PM
 
 INPUT INSTRUCTIONS
 
@@ -10,7 +10,7 @@ INPUT INSTRUCTIONS
 
   VARIABLE:
   NAMES = subjno School Gender Female Race Race4
-  Black Hispanic White OtherR SchBel
+  Black Hispanic White OtherR SHVict SchBel
   Age Grades FamCon Abuse SibAgg
   del_w1 del_w2 del_w3 del_w4
   dep_w1 dep_w2 dep_w3 dep_w4
@@ -559,8 +559,8 @@ DIAGRAM INFORMATION
   Diagram output
     c:\users\kylenick\onedrive - university of north carolina at chapel hill\dorothy\ipa\paper_1_ace_sv\mplus files\late
 
-     Beginning Time:  09:52:16
-        Ending Time:  09:52:16
+     Beginning Time:  12:57:41
+        Ending Time:  12:57:41
        Elapsed Time:  00:00:00
 
 

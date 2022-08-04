@@ -1,0 +1,2954 @@
+Mplus VERSION 8.4
+MUTHEN & MUTHEN
+07/21/2022   8:39 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE: SH LGM MG-SB SFC
+
+  DATA: FILE = mpluswide.csv;
+
+  VARIABLE:
+  NAMES = subjno School Gender Female Race Race4
+  Black Hispanic White OtherR SHVict SchBel
+  Age Grades FamCon Abuse SibAgg
+  del_w1 del_w2 del_w3 del_w4
+  dep_w1 dep_w2 dep_w3 dep_w4
+  emp_w1 emp_w2 emp_w3 emp_w4
+  schb_w1 schb_w2 schb_w3 schb_w4
+  sh_w1 sh_w2 sh_w3 sh_w4;
+
+  USEVARIABLES = sh_w1-sh_w4
+  FamCon Abuse SibAgg SHVict;
+
+  IDVARIABLE = subjno;
+  CLUSTER = School;
+  GROUPING = SchBel (0 = Moderate 1 = High);
+  ! 4 = Other is excluded
+
+  MISSING = ALL(-999);
+
+  ANALYSIS:
+  TYPE = COMPLEX;
+
+  MODEL:
+  i s | sh_w1@0 sh_w2@.5 sh_w3@1.5 sh_w4@2.5;
+  i s ON FamCon Abuse SibAgg SHVict;
+  [FamCon Abuse SibAgg SHVict];
+
+  MODEL High:
+  s@0
+  [i] (hi);
+  [s] (hs);
+  i ON FamCon (hifc);
+  i ON Abuse (hia);
+  i ON SibAgg (hisa);
+  i ON SHVict (hiv);
+  s ON FamCon (hsfc);
+  s ON Abuse (hsa);
+  s ON SibAgg (hssa);
+  s ON SHVict (hsv);
+  [FamCon Abuse SibAgg SHVict] (hm1-hm4);
+
+  MODEL Moderate:
+  [i] (mi);
+  [s] (ms);
+  i ON FamCon (mifc);
+  i ON Abuse (mia);
+  i ON SibAgg (misa);
+  i ON SHVict (miv);
+  s ON FamCon (msfc);
+  s ON Abuse (msa);
+  s ON SibAgg (mssa);
+  s ON SHVict (msv);
+  [FamCon Abuse SibAgg SHVict] (mm1-mm4);
+
+  MODEL TEST:
+  !0 = hi-mi;
+  !0 = hs-ms;
+  !0 = hifc-mifc;
+  !0 = hia-mia;
+  !0 = hisa-misa;
+  0 = hsfc-msfc;
+  !0 = hsa-msa;
+  !0 = hssa-mssa;
+
+
+  OUTPUT:
+  STANDARDIZED CINTERVAL RESIDUAL TECH1 TECH4 MODINDICES (ALL);
+
+
+
+*** WARNING in MODEL command
+  All continuous latent variable covariances involving S have been fixed to 0
+  because the variance of S is fixed at 0.
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  3
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+SH LGM MG-SB SFC
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 2
+Number of observations
+   Group MODERATE                                              629
+   Group HIGH                                                  932
+   Total sample size                                          1561
+
+Number of dependent variables                                    4
+Number of independent variables                                  4
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   SH_W1       SH_W2       SH_W3       SH_W4
+
+Observed independent variables
+   FAMCON      ABUSE       SIBAGG      SHVICT
+
+Continuous latent variables
+   I           S
+
+Variables with special functions
+
+  Grouping variable     SCHBEL
+  Cluster variable      SCHOOL
+  ID variable           SUBJNO
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  mpluswide.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group MODERATE
+     Number of missing data patterns            42
+     Number of clusters                         18
+
+
+   Group HIGH
+     Number of missing data patterns            40
+     Number of clusters                         18
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR MODERATE
+
+
+           Covariance Coverage
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.989
+ SH_W2          0.901         0.911
+ SH_W3          0.692         0.639         0.700
+ SH_W4          0.588         0.536         0.506         0.595
+ FAMCON         0.897         0.824         0.628         0.531         0.897
+ ABUSE          0.886         0.814         0.623         0.526         0.873
+ SIBAGG         0.946         0.866         0.661         0.566         0.860
+ SHVICT         0.986         0.900         0.695         0.588         0.895
+
+
+           Covariance Coverage
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.886
+ SIBAGG         0.847         0.946
+ SHVICT         0.884         0.946         0.989
+
+
+     PROPORTION OF DATA PRESENT FOR HIGH
+
+
+           Covariance Coverage
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.992
+ SH_W2          0.920         0.926
+ SH_W3          0.774         0.726         0.779
+ SH_W4          0.668         0.623         0.613         0.673
+ FAMCON         0.932         0.869         0.730         0.633         0.936
+ ABUSE          0.921         0.857         0.716         0.623         0.915
+ SIBAGG         0.948         0.878         0.744         0.641         0.894
+ SHVICT         0.986         0.915         0.770         0.666         0.933
+
+
+           Covariance Coverage
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.924
+ SIBAGG         0.883         0.952
+ SHVICT         0.922         0.946         0.988
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR MODERATE
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     SH_W1                 0.342       3.491       0.000   81.67%       0.000      0.000      0.000
+             622.000       0.810      14.097       6.000    0.64%       0.000      0.000
+     SH_W2                 0.454       2.609       0.000   74.52%       0.000      0.000      0.000
+             573.000       0.908       7.555       6.000    0.35%       0.000      1.000
+     SH_W3                 0.545       2.291       0.000   71.82%       0.000      0.000      0.000
+             440.000       1.134       5.279       6.000    0.23%       0.000      1.000
+     SH_W4                 0.559       2.748       0.000   71.66%       0.000      0.000      0.000
+             374.000       1.380       7.825       6.000    1.34%       0.000      1.000
+     FAMCON                0.927       0.975       0.000   26.95%       0.000      0.333      0.667
+             564.000       0.833       0.335       4.000    0.35%       1.000      1.667
+     ABUSE                 0.454       1.527       0.000   69.30%       0.000      0.000      0.000
+             557.000       0.578       1.291       3.000    1.80%       0.000      1.000
+     SIBAGG                0.397       3.110       0.000   73.28%       0.000      0.000      0.000
+             595.000       0.893       9.929       5.000    1.18%       0.000      0.500
+     SHVICT                0.379       0.497       0.000   62.06%       0.000      0.000      0.000
+             622.000       0.235      -1.753       1.000   37.94%       0.000      1.000
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR HIGH
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     SH_W1                 0.148       4.870       0.000   91.14%       0.000      0.000      0.000
+             925.000       0.316      27.347       5.000    0.22%       0.000      0.000
+     SH_W2                 0.146       4.401       0.000   89.92%       0.000      0.000      0.000
+             863.000       0.257      22.211       4.000    0.35%       0.000      0.000
+     SH_W3                 0.227       4.251       0.000   85.81%       0.000      0.000      0.000
+             726.000       0.468      22.904       6.000    0.28%       0.000      0.000
+     SH_W4                 0.262       3.596       0.000   82.93%       0.000      0.000      0.000
+             627.000       0.487      15.880       6.000    0.16%       0.000      0.000
+     FAMCON                0.690       1.661       0.000   35.09%       0.000      0.333      0.333
+             872.000       0.701       2.840       4.000    1.03%       0.667      1.333
+     ABUSE                 0.341       2.010       0.000   75.49%       0.000      0.000      0.000
+             861.000       0.448       3.462       3.000    1.51%       0.000      1.000
+     SIBAGG                0.298       3.886       0.000   81.17%       0.000      0.000      0.000
+             887.000       0.779      15.620       5.000    1.69%       0.000      0.000
+     SHVICT                0.220       1.349       0.000   77.96%       0.000      0.000      0.000
+             921.000       0.172      -0.180       1.000   22.04%       0.000      1.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.264D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 18, Group MODERATE: SH_W1
+
+     THIS IS MOST LIKELY DUE TO HAVING MORE PARAMETERS THAN THE NUMBER
+     OF CLUSTERS MINUS THE NUMBER OF STRATA WITH MORE THAN ONE CLUSTER.
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       60
+
+Loglikelihood
+
+          H0 Value                      -11345.476
+          H0 Scaling Correction Factor      3.0537
+            for MLR
+          H1 Value                      -11303.000
+          H1 Scaling Correction Factor      2.5873
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   22810.952
+          Bayesian (BIC)                 23132.137
+          Sample-Size Adjusted BIC       22941.530
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             53.504*
+          Degrees of Freedom                    28
+          P-Value                           0.0026
+          Scaling Correction Factor         1.5878
+            for MLR
+
+Chi-Square Contribution From Each Group
+
+          MODERATE                          23.403
+          HIGH                              30.100
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.034
+          90 Percent C.I.                    0.020  0.048
+          Probability RMSEA <= .05           0.972
+
+CFI/TLI
+
+          CFI                                0.933
+          TLI                                0.895
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                            426.865
+          Degrees of Freedom                    44
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.035
+
+Wald Test of Parameter Constraints
+
+          Value                              0.063
+          Degrees of Freedom                     1
+          P-Value                           0.8020
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MODERATE
+
+ I        |
+    SH_W1              1.000      0.000    999.000    999.000
+    SH_W2              1.000      0.000    999.000    999.000
+    SH_W3              1.000      0.000    999.000    999.000
+    SH_W4              1.000      0.000    999.000    999.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.500      0.000    999.000    999.000
+    SH_W3              1.500      0.000    999.000    999.000
+    SH_W4              2.500      0.000    999.000    999.000
+
+ I        ON
+    FAMCON             0.023      0.037      0.612      0.540
+    ABUSE              0.228      0.062      3.689      0.000
+    SIBAGG             0.029      0.026      1.127      0.260
+    SHVICT             0.490      0.084      5.837      0.000
+
+ S        ON
+    FAMCON             0.004      0.024      0.173      0.863
+    ABUSE             -0.095      0.035     -2.750      0.006
+    SIBAGG            -0.002      0.040     -0.039      0.969
+    SHVICT            -0.030      0.077     -0.387      0.698
+
+ S        WITH
+    I                 -0.016      0.037     -0.422      0.673
+
+ ABUSE    WITH
+    FAMCON             0.195      0.033      5.936      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.249      0.065      3.822      0.000
+    ABUSE              0.190      0.034      5.615      0.000
+
+ SHVICT   WITH
+    FAMCON             0.138      0.016      8.503      0.000
+    ABUSE              0.085      0.014      6.069      0.000
+    SIBAGG             0.061      0.013      4.803      0.000
+
+ Means
+    FAMCON             0.932      0.061     15.367      0.000
+    ABUSE              0.465      0.035     13.262      0.000
+    SIBAGG             0.400      0.025     16.078      0.000
+    SHVICT             0.381      0.029     12.928      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.042      0.038      1.117      0.264
+    S                  0.150      0.034      4.441      0.000
+
+ Variances
+    FAMCON             0.835      0.065     12.787      0.000
+    ABUSE              0.583      0.057     10.158      0.000
+    SIBAGG             0.893      0.076     11.749      0.000
+    SHVICT             0.237      0.007     34.842      0.000
+
+ Residual Variances
+    SH_W1              0.454      0.109      4.167      0.000
+    SH_W2              0.612      0.082      7.477      0.000
+    SH_W3              0.608      0.082      7.391      0.000
+    SH_W4              0.376      0.122      3.086      0.002
+    I                  0.217      0.058      3.711      0.000
+    S                  0.140      0.046      3.058      0.002
+
+Group HIGH
+
+ I        |
+    SH_W1              1.000      0.000    999.000    999.000
+    SH_W2              1.000      0.000    999.000    999.000
+    SH_W3              1.000      0.000    999.000    999.000
+    SH_W4              1.000      0.000    999.000    999.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.500      0.000    999.000    999.000
+    SH_W3              1.500      0.000    999.000    999.000
+    SH_W4              2.500      0.000    999.000    999.000
+
+ I        ON
+    FAMCON            -0.012      0.032     -0.370      0.711
+    ABUSE              0.104      0.059      1.750      0.080
+    SIBAGG             0.009      0.023      0.382      0.703
+    SHVICT             0.293      0.059      4.974      0.000
+
+ S        ON
+    FAMCON             0.014      0.029      0.464      0.643
+    ABUSE             -0.032      0.031     -1.046      0.296
+    SIBAGG             0.001      0.013      0.044      0.965
+    SHVICT            -0.049      0.050     -0.975      0.330
+
+ S        WITH
+    I                  0.000      0.000    999.000    999.000
+
+ ABUSE    WITH
+    FAMCON             0.184      0.021      8.733      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.219      0.042      5.174      0.000
+    ABUSE              0.062      0.016      3.867      0.000
+
+ SHVICT   WITH
+    FAMCON             0.070      0.011      6.604      0.000
+    ABUSE              0.043      0.007      6.101      0.000
+    SIBAGG             0.042      0.016      2.582      0.010
+
+ Means
+    FAMCON             0.691      0.040     17.194      0.000
+    ABUSE              0.344      0.023     15.304      0.000
+    SIBAGG             0.299      0.023     12.936      0.000
+    SHVICT             0.221      0.022     10.148      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.044      0.021      2.105      0.035
+    S                  0.068      0.017      3.935      0.000
+
+ Variances
+    FAMCON             0.701      0.058     12.008      0.000
+    ABUSE              0.448      0.025     18.113      0.000
+    SIBAGG             0.780      0.080      9.755      0.000
+    SHVICT             0.172      0.012     14.200      0.000
+
+ Residual Variances
+    SH_W1              0.204      0.041      4.964      0.000
+    SH_W2              0.167      0.038      4.434      0.000
+    SH_W3              0.348      0.058      6.020      0.000
+    SH_W4              0.412      0.138      2.992      0.003
+    I                  0.087      0.022      4.022      0.000
+    S                  0.000      0.000    999.000    999.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MODERATE
+
+ I        |
+    SH_W1              0.651      0.051     12.882      0.000
+    SH_W2              0.594      0.072      8.252      0.000
+    SH_W3              0.537      0.073      7.316      0.000
+    SH_W4              0.483      0.062      7.832      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.196      0.031      6.314      0.000
+    SH_W3              0.532      0.084      6.324      0.000
+    SH_W4              0.797      0.091      8.734      0.000
+
+ I        ON
+    FAMCON             0.036      0.059      0.604      0.546
+    ABUSE              0.301      0.080      3.790      0.000
+    SIBAGG             0.047      0.041      1.151      0.250
+    SHVICT             0.413      0.048      8.552      0.000
+
+ S        ON
+    FAMCON             0.010      0.058      0.172      0.863
+    ABUSE             -0.190      0.063     -3.031      0.002
+    SIBAGG            -0.004      0.098     -0.039      0.969
+    SHVICT            -0.038      0.098     -0.387      0.699
+
+ S        WITH
+    I                 -0.091      0.195     -0.467      0.641
+
+ ABUSE    WITH
+    FAMCON             0.279      0.044      6.349      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.289      0.070      4.134      0.000
+    ABUSE              0.263      0.040      6.606      0.000
+
+ SHVICT   WITH
+    FAMCON             0.310      0.035      8.965      0.000
+    ABUSE              0.228      0.034      6.733      0.000
+    SIBAGG             0.134      0.029      4.602      0.000
+
+ Means
+    FAMCON             1.019      0.050     20.279      0.000
+    ABUSE              0.610      0.023     26.823      0.000
+    SIBAGG             0.423      0.017     24.173      0.000
+    SHVICT             0.783      0.050     15.817      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.074      0.066      1.112      0.266
+    S                  0.394      0.070      5.620      0.000
+
+ Variances
+    FAMCON             1.000      0.000    999.000    999.000
+    ABUSE              1.000      0.000    999.000    999.000
+    SIBAGG             1.000      0.000    999.000    999.000
+    SHVICT             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.576      0.066      8.754      0.000
+    SH_W2              0.648      0.052     12.538      0.000
+    SH_W3              0.525      0.052     10.032      0.000
+    SH_W4              0.262      0.081      3.225      0.001
+    I                  0.650      0.054     11.965      0.000
+    S                  0.960      0.029     33.499      0.000
+
+Group HIGH
+
+ I        |
+    SH_W1              0.590      0.059     10.054      0.000
+    SH_W2              0.633      0.051     12.464      0.000
+    SH_W3              0.493      0.054      9.108      0.000
+    SH_W4              0.464      0.080      5.818      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.029      0.012      2.459      0.014
+    SH_W3              0.067      0.031      2.160      0.031
+    SH_W4              0.105      0.045      2.346      0.019
+
+ I        ON
+    FAMCON            -0.030      0.079     -0.376      0.707
+    ABUSE              0.211      0.118      1.784      0.074
+    SIBAGG             0.024      0.062      0.384      0.701
+    SHVICT             0.369      0.070      5.259      0.000
+
+ S        ON
+    FAMCON             0.381      0.754      0.505      0.613
+    ABUSE             -0.722      0.634     -1.139      0.255
+    SIBAGG             0.017      0.378      0.044      0.965
+    SHVICT            -0.683      0.614     -1.112      0.266
+
+ S        WITH
+    I                999.000    999.000    999.000    999.000
+
+ ABUSE    WITH
+    FAMCON             0.329      0.036      9.203      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.297      0.053      5.643      0.000
+    ABUSE              0.105      0.029      3.664      0.000
+
+ SHVICT   WITH
+    FAMCON             0.201      0.026      7.592      0.000
+    ABUSE              0.154      0.028      5.604      0.000
+    SIBAGG             0.114      0.042      2.698      0.007
+
+ Means
+    FAMCON             0.825      0.036     22.945      0.000
+    ABUSE              0.515      0.023     22.582      0.000
+    SIBAGG             0.339      0.014     23.425      0.000
+    SHVICT             0.532      0.034     15.790      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.133      0.057      2.346      0.019
+    S                  2.267      1.268      1.788      0.074
+
+ Variances
+    FAMCON             1.000      0.000    999.000    999.000
+    ABUSE              1.000      0.000    999.000    999.000
+    SIBAGG             1.000      0.000    999.000    999.000
+    SHVICT             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.652      0.069      9.403      0.000
+    SH_W2              0.614      0.062      9.972      0.000
+    SH_W3              0.779      0.045     17.140      0.000
+    SH_W4              0.814      0.067     12.182      0.000
+    I                  0.800      0.048     16.823      0.000
+    S                  0.000    999.000    999.000    999.000
+
+
+STDY Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MODERATE
+
+ I        |
+    SH_W1              0.651      0.051     12.882      0.000
+    SH_W2              0.594      0.072      8.252      0.000
+    SH_W3              0.537      0.073      7.316      0.000
+    SH_W4              0.483      0.062      7.832      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.196      0.031      6.314      0.000
+    SH_W3              0.532      0.084      6.324      0.000
+    SH_W4              0.797      0.091      8.734      0.000
+
+ I        ON
+    FAMCON             0.036      0.059      0.604      0.546
+    ABUSE              0.301      0.080      3.790      0.000
+    SIBAGG             0.047      0.041      1.151      0.250
+    SHVICT             0.413      0.048      8.552      0.000
+
+ S        ON
+    FAMCON             0.010      0.058      0.172      0.863
+    ABUSE             -0.190      0.063     -3.031      0.002
+    SIBAGG            -0.004      0.098     -0.039      0.969
+    SHVICT            -0.038      0.098     -0.387      0.699
+
+ S        WITH
+    I                 -0.091      0.195     -0.467      0.641
+
+ ABUSE    WITH
+    FAMCON             0.279      0.044      6.349      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.289      0.070      4.134      0.000
+    ABUSE              0.263      0.040      6.606      0.000
+
+ SHVICT   WITH
+    FAMCON             0.310      0.035      8.965      0.000
+    ABUSE              0.228      0.034      6.733      0.000
+    SIBAGG             0.134      0.029      4.602      0.000
+
+ Means
+    FAMCON             1.019      0.050     20.279      0.000
+    ABUSE              0.610      0.023     26.823      0.000
+    SIBAGG             0.423      0.017     24.173      0.000
+    SHVICT             0.783      0.050     15.817      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.074      0.066      1.112      0.266
+    S                  0.394      0.070      5.620      0.000
+
+ Variances
+    FAMCON             1.000      0.000    999.000    999.000
+    ABUSE              1.000      0.000    999.000    999.000
+    SIBAGG             1.000      0.000    999.000    999.000
+    SHVICT             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.576      0.066      8.754      0.000
+    SH_W2              0.648      0.052     12.538      0.000
+    SH_W3              0.525      0.052     10.032      0.000
+    SH_W4              0.262      0.081      3.225      0.001
+    I                  0.650      0.054     11.965      0.000
+    S                  0.960      0.029     33.499      0.000
+
+Group HIGH
+
+ I        |
+    SH_W1              0.590      0.059     10.054      0.000
+    SH_W2              0.633      0.051     12.464      0.000
+    SH_W3              0.493      0.054      9.108      0.000
+    SH_W4              0.464      0.080      5.818      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.029      0.012      2.459      0.014
+    SH_W3              0.067      0.031      2.160      0.031
+    SH_W4              0.105      0.045      2.346      0.019
+
+ I        ON
+    FAMCON            -0.030      0.079     -0.376      0.707
+    ABUSE              0.211      0.118      1.784      0.074
+    SIBAGG             0.024      0.062      0.384      0.701
+    SHVICT             0.369      0.070      5.259      0.000
+
+ S        ON
+    FAMCON             0.381      0.754      0.505      0.613
+    ABUSE             -0.722      0.634     -1.139      0.255
+    SIBAGG             0.017      0.378      0.044      0.965
+    SHVICT            -0.683      0.614     -1.112      0.266
+
+ S        WITH
+    I                999.000    999.000    999.000    999.000
+
+ ABUSE    WITH
+    FAMCON             0.329      0.036      9.203      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.297      0.053      5.643      0.000
+    ABUSE              0.105      0.029      3.664      0.000
+
+ SHVICT   WITH
+    FAMCON             0.201      0.026      7.592      0.000
+    ABUSE              0.154      0.028      5.604      0.000
+    SIBAGG             0.114      0.042      2.698      0.007
+
+ Means
+    FAMCON             0.825      0.036     22.945      0.000
+    ABUSE              0.515      0.023     22.582      0.000
+    SIBAGG             0.339      0.014     23.425      0.000
+    SHVICT             0.532      0.034     15.790      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.133      0.057      2.346      0.019
+    S                  2.267      1.268      1.788      0.074
+
+ Variances
+    FAMCON             1.000      0.000    999.000    999.000
+    ABUSE              1.000      0.000    999.000    999.000
+    SIBAGG             1.000      0.000    999.000    999.000
+    SHVICT             1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.652      0.069      9.403      0.000
+    SH_W2              0.614      0.062      9.972      0.000
+    SH_W3              0.779      0.045     17.140      0.000
+    SH_W4              0.814      0.067     12.182      0.000
+    I                  0.800      0.048     16.823      0.000
+    S                999.000    999.000    999.000    999.000
+
+
+STD Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group MODERATE
+
+ I        |
+    SH_W1              0.578      0.073      7.882      0.000
+    SH_W2              0.578      0.073      7.882      0.000
+    SH_W3              0.578      0.073      7.882      0.000
+    SH_W4              0.578      0.073      7.882      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.191      0.031      6.106      0.000
+    SH_W3              0.572      0.094      6.106      0.000
+    SH_W4              0.954      0.156      6.106      0.000
+
+ I        ON
+    FAMCON             0.039      0.065      0.599      0.549
+    ABUSE              0.395      0.098      4.050      0.000
+    SIBAGG             0.050      0.043      1.160      0.246
+    SHVICT             0.848      0.101      8.410      0.000
+
+ S        ON
+    FAMCON             0.011      0.064      0.172      0.863
+    ABUSE             -0.249      0.086     -2.886      0.004
+    SIBAGG            -0.004      0.104     -0.039      0.969
+    SHVICT            -0.078      0.202     -0.387      0.699
+
+ S        WITH
+    I                 -0.091      0.195     -0.467      0.641
+
+ ABUSE    WITH
+    FAMCON             0.195      0.033      5.936      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.249      0.065      3.822      0.000
+    ABUSE              0.190      0.034      5.615      0.000
+
+ SHVICT   WITH
+    FAMCON             0.138      0.016      8.503      0.000
+    ABUSE              0.085      0.014      6.069      0.000
+    SIBAGG             0.061      0.013      4.803      0.000
+
+ Means
+    FAMCON             0.932      0.061     15.367      0.000
+    ABUSE              0.465      0.035     13.262      0.000
+    SIBAGG             0.400      0.025     16.078      0.000
+    SHVICT             0.381      0.029     12.928      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.074      0.066      1.112      0.266
+    S                  0.394      0.070      5.620      0.000
+
+ Variances
+    FAMCON             0.835      0.065     12.787      0.000
+    ABUSE              0.583      0.057     10.158      0.000
+    SIBAGG             0.893      0.076     11.749      0.000
+    SHVICT             0.237      0.007     34.842      0.000
+
+ Residual Variances
+    SH_W1              0.454      0.109      4.167      0.000
+    SH_W2              0.612      0.082      7.477      0.000
+    SH_W3              0.608      0.082      7.391      0.000
+    SH_W4              0.376      0.122      3.086      0.002
+    I                  0.650      0.054     11.965      0.000
+    S                  0.960      0.029     33.499      0.000
+
+Group HIGH
+
+ I        |
+    SH_W1              0.330      0.037      8.894      0.000
+    SH_W2              0.330      0.037      8.894      0.000
+    SH_W3              0.330      0.037      8.894      0.000
+    SH_W4              0.330      0.037      8.894      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.015      0.007      2.202      0.028
+    SH_W3              0.045      0.020      2.202      0.028
+    SH_W4              0.074      0.034      2.202      0.028
+
+ I        ON
+    FAMCON            -0.036      0.095     -0.376      0.707
+    ABUSE              0.314      0.175      1.793      0.073
+    SIBAGG             0.027      0.070      0.384      0.701
+    SHVICT             0.889      0.178      4.986      0.000
+
+ S        ON
+    FAMCON             0.455      0.895      0.508      0.611
+    ABUSE             -1.079      0.947     -1.139      0.255
+    SIBAGG             0.019      0.427      0.044      0.965
+    SHVICT            -1.649      1.473     -1.119      0.263
+
+ S        WITH
+    I                999.000    999.000    999.000    999.000
+
+ ABUSE    WITH
+    FAMCON             0.184      0.021      8.733      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.219      0.042      5.174      0.000
+    ABUSE              0.062      0.016      3.867      0.000
+
+ SHVICT   WITH
+    FAMCON             0.070      0.011      6.604      0.000
+    ABUSE              0.043      0.007      6.101      0.000
+    SIBAGG             0.042      0.016      2.582      0.010
+
+ Means
+    FAMCON             0.691      0.040     17.194      0.000
+    ABUSE              0.344      0.023     15.304      0.000
+    SIBAGG             0.299      0.023     12.936      0.000
+    SHVICT             0.221      0.022     10.148      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.133      0.057      2.346      0.019
+    S                  2.267      1.268      1.788      0.074
+
+ Variances
+    FAMCON             0.701      0.058     12.008      0.000
+    ABUSE              0.448      0.025     18.113      0.000
+    SIBAGG             0.780      0.080      9.755      0.000
+    SHVICT             0.172      0.012     14.200      0.000
+
+ Residual Variances
+    SH_W1              0.204      0.041      4.964      0.000
+    SH_W2              0.167      0.038      4.434      0.000
+    SH_W3              0.348      0.058      6.020      0.000
+    SH_W4              0.412      0.138      2.992      0.003
+    I                  0.800      0.048     16.823      0.000
+    S                999.000    999.000    999.000    999.000
+
+
+R-SQUARE
+
+Group MODERATE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    SH_W1              0.424      0.066      6.441      0.000
+    SH_W2              0.352      0.052      6.826      0.000
+    SH_W3              0.475      0.052      9.078      0.000
+    SH_W4              0.738      0.081      9.083      0.000
+
+     Latent                                         Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    I                  0.350      0.054      6.449      0.000
+    S                  0.040      0.029      1.403      0.161
+
+Group HIGH
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    SH_W1              0.348      0.069      5.027      0.000
+    SH_W2              0.386      0.062      6.274      0.000
+    SH_W3              0.221      0.045      4.855      0.000
+    SH_W4              0.186      0.067      2.782      0.005
+
+     Latent                                         Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    I                  0.200      0.048      4.195      0.000
+    S                  1.000    999.000    999.000    999.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.355E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MODERATE
+
+ I        |
+    SH_W1            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W2            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W3            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W4            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.500       0.500       0.500       0.500       0.500       0.500       0.500
+    SH_W3            1.500       1.500       1.500       1.500       1.500       1.500       1.500
+    SH_W4            2.500       2.500       2.500       2.500       2.500       2.500       2.500
+
+ I        ON
+    FAMCON          -0.072      -0.050      -0.038       0.023       0.083       0.095       0.118
+    ABUSE            0.069       0.107       0.126       0.228       0.330       0.349       0.388
+    SIBAGG          -0.037      -0.021      -0.013       0.029       0.071       0.079       0.094
+    SHVICT           0.274       0.325       0.352       0.490       0.628       0.654       0.706
+
+ S        ON
+    FAMCON          -0.058      -0.043      -0.036       0.004       0.044       0.052       0.067
+    ABUSE           -0.184      -0.163      -0.152      -0.095      -0.038      -0.027      -0.006
+    SIBAGG          -0.104      -0.079      -0.067      -0.002       0.064       0.076       0.101
+    SHVICT          -0.228      -0.181      -0.157      -0.030       0.097       0.121       0.169
+
+ S        WITH
+    I               -0.112      -0.089      -0.077      -0.016       0.046       0.058       0.081
+
+ ABUSE    WITH
+    FAMCON           0.110       0.130       0.141       0.195       0.249       0.259       0.279
+
+ SIBAGG   WITH
+    FAMCON           0.081       0.122       0.142       0.249       0.357       0.377       0.418
+    ABUSE            0.103       0.124       0.134       0.190       0.246       0.256       0.277
+
+ SHVICT   WITH
+    FAMCON           0.096       0.106       0.111       0.138       0.165       0.170       0.180
+    ABUSE            0.049       0.057       0.062       0.085       0.108       0.112       0.121
+    SIBAGG           0.029       0.036       0.040       0.061       0.083       0.087       0.094
+
+ Means
+    FAMCON           0.776       0.813       0.832       0.932       1.031       1.051       1.088
+    ABUSE            0.375       0.397       0.408       0.465       0.523       0.534       0.556
+    SIBAGG           0.336       0.351       0.359       0.400       0.441       0.449       0.464
+    SHVICT           0.305       0.323       0.333       0.381       0.430       0.439       0.457
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.055      -0.032      -0.020       0.042       0.105       0.117       0.140
+    S                0.063       0.084       0.095       0.150       0.206       0.216       0.237
+
+ Variances
+    FAMCON           0.667       0.707       0.728       0.835       0.943       0.963       1.003
+    ABUSE            0.435       0.470       0.488       0.583       0.677       0.695       0.730
+    SIBAGG           0.698       0.744       0.768       0.893       1.019       1.042       1.089
+    SHVICT           0.219       0.224       0.226       0.237       0.248       0.250       0.254
+
+ Residual Variances
+    SH_W1            0.173       0.240       0.275       0.454       0.633       0.667       0.734
+    SH_W2            0.401       0.451       0.477       0.612       0.746       0.772       0.823
+    SH_W3            0.396       0.446       0.472       0.608       0.743       0.769       0.819
+    SH_W4            0.062       0.137       0.175       0.376       0.576       0.614       0.689
+    I                0.066       0.102       0.121       0.217       0.313       0.331       0.367
+    S                0.022       0.050       0.065       0.140       0.215       0.229       0.257
+
+Group HIGH
+
+ I        |
+    SH_W1            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W2            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W3            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W4            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.500       0.500       0.500       0.500       0.500       0.500       0.500
+    SH_W3            1.500       1.500       1.500       1.500       1.500       1.500       1.500
+    SH_W4            2.500       2.500       2.500       2.500       2.500       2.500       2.500
+
+ I        ON
+    FAMCON          -0.093      -0.074      -0.064      -0.012       0.040       0.050       0.070
+    ABUSE           -0.049      -0.012       0.006       0.104       0.201       0.220       0.256
+    SIBAGG          -0.051      -0.037      -0.029       0.009       0.047       0.054       0.069
+    SHVICT           0.141       0.178       0.196       0.293       0.390       0.409       0.445
+
+ S        ON
+    FAMCON          -0.062      -0.044      -0.035       0.014       0.062       0.071       0.089
+    ABUSE           -0.111      -0.092      -0.083      -0.032       0.018       0.028       0.047
+    SIBAGG          -0.032      -0.025      -0.020       0.001       0.022       0.026       0.034
+    SHVICT          -0.179      -0.148      -0.132      -0.049       0.034       0.050       0.081
+
+ S        WITH
+    I                0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+ ABUSE    WITH
+    FAMCON           0.130       0.143       0.150       0.184       0.219       0.226       0.239
+
+ SIBAGG   WITH
+    FAMCON           0.110       0.136       0.150       0.219       0.289       0.302       0.329
+    ABUSE            0.021       0.031       0.036       0.062       0.089       0.094       0.104
+
+ SHVICT   WITH
+    FAMCON           0.042       0.049       0.052       0.070       0.087       0.090       0.097
+    ABUSE            0.025       0.029       0.031       0.043       0.054       0.057       0.061
+    SIBAGG           0.000       0.010       0.015       0.042       0.068       0.073       0.083
+
+ Means
+    FAMCON           0.587       0.612       0.625       0.691       0.757       0.770       0.794
+    ABUSE            0.287       0.300       0.307       0.344       0.382       0.389       0.402
+    SIBAGG           0.240       0.254       0.261       0.299       0.337       0.344       0.359
+    SHVICT           0.165       0.178       0.185       0.221       0.256       0.263       0.277
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.010       0.003       0.010       0.044       0.078       0.085       0.097
+    S                0.023       0.034       0.039       0.068       0.096       0.101       0.112
+
+ Variances
+    FAMCON           0.551       0.587       0.605       0.701       0.797       0.815       0.851
+    ABUSE            0.384       0.400       0.408       0.448       0.489       0.497       0.512
+    SIBAGG           0.574       0.623       0.649       0.780       0.912       0.937       0.986
+    SHVICT           0.141       0.148       0.152       0.172       0.192       0.196       0.203
+
+ Residual Variances
+    SH_W1            0.098       0.123       0.136       0.204       0.271       0.284       0.309
+    SH_W2            0.070       0.093       0.105       0.167       0.229       0.241       0.264
+    SH_W3            0.199       0.235       0.253       0.348       0.444       0.462       0.498
+    SH_W4            0.057       0.142       0.186       0.412       0.639       0.682       0.767
+    I                0.031       0.045       0.051       0.087       0.123       0.130       0.143
+    S                0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MODERATE
+
+ I        |
+    SH_W1            0.521       0.552       0.568       0.651       0.734       0.750       0.781
+    SH_W2            0.409       0.453       0.476       0.594       0.713       0.736       0.780
+    SH_W3            0.348       0.393       0.416       0.537       0.658       0.681       0.726
+    SH_W4            0.324       0.362       0.381       0.483       0.584       0.603       0.641
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.116       0.135       0.145       0.196       0.247       0.257       0.276
+    SH_W3            0.315       0.367       0.393       0.532       0.670       0.697       0.748
+    SH_W4            0.562       0.618       0.647       0.797       0.947       0.975       1.032
+
+ I        ON
+    FAMCON          -0.117      -0.080      -0.062       0.036       0.133       0.152       0.188
+    ABUSE            0.097       0.146       0.171       0.301       0.432       0.457       0.506
+    SIBAGG          -0.058      -0.033      -0.020       0.047       0.114       0.127       0.152
+    SHVICT           0.288       0.318       0.333       0.413       0.492       0.507       0.537
+
+ S        ON
+    FAMCON          -0.140      -0.104      -0.086       0.010       0.106       0.124       0.160
+    ABUSE           -0.352      -0.313      -0.294      -0.190      -0.087      -0.067      -0.029
+    SIBAGG          -0.257      -0.196      -0.165      -0.004       0.158       0.189       0.249
+    SHVICT          -0.291      -0.231      -0.200      -0.038       0.124       0.155       0.215
+
+ S        WITH
+    I               -0.593      -0.473      -0.411      -0.091       0.230       0.291       0.411
+
+ ABUSE    WITH
+    FAMCON           0.166       0.193       0.207       0.279       0.351       0.365       0.392
+
+ SIBAGG   WITH
+    FAMCON           0.109       0.152       0.174       0.289       0.404       0.426       0.469
+    ABUSE            0.161       0.185       0.198       0.263       0.329       0.341       0.366
+
+ SHVICT   WITH
+    FAMCON           0.221       0.243       0.254       0.310       0.367       0.378       0.400
+    ABUSE            0.141       0.162       0.172       0.228       0.284       0.294       0.315
+    SIBAGG           0.059       0.077       0.086       0.134       0.181       0.191       0.208
+
+ Means
+    FAMCON           0.890       0.921       0.937       1.019       1.102       1.118       1.149
+    ABUSE            0.551       0.565       0.572       0.610       0.647       0.654       0.668
+    SIBAGG           0.378       0.389       0.394       0.423       0.452       0.457       0.468
+    SHVICT           0.656       0.686       0.702       0.783       0.865       0.880       0.911
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.097      -0.056      -0.035       0.074       0.182       0.203       0.244
+    S                0.213       0.256       0.278       0.394       0.509       0.531       0.574
+
+ Variances
+    FAMCON           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ABUSE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SIBAGG           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SHVICT           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.407       0.447       0.468       0.576       0.684       0.705       0.746
+    SH_W2            0.514       0.546       0.563       0.648       0.732       0.749       0.781
+    SH_W3            0.390       0.422       0.439       0.525       0.611       0.628       0.660
+    SH_W4            0.053       0.103       0.128       0.262       0.396       0.421       0.471
+    I                0.510       0.543       0.560       0.650       0.739       0.756       0.790
+    S                0.886       0.904       0.913       0.960       1.007       1.016       1.034
+
+Group HIGH
+
+ I        |
+    SH_W1            0.439       0.475       0.494       0.590       0.687       0.705       0.741
+    SH_W2            0.502       0.533       0.549       0.633       0.716       0.732       0.763
+    SH_W3            0.354       0.387       0.404       0.493       0.583       0.600       0.633
+    SH_W4            0.258       0.307       0.333       0.464       0.595       0.620       0.669
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2           -0.001       0.006       0.009       0.029       0.048       0.051       0.058
+    SH_W3           -0.013       0.006       0.016       0.067       0.118       0.127       0.147
+    SH_W4           -0.010       0.017       0.031       0.105       0.178       0.192       0.220
+
+ I        ON
+    FAMCON          -0.234      -0.185      -0.160      -0.030       0.101       0.126       0.174
+    ABUSE           -0.093      -0.021       0.016       0.211       0.405       0.442       0.514
+    SIBAGG          -0.135      -0.097      -0.078       0.024       0.125       0.145       0.183
+    SHVICT           0.188       0.231       0.253       0.369       0.484       0.506       0.549
+
+ S        ON
+    FAMCON          -1.561      -1.096      -0.859       0.381       1.621       1.858       2.322
+    ABUSE           -2.357      -1.966      -1.766      -0.722       0.321       0.521       0.912
+    SIBAGG          -0.956      -0.723      -0.604       0.017       0.638       0.757       0.989
+    SHVICT          -2.266      -1.888      -1.694      -0.683       0.327       0.521       0.899
+
+ S        WITH
+    I              999.000     999.000     999.000     999.000     999.000     999.000     999.000
+
+ ABUSE    WITH
+    FAMCON           0.237       0.259       0.270       0.329       0.387       0.399       0.421
+
+ SIBAGG   WITH
+    FAMCON           0.161       0.194       0.210       0.297       0.383       0.400       0.432
+    ABUSE            0.031       0.049       0.058       0.105       0.153       0.162       0.179
+
+ SHVICT   WITH
+    FAMCON           0.133       0.149       0.157       0.201       0.244       0.252       0.269
+    ABUSE            0.083       0.100       0.109       0.154       0.200       0.208       0.225
+    SIBAGG           0.005       0.031       0.044       0.114       0.183       0.196       0.222
+
+ Means
+    FAMCON           0.733       0.755       0.766       0.825       0.884       0.896       0.918
+    ABUSE            0.456       0.470       0.477       0.515       0.552       0.559       0.573
+    SIBAGG           0.301       0.310       0.315       0.339       0.362       0.367       0.376
+    SHVICT           0.445       0.466       0.477       0.532       0.588       0.598       0.619
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.013       0.022       0.040       0.133       0.226       0.244       0.279
+    S               -0.999      -0.218       0.181       2.267       4.352       4.752       5.532
+
+ Variances
+    FAMCON           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ABUSE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SIBAGG           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SHVICT           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.473       0.516       0.538       0.652       0.766       0.787       0.830
+    SH_W2            0.455       0.493       0.513       0.614       0.715       0.734       0.772
+    SH_W3            0.662       0.690       0.704       0.779       0.854       0.868       0.896
+    SH_W4            0.642       0.683       0.704       0.814       0.924       0.945       0.986
+    I                0.678       0.707       0.722       0.800       0.879       0.894       0.923
+    S              999.000     999.000     999.000       0.000     999.000     999.000     999.000
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MODERATE
+
+ I        |
+    SH_W1            0.521       0.552       0.568       0.651       0.734       0.750       0.781
+    SH_W2            0.409       0.453       0.476       0.594       0.713       0.736       0.780
+    SH_W3            0.348       0.393       0.416       0.537       0.658       0.681       0.726
+    SH_W4            0.324       0.362       0.381       0.483       0.584       0.603       0.641
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.116       0.135       0.145       0.196       0.247       0.257       0.276
+    SH_W3            0.315       0.367       0.393       0.532       0.670       0.697       0.748
+    SH_W4            0.562       0.618       0.647       0.797       0.947       0.975       1.032
+
+ I        ON
+    FAMCON          -0.117      -0.080      -0.062       0.036       0.133       0.152       0.188
+    ABUSE            0.097       0.146       0.171       0.301       0.432       0.457       0.506
+    SIBAGG          -0.058      -0.033      -0.020       0.047       0.114       0.127       0.152
+    SHVICT           0.288       0.318       0.333       0.413       0.492       0.507       0.537
+
+ S        ON
+    FAMCON          -0.140      -0.104      -0.086       0.010       0.106       0.124       0.160
+    ABUSE           -0.352      -0.313      -0.294      -0.190      -0.087      -0.067      -0.029
+    SIBAGG          -0.257      -0.196      -0.165      -0.004       0.158       0.189       0.249
+    SHVICT          -0.291      -0.231      -0.200      -0.038       0.124       0.155       0.215
+
+ S        WITH
+    I               -0.593      -0.473      -0.411      -0.091       0.230       0.291       0.411
+
+ ABUSE    WITH
+    FAMCON           0.166       0.193       0.207       0.279       0.351       0.365       0.392
+
+ SIBAGG   WITH
+    FAMCON           0.109       0.152       0.174       0.289       0.404       0.426       0.469
+    ABUSE            0.161       0.185       0.198       0.263       0.329       0.341       0.366
+
+ SHVICT   WITH
+    FAMCON           0.221       0.243       0.254       0.310       0.367       0.378       0.400
+    ABUSE            0.141       0.162       0.172       0.228       0.284       0.294       0.315
+    SIBAGG           0.059       0.077       0.086       0.134       0.181       0.191       0.208
+
+ Means
+    FAMCON           0.890       0.921       0.937       1.019       1.102       1.118       1.149
+    ABUSE            0.551       0.565       0.572       0.610       0.647       0.654       0.668
+    SIBAGG           0.378       0.389       0.394       0.423       0.452       0.457       0.468
+    SHVICT           0.656       0.686       0.702       0.783       0.865       0.880       0.911
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.097      -0.056      -0.035       0.074       0.182       0.203       0.244
+    S                0.213       0.256       0.278       0.394       0.509       0.531       0.574
+
+ Variances
+    FAMCON           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ABUSE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SIBAGG           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SHVICT           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.407       0.447       0.468       0.576       0.684       0.705       0.746
+    SH_W2            0.514       0.546       0.563       0.648       0.732       0.749       0.781
+    SH_W3            0.390       0.422       0.439       0.525       0.611       0.628       0.660
+    SH_W4            0.053       0.103       0.128       0.262       0.396       0.421       0.471
+    I                0.510       0.543       0.560       0.650       0.739       0.756       0.790
+    S                0.886       0.904       0.913       0.960       1.007       1.016       1.034
+
+Group HIGH
+
+ I        |
+    SH_W1            0.439       0.475       0.494       0.590       0.687       0.705       0.741
+    SH_W2            0.502       0.533       0.549       0.633       0.716       0.732       0.763
+    SH_W3            0.354       0.387       0.404       0.493       0.583       0.600       0.633
+    SH_W4            0.258       0.307       0.333       0.464       0.595       0.620       0.669
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2           -0.001       0.006       0.009       0.029       0.048       0.051       0.058
+    SH_W3           -0.013       0.006       0.016       0.067       0.118       0.127       0.147
+    SH_W4           -0.010       0.017       0.031       0.105       0.178       0.192       0.220
+
+ I        ON
+    FAMCON          -0.234      -0.185      -0.160      -0.030       0.101       0.126       0.174
+    ABUSE           -0.093      -0.021       0.016       0.211       0.405       0.442       0.514
+    SIBAGG          -0.135      -0.097      -0.078       0.024       0.125       0.145       0.183
+    SHVICT           0.188       0.231       0.253       0.369       0.484       0.506       0.549
+
+ S        ON
+    FAMCON          -1.561      -1.096      -0.859       0.381       1.621       1.858       2.322
+    ABUSE           -2.357      -1.966      -1.766      -0.722       0.321       0.521       0.912
+    SIBAGG          -0.956      -0.723      -0.604       0.017       0.638       0.757       0.989
+    SHVICT          -2.266      -1.888      -1.694      -0.683       0.327       0.521       0.899
+
+ S        WITH
+    I              999.000     999.000     999.000     999.000     999.000     999.000     999.000
+
+ ABUSE    WITH
+    FAMCON           0.237       0.259       0.270       0.329       0.387       0.399       0.421
+
+ SIBAGG   WITH
+    FAMCON           0.161       0.194       0.210       0.297       0.383       0.400       0.432
+    ABUSE            0.031       0.049       0.058       0.105       0.153       0.162       0.179
+
+ SHVICT   WITH
+    FAMCON           0.133       0.149       0.157       0.201       0.244       0.252       0.269
+    ABUSE            0.083       0.100       0.109       0.154       0.200       0.208       0.225
+    SIBAGG           0.005       0.031       0.044       0.114       0.183       0.196       0.222
+
+ Means
+    FAMCON           0.733       0.755       0.766       0.825       0.884       0.896       0.918
+    ABUSE            0.456       0.470       0.477       0.515       0.552       0.559       0.573
+    SIBAGG           0.301       0.310       0.315       0.339       0.362       0.367       0.376
+    SHVICT           0.445       0.466       0.477       0.532       0.588       0.598       0.619
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.013       0.022       0.040       0.133       0.226       0.244       0.279
+    S               -0.999      -0.218       0.181       2.267       4.352       4.752       5.532
+
+ Variances
+    FAMCON           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ABUSE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SIBAGG           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SHVICT           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.473       0.516       0.538       0.652       0.766       0.787       0.830
+    SH_W2            0.455       0.493       0.513       0.614       0.715       0.734       0.772
+    SH_W3            0.662       0.690       0.704       0.779       0.854       0.868       0.896
+    SH_W4            0.642       0.683       0.704       0.814       0.924       0.945       0.986
+    I                0.678       0.707       0.722       0.800       0.879       0.894       0.923
+    S              999.000     999.000     999.000     999.000     999.000     999.000     999.000
+
+
+STD Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+Group MODERATE
+
+ I        |
+    SH_W1            0.389       0.434       0.457       0.578       0.698       0.721       0.767
+    SH_W2            0.389       0.434       0.457       0.578       0.698       0.721       0.767
+    SH_W3            0.389       0.434       0.457       0.578       0.698       0.721       0.767
+    SH_W4            0.389       0.434       0.457       0.578       0.698       0.721       0.767
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.110       0.129       0.139       0.191       0.242       0.252       0.271
+    SH_W3            0.331       0.388       0.418       0.572       0.726       0.756       0.814
+    SH_W4            0.551       0.647       0.697       0.954       1.211       1.260       1.356
+
+ I        ON
+    FAMCON          -0.129      -0.089      -0.068       0.039       0.146       0.167       0.207
+    ABUSE            0.144       0.204       0.235       0.395       0.555       0.586       0.646
+    SIBAGG          -0.061      -0.034      -0.021       0.050       0.120       0.134       0.160
+    SHVICT           0.588       0.650       0.682       0.848       1.014       1.046       1.108
+
+ S        ON
+    FAMCON          -0.153      -0.114      -0.094       0.011       0.116       0.136       0.175
+    ABUSE           -0.472      -0.419      -0.392      -0.249      -0.107      -0.080      -0.027
+    SIBAGG          -0.272      -0.208      -0.175      -0.004       0.167       0.200       0.264
+    SHVICT          -0.599      -0.474      -0.411      -0.078       0.254       0.318       0.442
+
+ S        WITH
+    I               -0.593      -0.473      -0.411      -0.091       0.230       0.291       0.411
+
+ ABUSE    WITH
+    FAMCON           0.110       0.130       0.141       0.195       0.249       0.259       0.279
+
+ SIBAGG   WITH
+    FAMCON           0.081       0.122       0.142       0.249       0.357       0.377       0.418
+    ABUSE            0.103       0.124       0.134       0.190       0.246       0.256       0.277
+
+ SHVICT   WITH
+    FAMCON           0.096       0.106       0.111       0.138       0.165       0.170       0.180
+    ABUSE            0.049       0.057       0.062       0.085       0.108       0.112       0.121
+    SIBAGG           0.029       0.036       0.040       0.061       0.083       0.087       0.094
+
+ Means
+    FAMCON           0.776       0.813       0.832       0.932       1.031       1.051       1.088
+    ABUSE            0.375       0.397       0.408       0.465       0.523       0.534       0.556
+    SIBAGG           0.336       0.351       0.359       0.400       0.441       0.449       0.464
+    SHVICT           0.305       0.323       0.333       0.381       0.430       0.439       0.457
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.097      -0.056      -0.035       0.074       0.182       0.203       0.244
+    S                0.213       0.256       0.278       0.394       0.509       0.531       0.574
+
+ Variances
+    FAMCON           0.667       0.707       0.728       0.835       0.943       0.963       1.003
+    ABUSE            0.435       0.470       0.488       0.583       0.677       0.695       0.730
+    SIBAGG           0.698       0.744       0.768       0.893       1.019       1.042       1.089
+    SHVICT           0.219       0.224       0.226       0.237       0.248       0.250       0.254
+
+ Residual Variances
+    SH_W1            0.173       0.240       0.275       0.454       0.633       0.667       0.734
+    SH_W2            0.401       0.451       0.477       0.612       0.746       0.772       0.823
+    SH_W3            0.396       0.446       0.472       0.608       0.743       0.769       0.819
+    SH_W4            0.062       0.137       0.175       0.376       0.576       0.614       0.689
+    I                0.510       0.543       0.560       0.650       0.739       0.756       0.790
+    S                0.886       0.904       0.913       0.960       1.007       1.016       1.034
+
+Group HIGH
+
+ I        |
+    SH_W1            0.234       0.257       0.269       0.330       0.391       0.403       0.425
+    SH_W2            0.234       0.257       0.269       0.330       0.391       0.403       0.425
+    SH_W3            0.234       0.257       0.269       0.330       0.391       0.403       0.425
+    SH_W4            0.234       0.257       0.269       0.330       0.391       0.403       0.425
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2           -0.003       0.002       0.004       0.015       0.026       0.028       0.032
+    SH_W3           -0.008       0.005       0.011       0.045       0.078       0.084       0.097
+    SH_W4           -0.013       0.008       0.019       0.074       0.130       0.141       0.162
+
+ I        ON
+    FAMCON          -0.280      -0.221      -0.191      -0.036       0.120       0.150       0.208
+    ABUSE           -0.137      -0.029       0.026       0.314       0.603       0.658       0.766
+    SIBAGG          -0.153      -0.110      -0.088       0.027       0.142       0.164       0.207
+    SHVICT           0.430       0.540       0.596       0.889       1.182       1.239       1.348
+
+ S        ON
+    FAMCON          -1.850      -1.299      -1.017       0.455       1.927       2.209       2.760
+    ABUSE           -3.519      -2.935      -2.637      -1.079       0.479       0.777       1.360
+    SIBAGG          -1.082      -0.819      -0.684       0.019       0.722       0.857       1.120
+    SHVICT          -5.444      -4.537      -4.073      -1.649       0.775       1.239       2.147
+
+ S        WITH
+    I              999.000     999.000     999.000     999.000     999.000     999.000     999.000
+
+ ABUSE    WITH
+    FAMCON           0.130       0.143       0.150       0.184       0.219       0.226       0.239
+
+ SIBAGG   WITH
+    FAMCON           0.110       0.136       0.150       0.219       0.289       0.302       0.329
+    ABUSE            0.021       0.031       0.036       0.062       0.089       0.094       0.104
+
+ SHVICT   WITH
+    FAMCON           0.042       0.049       0.052       0.070       0.087       0.090       0.097
+    ABUSE            0.025       0.029       0.031       0.043       0.054       0.057       0.061
+    SIBAGG           0.000       0.010       0.015       0.042       0.068       0.073       0.083
+
+ Means
+    FAMCON           0.587       0.612       0.625       0.691       0.757       0.770       0.794
+    ABUSE            0.287       0.300       0.307       0.344       0.382       0.389       0.402
+    SIBAGG           0.240       0.254       0.261       0.299       0.337       0.344       0.359
+    SHVICT           0.165       0.178       0.185       0.221       0.256       0.263       0.277
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.013       0.022       0.040       0.133       0.226       0.244       0.279
+    S               -0.999      -0.218       0.181       2.267       4.352       4.752       5.532
+
+ Variances
+    FAMCON           0.551       0.587       0.605       0.701       0.797       0.815       0.851
+    ABUSE            0.384       0.400       0.408       0.448       0.489       0.497       0.512
+    SIBAGG           0.574       0.623       0.649       0.780       0.912       0.937       0.986
+    SHVICT           0.141       0.148       0.152       0.172       0.192       0.196       0.203
+
+ Residual Variances
+    SH_W1            0.098       0.123       0.136       0.204       0.271       0.284       0.309
+    SH_W2            0.070       0.093       0.105       0.167       0.229       0.241       0.264
+    SH_W3            0.199       0.235       0.253       0.348       0.444       0.462       0.498
+    SH_W4            0.057       0.142       0.186       0.412       0.639       0.682       0.767
+    I                0.678       0.707       0.722       0.800       0.879       0.894       0.923
+    S              999.000     999.000     999.000     999.000     999.000     999.000     999.000
+
+
+RESIDUAL OUTPUT
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED) FOR MODERATE
+
+
+           Model Estimated Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.368         0.417         0.515         0.612         0.932
+
+
+           Model Estimated Means
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                0.465         0.400         0.381
+
+
+           Residuals for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+               -0.027         0.037         0.032        -0.039         0.001
+
+
+           Residuals for Means
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                0.000        -0.001         0.000
+
+
+           Standardized Residuals (z-scores) for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+               -0.941       999.000         2.306        -1.599         0.184
+
+
+           Standardized Residuals (z-scores) for Means
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+              999.000       999.000        -0.070
+
+
+           Normalized Residuals for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+               -0.503         1.142         0.877        -0.647         0.017
+
+
+           Normalized Residuals for Means
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+               -0.003        -0.027        -0.004
+
+
+           Model Estimated Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.787
+ SH_W2          0.315         0.945
+ SH_W3          0.278         0.369         1.157
+ SH_W4          0.241         0.404         0.731         1.433
+ FAMCON         0.138         0.128         0.109         0.089         0.835
+ ABUSE          0.184         0.156         0.098         0.041         0.195
+ SIBAGG         0.105         0.095         0.074         0.054         0.249
+ SHVICT         0.140         0.133         0.118         0.104         0.138
+
+
+           Model Estimated Covariances
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.583
+ SIBAGG         0.190         0.893
+ SHVICT         0.085         0.061         0.237
+
+
+           Model Estimated Correlations
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          1.000
+ SH_W2          0.365         1.000
+ SH_W3          0.291         0.353         1.000
+ SH_W4          0.227         0.347         0.568         1.000
+ FAMCON         0.170         0.144         0.111         0.082         1.000
+ ABUSE          0.272         0.210         0.120         0.045         0.279
+ SIBAGG         0.125         0.103         0.073         0.048         0.289
+ SHVICT         0.325         0.281         0.226         0.178         0.310
+
+
+           Model Estimated Correlations
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          1.000
+ SIBAGG         0.263         1.000
+ SHVICT         0.228         0.134         1.000
+
+
+           Residuals for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.022
+ SH_W2         -0.008        -0.038
+ SH_W3         -0.070         0.041        -0.006
+ SH_W4          0.057        -0.070         0.001        -0.014
+ FAMCON         0.011        -0.037         0.050        -0.017         0.000
+ ABUSE          0.009        -0.009        -0.026         0.008        -0.001
+ SIBAGG         0.022        -0.044        -0.002         0.010         0.001
+ SHVICT         0.025        -0.044        -0.020         0.026        -0.001
+
+
+           Residuals for Covariances
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.000
+ SIBAGG        -0.001         0.000
+ SHVICT         0.000         0.000         0.000
+
+
+           Residuals for Correlations
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.000
+ SH_W2         -0.007         0.000
+ SH_W3         -0.076         0.048         0.000
+ SH_W4          0.051        -0.053         0.005         0.000
+ FAMCON         0.011        -0.040         0.052        -0.015         0.000
+ ABUSE          0.009        -0.007        -0.031         0.009        -0.001
+ SIBAGG         0.024        -0.047        -0.002         0.009         0.001
+ SHVICT         0.053        -0.089        -0.038         0.046        -0.001
+
+
+           Residuals for Correlations
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.000
+ SIBAGG        -0.001         0.000
+ SHVICT         0.000         0.000         0.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.402
+ SH_W2        999.000        -0.910
+ SH_W3         -1.379         0.544        -0.163
+ SH_W4          0.943        -1.385         0.015       999.000
+ FAMCON       999.000        -3.459         0.904       999.000        -0.475
+ ABUSE        999.000        -0.279        -1.313         0.436        -0.141
+ SIBAGG         1.231       -12.457        -0.061         0.618         0.191
+ SHVICT         1.322        -5.319        -0.836         1.960       999.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE        999.000
+ SIBAGG       999.000       999.000
+ SHVICT       999.000         0.058        -0.155
+
+
+           Normalized Residuals for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.128
+ SH_W2         -0.139        -0.410
+ SH_W3         -1.154         0.470        -0.050
+ SH_W4          0.672        -0.842         0.005        -0.063
+ FAMCON         0.352        -1.332         0.815        -0.480        -0.006
+ ABUSE          0.172        -0.162        -0.633         0.171        -0.021
+ SIBAGG         0.616        -2.188        -0.036         0.117         0.016
+ SHVICT         0.915        -2.956        -0.721         0.766        -0.036
+
+
+           Normalized Residuals for Covariances
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE         -0.007
+ SIBAGG        -0.024         0.000
+ SHVICT        -0.002         0.006        -0.014
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED) FOR HIGH
+
+
+           Model Estimated Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.139         0.166         0.222         0.277         0.691
+
+
+           Model Estimated Means
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                0.344         0.299         0.221
+
+
+           Residuals for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.012        -0.016         0.022        -0.005         0.000
+
+
+           Residuals for Means
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           Standardized Residuals (z-scores) for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                3.275        -1.264         1.655        -0.244         0.018
+
+
+           Standardized Residuals (z-scores) for Means
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                0.010        -0.280        -0.149
+
+
+           Normalized Residuals for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.617        -0.799         0.933        -0.143         0.002
+
+
+           Normalized Residuals for Means
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                0.001        -0.003        -0.005
+
+
+           Model Estimated Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.312
+ SH_W2          0.107         0.272
+ SH_W3          0.103         0.101         0.447
+ SH_W4          0.099         0.098         0.096         0.506
+ FAMCON         0.033         0.033         0.034         0.034         0.701
+ ABUSE          0.057         0.050         0.036         0.023         0.184
+ SIBAGG         0.023         0.023         0.022         0.021         0.219
+ SHVICT         0.054         0.050         0.041         0.032         0.070
+
+
+           Model Estimated Covariances
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.448
+ SIBAGG         0.062         0.780
+ SHVICT         0.043         0.042         0.172
+
+
+           Model Estimated Correlations
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          1.000
+ SH_W2          0.366         1.000
+ SH_W3          0.275         0.291         1.000
+ SH_W4          0.248         0.264         0.202         1.000
+ FAMCON         0.071         0.076         0.060         0.057         1.000
+ ABUSE          0.154         0.145         0.081         0.047         0.329
+ SIBAGG         0.047         0.049         0.037         0.034         0.297
+ SHVICT         0.235         0.231         0.148         0.109         0.201
+
+
+           Model Estimated Correlations
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          1.000
+ SIBAGG         0.105         1.000
+ SHVICT         0.154         0.114         1.000
+
+
+           Residuals for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.007
+ SH_W2         -0.012        -0.013
+ SH_W3          0.068         0.012         0.042
+ SH_W4         -0.032        -0.011         0.006        -0.017
+ FAMCON         0.019        -0.023         0.013         0.005         0.000
+ ABUSE          0.010        -0.012         0.004         0.002         0.000
+ SIBAGG         0.005        -0.007         0.018        -0.005         0.000
+ SHVICT         0.011        -0.011        -0.005         0.013         0.000
+
+
+           Residuals for Covariances
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.000
+ SIBAGG         0.000         0.000
+ SHVICT         0.000         0.000         0.000
+
+
+           Residuals for Correlations
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.000
+ SH_W2         -0.035         0.000
+ SH_W3          0.158         0.029         0.000
+ SH_W4         -0.081        -0.020         0.006         0.000
+ FAMCON         0.040        -0.053         0.019         0.009         0.000
+ ABUSE          0.024        -0.032         0.005         0.006         0.000
+ SIBAGG         0.009        -0.014         0.027        -0.008        -0.001
+ SHVICT         0.046        -0.048        -0.023         0.046         0.001
+
+
+           Residuals for Correlations
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.000
+ SIBAGG         0.000         0.000
+ SHVICT         0.000         0.000         0.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.791
+ SH_W2         -0.719        -0.491
+ SH_W3          3.008         0.470         1.239
+ SH_W4         -1.337        -0.787         0.425       999.000
+ FAMCON         0.982        -4.560         0.885         0.257         0.441
+ ABUSE          5.489        -0.902         0.210         0.533       999.000
+ SIBAGG         0.649       999.000         1.071        -0.840       999.000
+ SHVICT         1.412        -1.977        -0.366         1.871       999.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE        999.000
+ SIBAGG        -0.081        -0.041
+ SHVICT       999.000       999.000         0.130
+
+
+           Normalized Residuals for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.141
+ SH_W2         -0.402        -0.234
+ SH_W3          2.138         0.357         0.582
+ SH_W4         -1.004        -0.433         0.219        -0.139
+ FAMCON         0.759        -1.807         0.544         0.122         0.007
+ ABUSE          0.403        -0.511         0.165         0.126         0.008
+ SIBAGG         0.274        -0.453         0.690        -0.218        -0.008
+ SHVICT         0.932        -1.233        -0.304         0.801         0.044
+
+
+           Normalized Residuals for Covariances
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.003
+ SIBAGG        -0.012        -0.001
+ SHVICT         0.009        -0.003         0.003
+
+
+MODEL MODIFICATION INDICES
+
+Minimum M.I. value for printing the modification index    10.000
+
+                                   M.I.     E.P.C.  Std E.P.C.  StdYX E.P.C.
+Group MODERATE
+
+
+No modification indices above the minimum value.
+
+Group HIGH
+
+
+ON Statements
+
+SH_W3    ON SH_W1                 10.871     0.183      0.183        0.153
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR MODERATE
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                  0             0             0
+
+
+           LAMBDA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           LAMBDA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1              0
+ SH_W2              0             0
+ SH_W3              0             0             0
+ SH_W4              0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           THETA
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE              0
+ SIBAGG             0             0
+ SHVICT             0             0             0
+
+
+           ALPHA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                  1             2             0             0             0
+
+
+           ALPHA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                  0             3             4             5             6
+
+
+           BETA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I                  0             0             0             0             0
+ S                  0             0             0             0             0
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           BETA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ I                  0             7             8             9            10
+ S                  0            11            12            13            14
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           PSI
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I                 15
+ S                 16            17
+ SH_W1              0             0            18
+ SH_W2              0             0             0            19
+ SH_W3              0             0             0             0            20
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           PSI
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4             21
+ FAMCON             0            22
+ ABUSE              0            23            24
+ SIBAGG             0            25            26            27
+ SHVICT             0            28            29            30            31
+
+
+     PARAMETER SPECIFICATION FOR HIGH
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                  0             0             0
+
+
+           LAMBDA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           LAMBDA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1              0
+ SH_W2              0             0
+ SH_W3              0             0             0
+ SH_W4              0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           THETA
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE              0
+ SIBAGG             0             0
+ SHVICT             0             0             0
+
+
+           ALPHA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                 32            33             0             0             0
+
+
+           ALPHA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                  0            34            35            36            37
+
+
+           BETA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I                  0             0             0             0             0
+ S                  0             0             0             0             0
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           BETA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ I                  0            38            39            40            41
+ S                  0            42            43            44            45
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           PSI
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I                 46
+ S                  0             0
+ SH_W1              0             0            47
+ SH_W2              0             0             0            48
+ SH_W3              0             0             0             0            49
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+
+
+           PSI
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4             50
+ FAMCON             0            51
+ ABUSE              0            52            53
+ SIBAGG             0            54            55            56
+ SHVICT             0            57            58            59            60
+
+
+     STARTING VALUES FOR MODERATE
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ SH_W1          0.000         0.000         1.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         1.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         1.000
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W1          0.000         0.000         0.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         0.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         0.000
+ SH_W4          1.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         1.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         1.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         1.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.000
+ SH_W2          0.000         0.000
+ SH_W3          0.000         0.000         0.000
+ SH_W4          0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.000
+ SIBAGG         0.000         0.000
+ SHVICT         0.000         0.000         0.000
+
+
+           ALPHA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                0.397         0.095         0.000         0.000         0.000
+
+
+           ALPHA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000         0.000
+ SH_W1          1.000         0.000         0.000         0.000         0.000
+ SH_W2          1.000         0.500         0.000         0.000         0.000
+ SH_W3          1.000         1.500         0.000         0.000         0.000
+ SH_W4          1.000         2.500         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000         0.000
+ SH_W1          0.000         0.000         0.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         0.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         0.000
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.762
+ S              0.000         0.834
+ SH_W1          0.000         0.000         0.405
+ SH_W2          0.000         0.000         0.000         0.454
+ SH_W3          0.000         0.000         0.000         0.000         0.567
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.690
+ FAMCON         0.000         0.417
+ ABUSE          0.000         0.000         0.289
+ SIBAGG         0.000         0.000         0.000         0.446
+ SHVICT         0.000         0.000         0.000         0.000         0.118
+
+
+     STARTING VALUES FOR HIGH
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ SH_W1          0.000         0.000         1.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         1.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         1.000
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W1          0.000         0.000         0.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         0.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         0.000
+ SH_W4          1.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         1.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         1.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         1.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.000
+ SH_W2          0.000         0.000
+ SH_W3          0.000         0.000         0.000
+ SH_W4          0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              ABUSE         SIBAGG        SHVICT
+              ________      ________      ________
+ ABUSE          0.000
+ SIBAGG         0.000         0.000
+ SHVICT         0.000         0.000         0.000
+
+
+           ALPHA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                0.397         0.095         0.000         0.000         0.000
+
+
+           ALPHA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000         0.000
+ SH_W1          1.000         0.000         0.000         0.000         0.000
+ SH_W2          1.000         0.500         0.000         0.000         0.000
+ SH_W3          1.000         1.500         0.000         0.000         0.000
+ SH_W4          1.000         2.500         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000         0.000
+ SH_W1          0.000         0.000         0.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         0.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         0.000
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.762
+ S              0.000         0.000
+ SH_W1          0.000         0.000         0.405
+ SH_W2          0.000         0.000         0.000         0.454
+ SH_W3          0.000         0.000         0.000         0.000         0.567
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.690
+ FAMCON         0.000         0.417
+ ABUSE          0.000         0.000         0.289
+ SIBAGG         0.000         0.000         0.000         0.446
+ SHVICT         0.000         0.000         0.000         0.000         0.118
+
+
+TECHNICAL 4 OUTPUT
+
+
+     ESTIMATES DERIVED FROM THE MODEL FOR MODERATE
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                0.368         0.098         0.368         0.417         0.515
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                0.612         0.932         0.465         0.400         0.381
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                0.046         0.031         0.046         0.036         0.034
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                0.055         0.061         0.035         0.025         0.029
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                8.022         3.141         8.022        11.522        15.037
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+               11.236        15.367        13.262        16.078        12.928
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                0.000         0.002         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.334
+ S             -0.037         0.145
+ SH_W1          0.334        -0.037         0.787
+ SH_W2          0.315         0.036         0.315         0.945
+ SH_W3          0.278         0.181         0.278         0.369         1.157
+ SH_W4          0.241         0.327         0.241         0.404         0.731
+ FAMCON         0.138        -0.020         0.138         0.128         0.109
+ ABUSE          0.184        -0.057         0.184         0.156         0.098
+ SIBAGG         0.105        -0.020         0.105         0.095         0.074
+ SHVICT         0.140        -0.015         0.140         0.133         0.118
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          1.433
+ FAMCON         0.089         0.835
+ ABUSE          0.041         0.195         0.583
+ SIBAGG         0.054         0.249         0.190         0.893
+ SHVICT         0.104         0.138         0.085         0.061         0.237
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.085
+ S              0.051         0.048
+ SH_W1          0.085         0.051         0.163
+ SH_W2          0.062         0.039         0.062         0.082
+ SH_W3          0.033         0.053         0.033         0.043         0.120
+ SH_W4          0.059         0.093         0.059         0.066         0.139
+ FAMCON         0.032         0.023         0.032         0.026         0.027
+ ABUSE          0.050         0.023         0.050         0.043         0.036
+ SIBAGG         0.031         0.041         0.031         0.020         0.042
+ SHVICT         0.020         0.019         0.020         0.012         0.014
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.237
+ FAMCON         0.043         0.065
+ ABUSE          0.041         0.033         0.057
+ SIBAGG         0.080         0.065         0.034         0.076
+ SHVICT         0.031         0.016         0.014         0.013         0.007
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              3.941
+ S             -0.730         3.053
+ SH_W1          3.941        -0.730         4.838
+ SH_W2          5.075         0.908         5.075        11.461
+ SH_W3          8.372         3.386         8.372         8.504         9.638
+ SH_W4          4.063         3.497         4.063         6.087         5.263
+ FAMCON         4.309        -0.852         4.309         4.998         4.077
+ ABUSE          3.650        -2.533         3.650         3.599         2.742
+ SIBAGG         3.429        -0.499         3.429         4.772         1.763
+ SHVICT         7.027        -0.771         7.027        10.732         8.286
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          6.037
+ FAMCON         2.095        12.787
+ ABUSE          0.982         5.936        10.158
+ SIBAGG         0.674         3.822         5.615        11.749
+ SHVICT         3.320         8.503         6.069         4.803        34.842
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.465         0.002
+ SH_W1          0.000         0.465         0.000
+ SH_W2          0.000         0.364         0.000         0.000
+ SH_W3          0.000         0.001         0.000         0.000         0.000
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.394         0.000         0.000         0.000
+ ABUSE          0.000         0.011         0.000         0.000         0.006
+ SIBAGG         0.001         0.618         0.001         0.000         0.078
+ SHVICT         0.000         0.441         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.000
+ FAMCON         0.036         0.000
+ ABUSE          0.326         0.000         0.000
+ SIBAGG         0.500         0.000         0.000         0.000
+ SHVICT         0.001         0.000         0.000         0.000         0.000
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              1.000
+ S             -0.168         1.000
+ SH_W1          0.651        -0.110         1.000
+ SH_W2          0.561         0.096         0.365         1.000
+ SH_W3          0.447         0.441         0.291         0.353         1.000
+ SH_W4          0.348         0.715         0.227         0.347         0.568
+ FAMCON         0.262        -0.056         0.170         0.144         0.111
+ ABUSE          0.418        -0.197         0.272         0.210         0.120
+ SIBAGG         0.192        -0.056         0.125         0.103         0.073
+ SHVICT         0.499        -0.079         0.325         0.281         0.226
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          1.000
+ FAMCON         0.082         1.000
+ ABUSE          0.045         0.279         1.000
+ SIBAGG         0.048         0.289         0.263         1.000
+ SHVICT         0.178         0.310         0.228         0.134         1.000
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.194         0.000
+ SH_W1          0.051         0.132         0.000
+ SH_W2          0.042         0.112         0.042         0.000
+ SH_W3          0.051         0.083         0.026         0.027         0.000
+ SH_W4          0.123         0.073         0.069         0.051         0.055
+ FAMCON         0.057         0.063         0.039         0.029         0.029
+ ABUSE          0.080         0.064         0.062         0.050         0.040
+ SIBAGG         0.044         0.109         0.033         0.023         0.041
+ SHVICT         0.036         0.101         0.027         0.027         0.021
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.000
+ FAMCON         0.039         0.000
+ ABUSE          0.045         0.044         0.000
+ SIBAGG         0.071         0.070         0.040         0.000
+ SHVICT         0.050         0.035         0.034         0.029         0.000
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I            999.000
+ S             -0.868       999.000
+ SH_W1         12.882        -0.831       999.000
+ SH_W2         13.392         0.859         8.728       999.000
+ SH_W3          8.727         5.303        11.413        13.167       999.000
+ SH_W4          2.827         9.827         3.284         6.864        10.327
+ FAMCON         4.578        -0.891         4.317         4.911         3.852
+ ABUSE          5.222        -3.090         4.418         4.198         2.992
+ SIBAGG         4.336        -0.514         3.807         4.530         1.806
+ SHVICT        13.912        -0.779        12.010        10.326        10.793
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4        999.000
+ FAMCON         2.074       999.000
+ ABUSE          0.983         6.349       999.000
+ SIBAGG         0.674         4.134         6.606       999.000
+ SHVICT         3.574         8.965         6.733         4.602       999.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.385         0.000
+ SH_W1          0.000         0.406         0.000
+ SH_W2          0.000         0.390         0.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         0.000
+ SH_W4          0.005         0.000         0.001         0.000         0.000
+ FAMCON         0.000         0.373         0.000         0.000         0.000
+ ABUSE          0.000         0.002         0.000         0.000         0.003
+ SIBAGG         0.000         0.607         0.000         0.000         0.071
+ SHVICT         0.000         0.436         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.000
+ FAMCON         0.038         0.000
+ ABUSE          0.326         0.000         0.000
+ SIBAGG         0.501         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+
+
+     ESTIMATES DERIVED FROM THE MODEL FOR HIGH
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                0.139         0.055         0.139         0.166         0.222
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                0.277         0.691         0.344         0.299         0.221
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                0.019         0.014         0.019         0.016         0.020
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                0.030         0.040         0.023         0.023         0.022
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                7.424         3.828         7.424        10.395        11.348
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                9.115        17.194        15.304        12.936        10.148
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.109
+ S             -0.004         0.001
+ SH_W1          0.109        -0.004         0.312
+ SH_W2          0.107        -0.004         0.107         0.272
+ SH_W3          0.103        -0.003         0.103         0.101         0.447
+ SH_W4          0.099        -0.002         0.099         0.098         0.096
+ FAMCON         0.033         0.000         0.033         0.033         0.034
+ ABUSE          0.057        -0.014         0.057         0.050         0.036
+ SIBAGG         0.023        -0.001         0.023         0.023         0.022
+ SHVICT         0.054        -0.009         0.054         0.050         0.041
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.506
+ FAMCON         0.034         0.701
+ ABUSE          0.023         0.184         0.448
+ SIBAGG         0.021         0.219         0.062         0.780
+ SHVICT         0.032         0.070         0.043         0.042         0.172
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.024
+ S              0.002         0.001
+ SH_W1          0.024         0.002         0.047
+ SH_W2          0.024         0.002         0.024         0.050
+ SH_W3          0.022         0.001         0.022         0.022         0.064
+ SH_W4          0.021         0.001         0.021         0.021         0.021
+ FAMCON         0.016         0.017         0.016         0.012         0.019
+ ABUSE          0.024         0.012         0.024         0.020         0.015
+ SIBAGG         0.015         0.007         0.015         0.016         0.019
+ SHVICT         0.009         0.008         0.009         0.007         0.009
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.135
+ FAMCON         0.034         0.058
+ ABUSE          0.019         0.021         0.025
+ SIBAGG         0.024         0.042         0.016         0.080
+ SHVICT         0.015         0.011         0.007         0.016         0.012
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              4.447
+ S             -1.786         1.101
+ SH_W1          4.447        -1.786         6.607
+ SH_W2          4.492        -1.901         4.492         5.411
+ SH_W3          4.569        -2.231         4.569         4.555         7.017
+ SH_W4          4.619        -2.243         4.619         4.569         4.464
+ FAMCON         2.053         0.016         2.053         2.829         1.809
+ ABUSE          2.377        -1.131         2.377         2.565         2.446
+ SIBAGG         1.514        -0.092         1.514         1.420         1.138
+ SHVICT         5.942        -1.158         5.942         6.981         4.789
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          3.747
+ FAMCON         0.997        12.008
+ ABUSE          1.180         8.733        18.113
+ SIBAGG         0.880         5.174         3.867         9.755
+ SHVICT         2.211         6.604         6.101         2.582        14.200
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.074         0.271
+ SH_W1          0.000         0.074         0.000
+ SH_W2          0.000         0.057         0.000         0.000
+ SH_W3          0.000         0.026         0.000         0.000         0.000
+ SH_W4          0.000         0.025         0.000         0.000         0.000
+ FAMCON         0.040         0.987         0.040         0.005         0.071
+ ABUSE          0.017         0.258         0.017         0.010         0.014
+ SIBAGG         0.130         0.927         0.130         0.156         0.255
+ SHVICT         0.000         0.247         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.000
+ FAMCON         0.319         0.000
+ ABUSE          0.238         0.000         0.000
+ SIBAGG         0.379         0.000         0.000         0.000
+ SHVICT         0.027         0.000         0.000         0.010         0.000
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              1.000
+ S             -0.413         1.000
+ SH_W1          0.590        -0.243         1.000
+ SH_W2          0.621        -0.232         0.366         1.000
+ SH_W3          0.466        -0.137         0.275         0.291         1.000
+ SH_W4          0.421        -0.087         0.248         0.264         0.202
+ FAMCON         0.120         0.011         0.071         0.076         0.060
+ ABUSE          0.260        -0.701         0.154         0.145         0.081
+ SIBAGG         0.079        -0.024         0.047         0.049         0.037
+ SHVICT         0.398        -0.717         0.235         0.231         0.148
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          1.000
+ FAMCON         0.057         1.000
+ ABUSE          0.047         0.329         1.000
+ SIBAGG         0.034         0.297         0.105         1.000
+ SHVICT         0.109         0.201         0.154         0.114         1.000
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.091         0.000
+ SH_W1          0.059         0.049         0.000
+ SH_W2          0.049         0.060         0.058         0.000
+ SH_W3          0.046         0.046         0.049         0.039         0.000
+ SH_W4          0.077         0.056         0.063         0.055         0.052
+ FAMCON         0.063         0.695         0.035         0.029         0.034
+ ABUSE          0.106         0.605         0.062         0.055         0.035
+ SIBAGG         0.051         0.270         0.030         0.031         0.034
+ SHVICT         0.061         0.532         0.035         0.027         0.036
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.000
+ FAMCON         0.051         0.000
+ ABUSE          0.036         0.036         0.000
+ SIBAGG         0.041         0.053         0.029         0.000
+ SHVICT         0.062         0.026         0.028         0.042         0.000
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I            999.000
+ S             -4.529       999.000
+ SH_W1         10.054        -4.922       999.000
+ SH_W2         12.557        -3.899         6.318       999.000
+ SH_W3         10.053        -2.947         5.623         7.398       999.000
+ SH_W4          5.488        -1.552         3.938         4.766         3.899
+ FAMCON         1.904         0.016         2.033         2.619         1.784
+ ABUSE          2.447        -1.159         2.479         2.629         2.322
+ SIBAGG         1.549        -0.089         1.568         1.572         1.101
+ SHVICT         6.527        -1.346         6.718         8.703         4.092
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4        999.000
+ FAMCON         1.109       999.000
+ ABUSE          1.325         9.203       999.000
+ SIBAGG         0.841         5.643         3.664       999.000
+ SHVICT         1.772         7.592         5.604         2.698       999.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             SH_W1         SH_W2         SH_W3
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.000         0.000
+ SH_W1          0.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         0.000
+ SH_W3          0.000         0.003         0.000         0.000         0.000
+ SH_W4          0.000         0.121         0.000         0.000         0.000
+ FAMCON         0.057         0.987         0.042         0.009         0.074
+ ABUSE          0.014         0.246         0.013         0.009         0.020
+ SIBAGG         0.121         0.929         0.117         0.116         0.271
+ SHVICT         0.000         0.178         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SH_W4         FAMCON        ABUSE         SIBAGG        SHVICT
+              ________      ________      ________      ________      ________
+ SH_W4          0.000
+ FAMCON         0.268         0.000
+ ABUSE          0.185         0.000         0.000
+ SIBAGG         0.400         0.000         0.000         0.000
+ SHVICT         0.076         0.000         0.000         0.007         0.000
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    c:\users\kylenick\onedrive - university of north carolina at chapel hill\dorothy\ipa\paper_1_ace_sv\mplus files\hhe\
+
+     Beginning Time:  08:39:16
+        Ending Time:  08:39:16
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen

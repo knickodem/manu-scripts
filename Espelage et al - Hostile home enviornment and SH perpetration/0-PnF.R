@@ -465,8 +465,8 @@ get_relis <- function(object, wave){
   relis <- suppressWarnings(semTools::reliability(object))
   
   df <- data.frame(wave = wave,
-                   alpha = relis[[1]],
-                   omega = relis[[4]])
+                   alpha = relis[[2]],
+                   omega = relis[[5]])
   return(df)
 }
 
@@ -525,7 +525,7 @@ mi_wrapper <- function(model, data, items, fnames,
                        auto = "all",
                        group = NULL,
                        group.equal = "",
-                       ordered = unlist(items),
+                       ordered = unlist(items, use.names = FALSE),
                        parameterization = "theta",
                        meanstructure = TRUE,
                        mimic = "Mplus",
@@ -591,7 +591,7 @@ compare_mods <- function(mod0, mod1){
   ind1 <- get_lavaan_fits(mod1, measures = c("cfi", "rmsea", "srmr"))
   ind.diff <- ind1 - ind0
   
-  mi.com <- format(round(cbind(aov01, ind.diff[2:4]), 2), nsmall = 2)
+  mi.com <- format(round(cbind(aov01, ind.diff[2:4]), 3), nsmall = 3)
   row.names(mi.com) <- NULL
   names(mi.com) <- c("delta.chisq", "delta.df", "delta.pvalue", "delta.cfi", "delta.rmsea", "delta.srmr")
   
@@ -717,7 +717,7 @@ predict_growth <- function(object, lavaan = TRUE){
     object %>%
       filter(paramHeader == "Means") %>%
       mutate(interim = est - low2.5) %>%
-      select(outcome, Group, param, est, interim) %>%
+      select(Group, param, est, interim) %>%
       gather(variable, value, est, interim) %>%
       unite(col = "temp", param, variable) %>%
       spread(temp, value) %>%
@@ -765,6 +765,7 @@ mplus_fit <- function(object, digits = 2, format = TRUE){
     mutate(rmsea.ci =  paste0("[", format(round(RMSEA_90CI_LB, digits), nsmall = digits),
                               ", ", format(round(RMSEA_90CI_UB, digits), nsmall = digits), "]")) %>%
     select(ntotal:rmsea, rmsea.ci, srmr)
+  
   if(format == TRUE){
     fit <- fit %>%
       mutate(across(c(chisq, pvalue, cfi, rmsea, srmr), ~format(round(.x, digits), nsmall = digits)))
@@ -813,6 +814,21 @@ mplus_est <- function(object, params = "all",
   return(est)
 }
 
+
+## Extracts random effect and R2 for intercept and slope factor
+mplus_rer2 <- function(object){
+  rer2 <- mplus_est(object, std = "unstandardized", params = "Residual.Variances",
+                    digits = 2, combine = TRUE, ci = FALSE) %>%
+    bind_rows(object$parameters$r2 %>%
+                mutate(estimate = paste0(format(round(est, 2), nsmall = 2),
+                                         " (", format(round(se, 2), nsmall = 2), ")"))) %>%
+    filter(param %in% c("I", "S")) %>%
+    mutate(predictor = c(rep("Variance", 2), rep("R2", 2)) %>% forcats::as_factor()) %>%
+    select(predictor, param, estimate) %>%
+    spread(param, estimate)
+  return(rer2)
+}
+
 mplus_sb2001 <- function(m0, m1, digits = 2){
   
   # https://statmodel.com/chidiff.shtml
@@ -844,18 +860,15 @@ mplus_sb2001 <- function(m0, m1, digits = 2){
   return(out)
 }
 
+
 format_mplus <- function(object, recodes, outcomes,
                          std = c("unstandardized", "stdyx.standardized", "stdy.standardized"),
                          reg = TRUE, r2 = TRUE, digits = 2){
-  
-  fit <- map_dfr(.x = object, ~.x$summaries %>%
-                   select(ntotal = Observations, npar = Parameters, chisq = ChiSqM_Value, df = ChiSqM_DF, pvalue = ChiSqM_PValue,
-                          cfi = CFI, rmsea = RMSEA_Estimate, RMSEA_90CI_LB, RMSEA_90CI_UB, srmr = SRMR), .id = "Outcome") %>%
-    mutate(rmsea.ci =  paste0("[", format(round(RMSEA_90CI_LB, digits), nsmall = digits),
-                              ", ", format(round(RMSEA_90CI_UB, digits), nsmall = digits), "]"),
-           Outcome = outcomes) %>%
-    select(Outcome, ntotal:rmsea, rmsea.ci, srmr) %>%
-    mutate(across(c(chisq, pvalue, cfi, rmsea, srmr), ~format(round(.x, digits), nsmall = digits)))
+
+  fit <- map_dfr(.x = object,
+                 ~mplus_fit(.x, digits = 2, format = TRUE)) %>%
+    mutate(Outcome = outcomes) %>%
+    select(Outcome, everything())
   
   if(reg == TRUE){
   estimates <- map(.x = object, ~.x$parameters[[std]] %>%
@@ -917,6 +930,8 @@ format_mplus <- function(object, recodes, outcomes,
 #### Interaction functions are not at all generalizable; very project specific ####
 intx_dat_shortcut <- function(object, std = "unstandardized", grades = TRUE){
   
+  # Calculates the mean and Mean +1 SD (High) value of each hostile home environment variable
+  # Creates 3 (high, mean, none) x 3 (abuse, famcon, sibagg) dataframe
   acevals <- object %>%
     mplus_est(params = c("Means", "Variances"), std = std, digits = 3) %>%
     filter(param %in% c("FAMCON", "ABUSE", "SIBAGG")) %>%
@@ -928,6 +943,7 @@ intx_dat_shortcut <- function(object, std = "unstandardized", grades = TRUE){
     gather(Level, value, -param) %>%
     spread(param, value)
   
+  # binds parameter estimates of main effects and interaction effects onto acevals
   aceparam <- object %>%
     mplus_est(params = c("ON", "Intercepts"), std = std, digits = 3) %>%
     filter(str_detect(paramHeader, "\\.ON")|(paramHeader == "Intercepts" & param %in% c("I", "S"))) %>%
@@ -936,6 +952,7 @@ intx_dat_shortcut <- function(object, std = "unstandardized", grades = TRUE){
     bind_rows(replicate(nrow(acevals) - 1, ., simplify = FALSE)) %>%
     bind_cols(acevals, .)
   
+  # calculates predicted intercept and slope for each HSB by hostile home environment value
   hsb.vals = c(1,0)
   hsb <- bind_rows(replicate(length(hsb.vals), aceparam, simplify = FALSE)) %>%
     bind_cols(., data.frame(HSB = rep(hsb.vals, each = 3))) %>%
@@ -951,17 +968,21 @@ intx_dat_shortcut <- function(object, std = "unstandardized", grades = TRUE){
            S.Sibling_Aggression = Intercepts_S + S.ON_SIBAGG*SIBAGG + S.ON_SCHBEL*HSB + S.ON_SBXSA*SAx)
   
   if(grades == TRUE){
-  ag.vals <- object %>%
-    mplus_est(params = c("Means", "Variances"), std = "unstandardized", digits = 3) %>%
-    filter(param %in% c("GRADES")) %>%
-    select(paramHeader, param, est) %>%
-    spread(paramHeader, est) %>%
-    mutate(High = 6,
-           Low = Means - sqrt(Variances)) %>%
-    select(-Variances) %>%
-    gather(Grade_Cat, value, -param) %>%
-    spread(param, value)
+  # ag.vals <- object %>%
+  #   mplus_est(params = c("Means", "Variances"), std = "unstandardized", digits = 3) %>%
+  #   filter(param %in% c("GRADES")) %>%
+  #   select(paramHeader, param, est) %>%
+  #   spread(paramHeader, est) %>%
+  #   mutate(High = 6,
+  #          Low = Means - sqrt(Variances)) %>%
+  #   select(-Variances) %>%
+  #   gather(Grade_Cat, value, -param) %>%
+  #   spread(param, value)
+  # 
+  ag.vals <- data.frame(Grade_Cat = c("Mostly A's (90-100)", "Mostly B's (80-84)", "Mostly C's (70-74)"),
+                        GRADES = c(6, 4, 2))
   
+  # calculates predicted intercept and slope for each academic grade by hostile home environment value
   ag <- bind_rows(replicate(nrow(ag.vals), aceparam, simplify = FALSE)) %>%
     bind_cols(., uncount(mutate(ag.vals, n = nrow(aceparam)), n)) %>%
     mutate(Level = recode(Level, Means = "Mean"),
@@ -1028,3 +1049,4 @@ su_items <- c("BEER","WINE","CIGARETTE","DRUNK","LIQUOR","CANNABIS","INHALANT","
 
 ## Moderators
 schb_items <- paste0("SCH_BEL", c(1:4)) # School Belonging; Note: item 5 dropped after W1
+vict_items <- paste0("LT_SH_VICT", c(1:4, 6,7))

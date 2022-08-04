@@ -12,7 +12,6 @@ load("Output/SS_Data_For_Analysis.RData")
 load("Output/MI_For_Analysis.RData")
 
 
-
 #### How many participants do not have a sibling? ####
 sibagg <- sswidewfs %>% select(starts_with("SIB_AGG")) %>% names()
 sibscore <- scale_score(sswidewfs, items = sibagg, type = "mean", min.valid = NULL)
@@ -20,8 +19,7 @@ sibscore <- scale_score(sswidewfs, items = sibagg, type = "mean", min.valid = NU
 table(is.na(sibscore), sswide$Took_Survey1, useNA = "always")
 51/1563
 
-
-
+## Mean age of the sample
 as_factor(sswide$AGE_W1) %>% str_remove(., " years") %>%
   as.numeric() %>% skimr::skim()
 
@@ -199,11 +197,12 @@ sh.highschb.spaghetti <- sslong %>%
 #   group_by(High_Belong, Wave) %>%
 #   summarize(SD = sd(sh_scale, na.rm = TRUE))
 
+
 #############################################################################
 
 # --------------- Creating Mplus data files -------------------------------
 mpluswide <- sswidewfs %>%
-  select(subjno, School = SCHOOL_ID_W1, Gender:OtherR, High_Belong, Age = AGE_W1, Grades = GRADES_W1,
+  select(subjno, School = SCHOOL_ID_W1, Gender:OtherR, SH_Victim, High_Belong, Age = AGE_W1, Grades = GRADES_W1,
          Family_Conflict:sh_scale_W4) %>%  #sh1:schb4 to include factor scores
   rename(FamCon = Family_Conflict, SibAgg = Sibling_Aggression, SchBel = High_Belong) %>%
   rename_with(~str_replace_all(., "_scale_W", "_w")) %>%
@@ -215,24 +214,24 @@ mpluswide <- sswidewfs %>%
 names(mpluswide) # must match names in mplus input files
 map_dbl(.x = names(mpluswide), ~colSums(is.na(mpluswide[, .x]))) # NAs have been replaced
 
-# ## Exporting files
+## Exporting files
 # write.table(mpluswide, file = "mplus files/mpluswide.csv", row.names = FALSE, col.names = FALSE, sep = ",")
 # write.table(mpluswide, file = "mplus files/mpluswide_colnames.csv", row.names = FALSE, col.names = TRUE, sep = ",")
 
 # Gender
-# mpluswide %>%
-#   filter(Female == 1) %>%
-#   write.table(., file = "mplus files/mpluswide_female.csv", row.names = FALSE, col.names = FALSE, sep = ",")
+mpluswide %>%
+  filter(Female == 0) %>%
+  write.table(., file = "mplus files/mpluswide_male.csv", row.names = FALSE, col.names = FALSE, sep = ",")
 
 # Race
-# mpluswide %>%
-#   filter(Race4 == 4) %>%
-#   write.table(., file = "mplus files/mpluswide_otherrace.csv", row.names = FALSE, col.names = FALSE, sep = ",")
+mpluswide %>%
+  filter(Race4 == 3) %>%
+  write.table(., file = "mplus files/mpluswide_white.csv", row.names = FALSE, col.names = FALSE, sep = ",")
 
 # School Belonging
-# mpluswide %>%
-#   filter(SchBel == 1) %>%
-#   write.table(., file = "mplus files/mpluswide_highschbel.csv", row.names = FALSE, col.names = FALSE, sep = ",")
+mpluswide %>%
+  filter(SchBel == 0) %>%
+  write.table(., file = "mplus files/mpluswide_modschbel.csv", row.names = FALSE, col.names = FALSE, sep = ",")
 
 
 #### Checking new export with previous ones ####
@@ -282,7 +281,7 @@ all_icc <- map2_dfr(.x = c("dep", "emp", "del", "schb", "sh"),
 ## variables in the intended order
 raw.corrder <- sswidewfs %>%
   select(sh_scale_W1:sh_scale_W4, #del_scale_W1:del_scale_W4,dep_scale_W1:dep_scale_W4,
-         Family_Conflict, Abuse, Sibling_Aggression, emp_scale_W1,
+         Family_Conflict, Abuse, Sibling_Aggression, SH_Victim,
          Female, Black, White, OtherR, High_Belong, GRADES_W1) %>% names()
 
 ## shortcut for recoding
@@ -333,7 +332,7 @@ raw.corrs.table <- bind_rows(data.frame(column = "Sexual Harassment W1", top = 1
 
 # ---- Variable Descriptive Statistics ----
 # adding skewness and kurtosis functions
-sk <- skim_with(numeric = sfl(skew = ~parameters::skewness(x=.)[[1]], kurtosis = ~parameters::kurtosis(x=.)[[1]]))
+sk <- skim_with(numeric = sfl(skew = ~datawizard::skewness(x=.)[[1]], kurtosis = ~datawizard::kurtosis(x=.)[[1]]))
 
 ## raw scale scores
 raw.skimmed <- sk(sswidewfs, all_of(raw.corrder)) %>%
@@ -354,6 +353,59 @@ raw.tab1 <- bind_rows(raw.corrs.table,
 # save_as_docx(raw.tab1.flex, path = "table1.docx")
 
 
+# ---- SH Base Rates -------------
+
+#### Prevalence (% perpetrators) ####
+
+## Prevalance overall (i.e. % of students with score > 0)
+lapply(paste0("sh_scale_W", 1:4), function(x) prop.table(table(sswidewfs[[x]] > 0, useNA = "no")))
+
+
+## by Group
+library(gtsummary)
+tab.dat <- sswidewfs %>%
+  mutate(Gender = if_else(Gender == 1, "Girl", "Boy"),
+         School_Belonging = if_else(High_Belong == 1, "High", "Moderate")) %>%
+  mutate(across(sh_scale_W1:sh_scale_W4, ~if_else(. > 0, 1, 0), .names = "{col}_di"))
+
+sh.base.tabs <- purrr::map(.x = c("Race4", "Gender", "School_Belonging"),
+                           ~tbl_summary(data = tab.dat, by = .x, include = sh_scale_W1_di:sh_scale_W4_di,
+                                        # statistic = list(all_continuous() ~ "{mean} ({sd})"),
+                                        missing = "no") %>%
+                             add_p() %>%
+                             add_q() %>%
+                             as_flex_table()) %>%
+  set_names(c("Race", "Gender", "School_Belonging"))
+sh.base.tabs$Overall <- tbl_summary(data = tab.dat, include = sh_scale_W1_di:sh_scale_W4_di,
+                                    missing = "always") %>%
+  as_flex_table()
+
+
+sh.base.n <- purrr::map(.x = c("Race4", "Gender", "School_Belonging"),
+                           ~tbl_summary(data = tab.dat, by = .x, include = sh_scale_W1_di:sh_scale_W4_di,
+                                        statistic = list(all_categorical() ~ "{N_nonmiss}"),
+                                        missing = "always") %>%
+                             as_flex_table()) %>%
+  set_names(c("Race", "Gender", "School_Belonging"))
+
+#### Score Frequency Distribution ####
+## Overall
+sh.dist.tab <- purrr::map(.x = paste0("sh_scale_W", 1:4),
+                          ~FreqProp(sswidewfs[[.x]], useNA = "always", varnames = "Score") %>%
+                            mutate(Score = round(as.numeric(as.character(Score)), 2))) %>%
+  reduce(left_join, by = "Score")
+names(sh.dist.tab) <- c("Score", paste(rep(c("n", "Percent"), times = 3), rep(1:4, each = 2), sep = "_W"))
+
+## by group
+sh.range.tabs <- purrr::map(.x = c("Race4", "Gender", "School_Belonging"),
+                           ~tbl_summary(data = tab.dat, by = .x, include = sh_scale_W1:sh_scale_W4,
+                                        # statistic = list(all_continuous() ~ "{min} ({max})"),
+                                        missing = "no") %>%
+                             as_flex_table()) %>%
+  set_names(c("Race", "Gender", "School_Belonging"))
+
+
+
 # ---- Hostile Home Scale Distribution ---------------
 ## Plot
 hh.dist.plot <- purrr::map2(.x = c("Family_Conflict", "Abuse", "Sibling_Aggression"),
@@ -371,6 +423,7 @@ hh.dist.tab <- purrr::map(.x = c("Family_Conflict", "Abuse", "Sibling_Aggression
 
 #### Saving Output ####
 save(all_icc, hh.dist.plot, hh.dist.tab,
+     sh.base.tabs, sh.base.n, sh.range.tabs,
      raw.corrder, raw.corrs, raw.corrs.table,
      kwide, wss_plot, silhouette_plot, gapstat_plot,
      kbelong, kmean_plot, kpods, kpod_plot, kclus, kmedoid_plot,
@@ -379,10 +432,11 @@ save(all_icc, hh.dist.plot, hh.dist.tab,
      raw.tab1, del.spaghetti, sh.highschb.spaghetti,
      file = "Output/Table_1_Info.RData")
 
-load("Output/Table_1_Info.RData")
+# load("Output/Table_1_Info.RData")
 
 save(sswide, sslong, sswidewfs,
      file = "Output/SS_Data_For_Analysis_wFS.RData")
+# load("Output/SS_Data_For_Analysis_wFS.RData")
 
 #####################################################
 

@@ -22,6 +22,7 @@ sswide <- sswide.orig %>%
          starts_with("ABUSE"), starts_with("FAM_VIOL"), starts_with("SIB_AGG"),
          starts_with("DEPRESSION"), starts_with("EMPATHY"), contains(su_items),
          starts_with("DELINQ"), starts_with("SCH_BEL"), contains("SH_PERP"),
+         starts_with("LT_SH_VICT"),
          -starts_with("School_W"), -starts_with("CYBER")) %>%
   filter(TX_COND_W1 == 0)
 
@@ -32,7 +33,9 @@ sswide <- sswide %>%
          Black = ifelse(Race4 == "Black", 1, 0),
          Hispanic = ifelse(Race4 == "Hispanic", 1, 0),
          White = ifelse(Race4 == "White", 1, 0),
-         OtherR = ifelse(Race4 == "Other", 1, 0)) %>%
+         OtherR = ifelse(Race4 == "Other", 1, 0),
+         SH_Victim_count = scale_score(., paste0(vict_items, "_W1"), "sum"),
+         SH_Victim = ifelse(SH_Victim_count > 0, 1, 0)) %>%
   mutate(across(contains("GRADES"), ~na_if(.x, 8))) %>% # "Not sure" to NA
   mutate(across(contains("GRADES"), ~max(., na.rm = TRUE) - .)) # reverse scoring so Mostly D's and F's = 0, Mostly A's = 6
 
@@ -52,7 +55,7 @@ sslong <- sslong.orig %>%
          all_of(c(ab_items, fv_items, sib_items, dep_items, emp_items, su_items,
                 del_items, schb_items, w1sh_items, sh_items))) %>%
   filter(subjno %in% sswide$subjno) %>%
-  left_join(select(sswide, subjno, Race4:OtherR), by = "subjno") %>% # adding the time-invariant demographic dummy variables
+  left_join(select(sswide, subjno, Race4:SH_Victim), by = "subjno") %>% # adding the time-invariant demographic dummy variables
   mutate(GRADES = na_if(GRADES, 8),                    # "Not sure" to NA
          GRADES = max(GRADES, na.rm = TRUE) - GRADES)  # reverse scoring so Mostly D's and F's = 0, Mostly A's = 6
   
@@ -318,7 +321,7 @@ sswide <- sswide %>%
 
 #### Investigating attrition patterns ####
 attritiondata <- sswide %>%
-  select(subjno, Gender, Race, Race4:OtherR, Family_Conflict, Abuse, Sibling_Aggression,
+  select(subjno, Gender, Race, Race4:OtherR, SH_Victim, Family_Conflict, Abuse, Sibling_Aggression,
          starts_with("Took"), ends_with("_W1")) %>%
   nabular(only_miss = TRUE) # creates dichotomous indicators of missingness for all variables with missingness
 
@@ -336,7 +339,7 @@ onewaveIDs <- surveypattern[surveypattern$Num_Surveys < 2,]$subjno
 ## predicting later attrition with W1 variables
 # gathering wave 1 predictors
 attrition.preds <- attritiondata %>%
-  select(Female, Black:OtherR, AGE_W1, GRADES_W1:DAD_EDU_W1,                               # Demographics
+  select(Female, Black:OtherR, SH_Victim, AGE_W1, GRADES_W1:DAD_EDU_W1,         # Demographics
          Family_Conflict, Abuse, Sibling_Aggression, del_scale_W1:su_scale_W1,  # scale scores
          -White) %>%                                                            # reference group
   names()
@@ -404,3 +407,5 @@ save(sswide, sslong,
 
 save(sswide, sslong,
      file = "Output/SS_Data_For_Analysis.RData")
+
+# load("Output/SS_Data_Prep.RData")

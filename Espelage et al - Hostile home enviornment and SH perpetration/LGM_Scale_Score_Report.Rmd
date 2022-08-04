@@ -19,16 +19,17 @@ library(dplyr)
 
 
 load("../Output/Scale_Score_LGM_Results.RData")
+load("../Output/Table_1_Info.RData")
 
 
-format_flex <- function(df, bold = TRUE, digits = 2){
+format_flex <- function(df, bold = TRUE, digits = 2, width = 8){
   
   numericcols <- which(unlist(lapply(df, is.numeric)))
   
   ftab <- flextable(df)
   ftab <- colformat_double(ftab, j = numericcols, digits = digits)
   ftab <- flextable::font(ftab, fontname = "Times New Roman", part = "all")
-  ftab <- flextable::padding(ftab, padding = 3, part = "all")
+  ftab <- flextable::padding(ftab, padding = 1, part = "all")
   
   if(bold == TRUE){
   ftab <- bold(ftab, i = ~ pvalue < .05, part =  "body")
@@ -36,7 +37,7 @@ format_flex <- function(df, bold = TRUE, digits = 2){
   }
   
   ftab <- autofit(ftab)
-  ftab <- fit_to_width(ftab, 8)
+  ftab <- fit_to_width(ftab, width)
   
   return(ftab)
 }
@@ -52,7 +53,7 @@ two_level_flex <- function(flex, mapping, vert.cols, border){
   # flex <- flextable::theme_vanilla(flex)
   flex <- flextable::align(flex, align = "center", part = "all")
   flex <- flextable::font(flex, fontname = "Times New Roman", part = "all")
-  flex <- flextable::padding(flex, padding = 3, part = "all")
+  flex <- flextable::padding(flex, padding = 1, part = "all")
   flex <- flextable::autofit(flex)
 }
 
@@ -62,15 +63,27 @@ border <- officer::fp_border(width = 2) # manual horizontal flextable border wid
 
 # Methods
 
-Raw scale scores were calculated as the mean item score for Depression and Delinquency and as the sum of the dichotomous items for Sexual Harassment. A student must have answered 3 or more items in the scale to receive a scale score. Descriptive statistics and correlations between the scale scores at each wave are in Table 1.
+Raw scale scores were calculated as the sum of the dichotomous items for Sexual Harassment. A student must have answered 3 or more items in the scale to receive a scale score. Descriptive statistics and correlations between the scale scores at each wave are in Table 1.
 
-The latent growth model was specified by loading the scale score at each wave onto an intercept and slope factor. The models were estimated with both Mplus and the lavaan package in R using a robust maximum likelihood estimator with cluster robust standard errors accounting for the nesting structure of students within schools. Missing data was handled using full information maximum likelihood.
+The latent growth model was specified by loading the scale score at each wave onto an intercept and slope factor. We also tested the utility of a quadratic factor. The models were run Mplus using a robust maximum likelihood estimator with cluster robust standard errors accounting for the nesting structure of students within schools. Missing data was handled using full information maximum likelihood.
 
-Multigroup analyses by gender, race, and school belonging were then run on the latent growth models for each outcome to examine differences in the parameter estimates. Prior to the multigroup analysis, the latent growth model for each outcome was fit separately to each group. Then, for a given variable (e.g., gender) and outcome (e.g., sexual harassment), the latent growth model was fit with the parameter estimates free to vary between the groups. A second model was then fit constraining the parameter estimates to equality. The models were compared using a likelihood ratio test with the Satorra and Bentler (2001) scaled difference test statistic and change in fit indices (i.e., CFI, RMSEA, and SRMR). When the model with equality constraints fits as well as the freely estimated model, the groups have statistically similar intercepts and slopes.
+Multigroup analyses by gender, race, and school belonging were then run on the latent growth models for each outcome to examine differences in the parameter estimates. Prior to the multigroup analysis, the latent growth model for each outcome was fit separately to each group. Then, for a given variable (e.g., gender), the latent growth model was fit with the parameter estimate equality between groups tested using a Wald test.
 
 Lastly, Wave 1 variables were added to the model as intercept and slope predictors. When the multigroup analysis indicated groups had different intercepts and slopes, the model with predictors was fit separately to each group.
 
 # Results
+
+**Table 1.**
+
+*Correlations and Descriptive Statistics*
+
+```{r table1}
+tab1.flex <- format_flex(raw.tab1, bold = FALSE, width = 10)
+knit_print(tab1.flex)
+```
+*Note.* SH = Sexual Harassment. \**p* < .05
+
+
 
 ## Latent Growth Model - Full Sample
 
@@ -86,269 +99,265 @@ cat("*Note.* Cluster robust standard errors are in the parentheses (). \\**p* < 
 cat("\n\n")
 ```
  
-**Summary**
-
- - Each outcome is adequately estimated by the latent growth model
- - At baseline, students report perpetrating an average of .88 delinquent behaviors and .23 sexual harassment behaviors. The mean student response across the 8 depression items was 1.10 indicating they "not often" felt depressive symptoms.
- - All three outcomes increased significantly over time
- - There was also significant variation across students in both the baseline rates and changes over time
 
 ## LGM Stratified by Group
 
-```{r lgm strat}
-
-for(i in 1:length(lgm.ss.strat.results$Fit)){
-  cat("###", names(lgm.ss.strat.results$Fit)[[i]])
-  cat("\n\n")
+```{r lgm_strat}
   cat("**Model Fit**")
   cat("\n\n")
-  format_flex(lgm.ss.strat.results$Fit[[i]], bold = FALSE) %>% knit_print() %>% cat()
+  format_flex(lgm.strat.results$Fit, bold = FALSE) %>% knit_print()
   cat("\n\n")
   cat("**Unstandardized Parameter Estimates**")
   cat("\n\n")
-  format_flex(lgm.ss.strat.results$Estimates[[i]], bold = FALSE) %>% knit_print() %>% cat()
+  format_flex(lgm.strat.results$Estimates, bold = FALSE) %>% knit_print()
   cat("\n\n")
-}
 ```
  
 **Summary**
 
- - Sexual Harassment
    - There was little to no variation in Sexual Harassment perpetration slopes for students with high school belonging nor for other racial students. To improve model convergence the slope variance (and therefore also the intercept and slope covariance) was constrained to 0.
    - With the exception of Hispanic students, SH perpetration increased significantly over time.
    - Students with moderate school belonging reported the highest average baseline rate and slope
- - Depression
-   - Overall model fit was adequate for all groups expect other race students.
-   - Students with moderate school belonging reported the highest average baseline rate while female students had the largest average slope.
- - Delinquency
-   - Model fit is suspect for Hispanic, White, and students with moderate school belonging
+   
+## SH Perpetration predicted by HHE
+
+**Table 2**
+
+*Unstandardized Estimates from Latent Growth Model of Sexual Harassment Perpetration (n = `r hhe.results$Fit$ntotal`)*
+
+```{r}
+format_flex(hhe.results$Estimates, bold = FALSE) %>% knit_print()
+```
+
+*Note.* Parentheses contain cluster robust standard errors. Model fit was X2 (`r hhe.results$Fit$df`) = `r hhe.results$Fit$chisq`, *p* = `r hhe.results$Fit$pvalue`; *CFI* = `r hhe.results$Fit$cfi`; *RMSEA* = `r hhe.results$Fit$rmsea` `r hhe.results$Fit$rmsea.ci`; *SRMR* = `r hhe.results$Fit$srmr`. \**p* < .05, \*\**p* < .01
+
+*Standardized Estimates from Latent Growth Model of Sexual Harassment Perpetration (n = `r hhe.results$Fit$ntotal`)*
+
+```{r}
+format_flex(hhe.results$Std.Estimates, bold = FALSE) %>% knit_print()
+```
+
+*Note.* Parentheses contain cluster robust standard errors. Model fit was X2 (`r hhe.results$Fit$df`) = `r hhe.results$Fit$chisq`, *p* = `r hhe.results$Fit$pvalue`; *CFI* = `r hhe.results$Fit$cfi`; *RMSEA* = `r hhe.results$Fit$rmsea` `r hhe.results$Fit$rmsea.ci`; *SRMR* = `r hhe.results$Fit$srmr`. \**p* < .05, \*\**p* < .01
+
+
 
 ## Multigroup Analysis
 
-### Gender
+### Sex
 
-```{r gen.descrips, fig.height=6, fig.width=8}
-cat("**Score Distribution by Wave**")
-cat("\n\n")
-print(gen.ss.mplus.results$Distribution_Plot)
-cat("\n\n")
-```
- 
+See Mplus files for n's by group.
 
-```{r gen, fig.height=4, fig.width=11}
-cat("**Model Fit**")
-cat("\n\n")
-format_flex(gen.ss.mplus.results$Model_Comparison, bold = FALSE) %>% knit_print()
-cat("\n\n")
-cat("**Freely Estimated Unstandardized Growth Parameters**")
-cat("\n\n")
-format_flex(gen.ss.mplus.results$Estimate_Table, bold = FALSE) %>% knit_print()
-cat("*Note.* Cluster robust standard errors are in the parentheses (). \\**p* < .05")
-cat("\n\n")
-cat("**Growth Curve Across 4 Waves**")
-cat("\n\n")
-print(gen.ss.mplus.results$Estimate_Plot)
-```
- 
+**Table 3**
 
-### Race
+*Multigroup Analysis of Sexual Harassment Perpetration on Hostile Home Environment by Sex*
 
-```{r race.descrips, fig.height=6, fig.width=8}
-cat("**Score Distribution by Wave**")
-cat("\n\n")
-print(race.ss.mplus.results$Distribution_Plot)
-cat("\n\n")
-```
- 
-
-```{r race, fig.height=4, fig.width=11}
-cat("**Model Fit**")
-cat("\n\n")
-format_flex(race.ss.mplus.results$Model_Comparison, bold = FALSE) %>% knit_print()
-cat("\n\n")
-cat("**Freely Estimated Unstandardized Growth Parameters**")
-cat("\n\n")
-format_flex(race.ss.results$Estimate_Table, bold = FALSE) %>% knit_print()
-cat("*Note.* Cluster robust standard errors are in the parentheses (). \\**p* < .05")
-cat("\n\n")
-cat("**Growth Curve Across 4 Waves**")
-cat("\n\n")
-print(race.ss.mplus.results$Estimate_Plot)
-```
- 
- 
-### School Belonging
-
-```{r bel.descrips, fig.height=6, fig.width=8}
-cat("**Score Distribution by Wave**")
-cat("\n\n")
-print(bel.ss.mplus.results$Distribution_Plot)
-cat("\n\n")
-```
- 
-
-```{r bel, fig.height=4, fig.width=11}
-cat("**Model Fit**")
-cat("\n\n")
-format_flex(bel.ss.mplus.results$Model_Comparison, bold = FALSE) %>% knit_print()
-cat("\n\n")
-cat("**Freely Estimated Unstandardized Growth Parameters**")
-cat("\n\n")
-format_flex(bel.ss.mplus.results$Estimate_Table, bold = FALSE) %>% knit_print()
-cat("*Note.* Cluster robust standard errors are in the parentheses (). \\**p* < .05")
-cat("\n\n")
-cat("**Growth Curve Across 4 Waves**")
-cat("\n\n")
-print(bel.ss.mplus.results$Estimate_Plot)
-```
- 
- 
-## Wave 1 Predictors
-
-### Gender
-
-```{r gender.w1, results='asis'}
-
-cat("*Main Effects*")
-cat("\n\n")
-cat("**Model Fit**")
-cat("\n\n")
-format_flex(gen.ss.w1p.fit, bold = FALSE) %>% knit_print()
-cat("\n\n")
-cat("**Standardized Estimates**")
-cat("\n\n")
-gen.map <- data.frame(col_keys = names(gen.ss.w1p.est),
-                      top = c("predictor", rep(rep(c("Sexual Harassment", "Delinquency", "Depression"), each = 2), each = 2)),
-                      middle = c("predictor",rep(rep(c("Female", "Male"), times = 3), each = 2)),
-                      bottom = c("predictor", rep(c("I", "S"), times = 6)))
-
-gen.ss.w1p.flex <- flextable(gen.ss.w1p.est) %>% two_level_flex(mapping = gen.map, vert.cols = "predictor", border = border) %>%
-  autofit() %>% fit_to_width(10)
-knit_print(gen.ss.w1p.flex)
+```{r}
+format_flex(gen.results$Estimates, bold = FALSE) %>% knit_print()
 ```
 
+*Note.* Estimates are unstandardized. Parentheses contain cluster robust standard errors. Model fit was X2 (`r gen.results$Fit$df`) = `r gen.results$Fit$chisq`, *p* = `r gen.results$Fit$pvalue`; *CFI* = `r gen.results$Fit$cfi`; *RMSEA* = `r gen.results$Fit$rmsea` `r gen.results$Fit$rmsea.ci`; *SRMR* = `r gen.results$Fit$srmr`. Omnibus Wald X2 (`r gen.results$Wald[gen.results$Wald$Test == "omnibus", ]$df`) = `r round(gen.results$Wald[gen.results$Wald$Test == "omnibus", ]$Wald, 2)`, *p* = `r round(gen.results$Wald[gen.results$Wald$Test == "omnibus", ]$p, 2)`.\**p* < .05, \*\**p* < .01
 
-```{r gender.w1.int, results='asis'}
+*Standardized Estimates from Multigroup Analysis of Sexual Harassment Perpetration on Hostile Home Environment by Sex*
 
-cat("*With Interactions*")
-cat("\n\n")
-cat("**Model Fit**")
-cat("\n\n")
-format_flex(gen.ss.w1p.int.fit, bold = FALSE) %>% knit_print()
-cat("\n\n")
-cat("**Standardized Estimates**")
-cat("\n\n")
-gen.ss.w1p.int.flex <- flextable(gen.ss.w1p.int.est) %>% two_level_flex(mapping = gen.map, vert.cols = "predictor", border = border) %>%
-  autofit() %>% fit_to_width(10)
-knit_print(gen.ss.w1p.int.flex)
+```{r}
+format_flex(gen.results$Std.Estimates, bold = FALSE) %>% knit_print()
 ```
+
+*Note.* Parentheses contain cluster robust standard errors. Model fit was X2 (`r gen.results$Fit$df`) = `r gen.results$Fit$chisq`, *p* = `r gen.results$Fit$pvalue`; *CFI* = `r gen.results$Fit$cfi`; *RMSEA* = `r gen.results$Fit$rmsea` `r gen.results$Fit$rmsea.ci`; *SRMR* = `r gen.results$Fit$srmr`. Omnibus Wald X2 (`r gen.results$Wald[gen.results$Wald$Test == "omnibus", ]$df`) = `r round(gen.results$Wald[gen.results$Wald$Test == "omnibus", ]$Wald, 2)`, *p* = `r round(gen.results$Wald[gen.results$Wald$Test == "omnibus", ]$p, 2)`.\**p* < .05, \*\**p* < .01
 
 
 ### Race
 
-```{r race.w1, results='asis'}
+See Mplus files for n's by group.
 
-cat("*Main Effects*")
-cat("\n\n")
-cat("**Model Fit**")
-cat("\n\n")
-format_flex(race.ss.w1p.fit, bold = FALSE) %>% knit_print()
-cat("\n\n")
-cat("**Standardized Estimates**")
-cat("\n\n")
-race.map <- data.frame(col_keys = names(race.ss.w1p.est),
-                            top = c("predictor", rep(rep(c("Sexual Harassment", "Delinquency", "Depression"), each = 3),
-                                                     each = 2)),
-                            middle = c("predictor", rep(rep(c("Black", "White", "Hispanic"), times = 3),
-                                                        each = 2)),
-                           bottom = c("predictor", rep(c("I", "S"), times = (ncol(race.ss.w1p.est)-1)/2)))
+**Table 4**
 
-race.ss.w1p.flex <- flextable(race.ss.w1p.est) %>% two_level_flex(mapping = race.map, vert.cols = "predictor", border = border) %>%
-  autofit() %>% fit_to_width(10)
-knit_print(race.ss.w1p.flex)
+*Multigroup Analysis of Sexual Harassment Perpetration on Hostile Home Environment by Race/Ethnicity*
+
+```{r}
+format_flex(race.results$Estimates, bold = FALSE) %>% knit_print()
 ```
 
+*Note.* Estimates are unstandardized. Parentheses contain cluster robust standard errors. Model fit was X2 (`r race.results$Fit$df`) = `r race.results$Fit$chisq`, *p* = `r race.results$Fit$pvalue`; *CFI* = `r race.results$Fit$cfi`; *RMSEA* = `r race.results$Fit$rmsea` `r race.results$Fit$rmsea.ci`; *SRMR* = `r race.results$Fit$srmr`. Omnibus Wald X2 (`r race.results$Wald[gen.results$Wald$Test == "omnibus", ]$df`) = `r round(race.results$Wald[gen.results$Wald$Test == "omnibus", ]$Wald, 2)`, *p* = `r round(race.results$Wald[gen.results$Wald$Test == "omnibus", ]$p, 2)`.\**p* < .05, \*\**p* < .01
 
-```{r race.w1.int, results='asis'}
 
-cat("*With Interactions*")
-cat("\n\n")
-cat("**Model Fit**")
-cat("\n\n")
-format_flex(race.ss.w1p.int.fit, bold = FALSE) %>% knit_print()
-cat("\n\n")
-cat("**Standardized Estimates**")
-cat("\n\n")
-race.ss.w1p.int.flex <- flextable(race.ss.w1p.int.est) %>% two_level_flex(mapping = race.map, vert.cols = "predictor", border = border) %>%
-  autofit() %>% fit_to_width(10)
-knit_print(race.ss.w1p.int.flex)
+*Standardized Estimates from Multigroup Analysis of Sexual Harassment Perpetration on Hostile Home Environment by Race/Ethnicity*
+
+```{r}
+format_flex(race.results$Std.Estimates, bold = FALSE) %>% knit_print()
 ```
 
+*Note.* Parentheses contain cluster robust standard errors. Model fit was X2 (`r race.results$Fit$df`) = `r race.results$Fit$chisq`, *p* = `r race.results$Fit$pvalue`; *CFI* = `r race.results$Fit$cfi`; *RMSEA* = `r race.results$Fit$rmsea` `r race.results$Fit$rmsea.ci`; *SRMR* = `r race.results$Fit$srmr`. Omnibus Wald X2 (`r race.results$Wald[gen.results$Wald$Test == "omnibus", ]$df`) = `r round(race.results$Wald[gen.results$Wald$Test == "omnibus", ]$Wald, 2)`, *p* = `r round(race.results$Wald[gen.results$Wald$Test == "omnibus", ]$p, 2)`.\**p* < .05, \*\**p* < .01
+
+ 
+### School Belonging
+
+See Mplus files for n's by group.
+
+**Table 5**
+
+*Multigroup Analysis of Sexual Harassment Perpetration on Hostile Home Environment by School Belonging*
+
+```{r}
+format_flex(bel.results$Estimates, bold = FALSE) %>% knit_print()
+```
+
+*Note.* Estimates are unstandardized. Parentheses contain cluster robust standard errors. ^a^Slope variance was constrained to 0. Model fit was X2 (`r bel.results$Fit$df`) = `r bel.results$Fit$chisq`, *p* = `r bel.results$Fit$pvalue`; *CFI* = `r bel.results$Fit$cfi`; *RMSEA* = `r bel.results$Fit$rmsea` `r bel.results$Fit$rmsea.ci`; *SRMR* = `r bel.results$Fit$srmr`. Omnibus Wald X2 (`r bel.results$Wald[gen.results$Wald$Test == "omnibus", ]$df`) = `r round(bel.results$Wald[gen.results$Wald$Test == "omnibus", ]$Wald, 2)`, *p* = `r round(bel.results$Wald[gen.results$Wald$Test == "omnibus", ]$p, 2)`.\**p* < .05, \*\**p* < .01
+
+
+*Standardized Estimates from Multigroup Analysis of Sexual Harassment Perpetration on Hostile Home Environment by School Belonging*
+
+```{r}
+format_flex(bel.results$Std.Estimates, bold = FALSE) %>% knit_print()
+```
+
+*Note.* Parentheses contain cluster robust standard errors. ^a^Slope variance was constrained to 0. Model fit was X2 (`r bel.results$Fit$df`) = `r bel.results$Fit$chisq`, *p* = `r bel.results$Fit$pvalue`; *CFI* = `r bel.results$Fit$cfi`; *RMSEA* = `r bel.results$Fit$rmsea` `r bel.results$Fit$rmsea.ci`; *SRMR* = `r bel.results$Fit$srmr`. Omnibus Wald X2 (`r bel.results$Wald[gen.results$Wald$Test == "omnibus", ]$df`) = `r round(bel.results$Wald[gen.results$Wald$Test == "omnibus", ]$Wald, 2)`, *p* = `r round(bel.results$Wald[gen.results$Wald$Test == "omnibus", ]$p, 2)`.\**p* < .05, \*\**p* < .01
+
+ 
+## Full Conditional Model
+
+### Gender
+
+```{r genderw1p, results='asis'}
+cat("**Table 6**")
+cat("\n\n")
+cat("*Unstandardized Estimates from Latent Growth Model of Sexual Harassment Perpetration Stratified by Sex*")
+cat("\n\n")
+gen.map <- data.frame(col_keys = names(gen.w1p.results.table),
+                      top = c("predictor", rep(c("Girls", "Boys"), each = 2)),
+                      bottom = c("predictor", rep(c("I", "S"), times = 2)))
+gen.w1p.int.flex <- flextable(gen.w1p.results.table) %>% two_level_flex(mapping = gen.map, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(gen.w1p.int.flex)
+
+```
+
+*Note.* Parentheses contain cluster robust standard errors. \**p* < .05, \*\**p* < .01
+
+```{r results='asis'}
+cat("*Standardized Estimates from Latent Growth Model of Sexual Harassment Perpetration Stratified by Sex*")
+cat("\n\n")
+gen.map.std <- data.frame(col_keys = names(gen.w1p.results.table.std),
+                      top = c("predictor", rep(c("Girls", "Boys"), each = 2)),
+                      bottom = c("predictor", rep(c("I", "S"), times = 2)))
+gen.w1p.int.flex.std <- flextable(gen.w1p.results.table.std) %>% two_level_flex(mapping = gen.map.std, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(gen.w1p.int.flex.std)
+
+```
+
+*Note.* Parentheses contain cluster robust standard errors. \**p* < .05, \*\**p* < .01
+
+### Race
+
+```{r racew1p, results='asis'}
+cat("**Table 7**")
+cat("\n\n")
+cat("*Unstandardized Estimates from Latent Growth Model of Sexual Harassment Perpetration Stratified by Race*")
+cat("\n\n")
+race.map <- data.frame(col_keys = names(race.w1p.results.table),
+                      top = c("predictor", rep(c("Black", "White", "Hispanic"), each = 2)),
+                      bottom = c("predictor", rep(c("I", "S"), times = 3)))
+race.w1p.int.flex <- flextable(race.w1p.results.table) %>% two_level_flex(mapping = race.map, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(race.w1p.int.flex)
+
+```
+
+*Note.* Parentheses contain cluster robust standard errors. ^a^Interactions of home hostility and academic grades yielded poor model fit and were removed. \**p* < .05, \**p* < .01
+
+```{r racew1pstd, results='asis'}
+cat("*Standardized Estimates from Latent Growth Model of Sexual Harassment Perpetration Stratified by Race*")
+cat("\n\n")
+race.map.std <- data.frame(col_keys = names(race.w1p.results.table.std),
+                      top = c("predictor", rep(c("Black", "White", "Hispanic"), each = 2)),
+                      bottom = c("predictor", rep(c("I", "S"), times = 3)))
+race.w1p.int.flex.std <- flextable(race.w1p.results.table.std) %>% two_level_flex(mapping = race.map.std, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(race.w1p.int.flex.std)
+
+```
+
+*Note.* Parentheses contain cluster robust standard errors. ^a^Interactions of home hostility and academic grades yielded poor model fit and were removed. \**p* < .05, \**p* < .01
 
 ### School Belonging
 
-```{r bel.w1, results='asis'}
-
-cat("**Model Fit**")
+```{r belw1p, results='asis'}
+cat("**Table 8**")
 cat("\n\n")
-format_flex(bel.ss.w1p.fit, bold = FALSE) %>% knit_print()
+cat("*Unstandardized Estimates from Latent Growth Model of Sexual Harassment Perpetration Stratified by School Belongingness*")
 cat("\n\n")
-cat("**Standardized Estimates**")
-cat("\n\n")
-bel.map <- data.frame(col_keys = names(bel.ss.w1p.est),
-                      top = c("predictor", rep(rep(c("Sexual Harassment", "Delinquency", "Depression"), each = 2), each = 2)),
-                      middle = c("predictor",rep(rep(c("High", "Moderate"), times = 3), each = 2)),
-                      bottom = c("predictor", rep(c("I", "S"), times = (ncol(bel.ss.w1p.est)-1)/2)))
-
-bel.ss.w1p.flex <- flextable(bel.ss.w1p.est) %>% two_level_flex(mapping = bel.map, vert.cols = "predictor", border = border) %>%
+bel.map <- data.frame(col_keys = names(bel.w1p.results.table),
+                      top = c("predictor", rep(c("High", "Low"), each = 2)),
+                      bottom = c("predictor", rep(c("I", "S"), times = 2)))
+bel.w1p.int.flex <- flextable(bel.w1p.results.table) %>% two_level_flex(mapping = bel.map, vert.cols = "predictor", border = border) %>%
   autofit() %>% fit_to_width(10)
-knit_print(bel.ss.w1p.flex)
+knit_print(bel.w1p.int.flex)
+
 ```
 
+*Note.* Parentheses contain cluster robust standard errors. ^a^Slope variance was constrained to 0. \**p* < .05, \*\**p* < .01
+
+```{r belw1pstd, results='asis'}
+cat("*Standardized Estimates from Latent Growth Model of Sexual Harassment Perpetration Stratified by School Belongingness*")
+cat("\n\n")
+bel.map.std <- data.frame(col_keys = names(bel.w1p.results.table.std),
+                      top = c("predictor", rep(c("High", "Low"), each = 2)),
+                      bottom = c("predictor", rep(c("I", "S"), times = 2)))
+bel.w1p.int.flex.std <- flextable(bel.w1p.results.table.std) %>% two_level_flex(mapping = bel.map.std, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(bel.w1p.int.flex.std)
+
+```
+
+*Note.* Parentheses contain cluster robust standard errors. ^a^Slope variance was constrained to 0. \**p* < .05, \*\**p* < .01
 
 # Additional Plots for Paper
 
-*Interaction of Academic Grades and Early Hostile Home Environment on Female Adolescents’ Sexual Harassment Perpetration*
+*Latent Trajectories of Sexual Harassment Perpetration*
 
-```{r fem.absa.intx.plot, fig.width=10, fig.height=10}
+```{r SHPlotgrid, fig.width=17, fig.height=7, eval = FALSE}
+print(SHPlot.grid)
+```
+
+*Note.* Trajectories are freely estimated for each group in a multigroup analysis by sex (A), race (B), and school belongingness (C). Shaded area signifies 95% confidence interval around each trajectory.
+
+*Interaction of Academic Grades and Early Hostile Home Environment on Girls’ Sexual Harassment Perpetration*
+
+```{r fem.absa_intx_plot, fig.width=10, fig.height=10}
 print(fem.absa.intx.plot)
 ```
 
-*Interaction of Exposure to Abuse and School Variables on Hispanic Adolescents’ Sexual Harassment Perpetration*
+*Note.* HHE = Hostile Home Environment. HHE categories are the mean, mean + 1 standard deviation (High), and scores of 0 (None) on the abuse or sibling aggression scales
 
-```{r hisp.intx.plot, fig.width=12, fig.height=12}
-hisp.intx.plot <- cowplot::plot_grid(hisp.abhsb.intx.plot, hisp.abag.intx.plot,
-                                     align = "v", ncol = 1, labels = "AUTO")
-print(hisp.intx.plot)
+
+*Interaction of Academic Grades and Exposure to Abuse on Hispanic Adolescents’ Sexual Harassment Perpetration*
+
+```{r hisp_intx_plot, fig.width=12, fig.height=6}
+# hisp.intx.plot <- cowplot::plot_grid(hisp.abhsb.intx.plot, hisp.abag.intx.plot,
+#                                      align = "v", ncol = 1, labels = "AUTO")
+# print(hisp.intx.plot)
+print(hisp.abag.intx.plot)
 ```
+
+*Note.* Exposure to abuse categories were the mean, mean + 1 standard deviation (High), and scores of 0 (None) on the exposure to abuse scale.
 
 *Interaction of Academic Grades and Early Hostile Home Environment on Black Adolescents’ Sexual Harassment Perpetration*
 
-```{r black.fcsa.intx.plot, fig.width=10, fig.height=10}
+```{r black_fcsa_intx_plot, fig.width=10, fig.height=10}
 print(black.fcsa.intx.plot)
 ```
 
+*Note.* HHE = Hostile Home Environment. HHE categories were the mean, mean + 1 standard deviation (High), and scores of 0 (None) on the family conflict or sibling aggression scales.
 
-*Interaction of School Belonging and Early Hostile Home Environment on Black (A), White (B), and Male (C) Adolescents’ Sexual Harassment Perpetration*
+*Interaction of School Belonging and Early Hostile Home Environment on White (A) and Boy (B) Adolescents’ Sexual Harassment Perpetration*
 
-```{r hsb.intx.plot, fig.width=10, fig.height=15}
+```{r hsb_intx_plot, fig.width=10, fig.height=10}
 
-hsb.intx.plot <- cowplot::plot_grid(black.fc.intx.plot, white.sa.intx.plot, male.ab.intx.plot,
+hsb.intx.plot <- cowplot::plot_grid(white.sa.intx.plot,male.ab.intx.plot,
                                      align = "v", ncol = 1, labels = "AUTO")
 print(hsb.intx.plot)
 
 ```
 
-
-```{r SHPlot.grid, fig.width=17, fig.height=7}
-print(SHPlot.grid)
-```
-
-
-
-```{r r2, results='asis'}
-format_flex(all.r2, bold = FALSE) %>% knit_print()
-```
-
-
-
+*Note.* Hostile home environment categories were the mean, mean + 1 standard deviation (High), and scores of 0 (None) on the family conflict, sibling aggression, or exposure to abuse scales.

@@ -1,0 +1,3118 @@
+Mplus VERSION 8.4
+MUTHEN & MUTHEN
+01/05/2022   1:00 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Sexual Harassment LGM with Wave 1 Predictors - High School Belonging
+
+  DATA: FILE = mpluswide_highschbel.csv;
+
+  VARIABLE:
+  NAMES = subjno School Gender Female Race Race4
+  Black Hispanic White OtherR SHVict SchBel
+  Age Grades FamCon Abuse SibAgg
+  del_w1 del_w2 del_w3 del_w4
+  dep_w1 dep_w2 dep_w3 dep_w4
+  emp_w1 emp_w2 emp_w3 emp_w4
+  schb_w1 schb_w2 schb_w3 schb_w4
+  sh_w1 sh_w2 sh_w3 sh_w4;
+
+  USEVARIABLES = sh_w1-sh_w4
+  FamCon Abuse SibAgg SHVict Female Black White OtherR Grades AGxFC AGxAB AGxSA;
+
+  IDVARIABLE = subjno;
+  CLUSTER = School;
+
+  MISSING = ALL(-999);
+
+  DEFINE:
+  AGxFC = Grades*FamCon;
+  AGxAB = Grades*Abuse;
+  AGxSA = Grades*SibAgg;
+
+  ANALYSIS:
+  TYPE = COMPLEX;
+
+  MODEL:
+  i s | sh_w1@0 sh_w2@.5 sh_w3@1.5 sh_w4@2.5;
+  s@0;
+  i s ON FamCon Abuse SibAgg SHVict Female Black White OtherR Grades AGxFC AGxAB AGxSA;
+  [FamCon Abuse SibAgg SHVict Female Black White OtherR Grades AGxFC AGxAB AGxSA];
+  !brings exogenous vars into model so missingness handled by FIML
+
+  OUTPUT:
+  STANDARDIZED CINTERVAL RESIDUAL TECH1 TECH4;
+
+
+
+*** WARNING in MODEL command
+  All continuous latent variable covariances involving S have been fixed to 0
+  because the variance of S is fixed at 0.
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Sexual Harassment LGM with Wave 1 Predictors - High School Belonging
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         932
+
+Number of dependent variables                                    4
+Number of independent variables                                 12
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   SH_W1       SH_W2       SH_W3       SH_W4
+
+Observed independent variables
+   FAMCON      ABUSE       SIBAGG      SHVICT      FEMALE      BLACK
+   WHITE       OTHERR      GRADES      AGXFC       AGXAB       AGXSA
+
+Continuous latent variables
+   I           S
+
+Variables with special functions
+
+  Cluster variable      SCHOOL
+  ID variable           SUBJNO
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  mpluswide_highschbel.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            56
+     Number of clusters                         18
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.992
+ SH_W2          0.920         0.926
+ SH_W3          0.774         0.726         0.779
+ SH_W4          0.668         0.623         0.613         0.673
+ FAMCON         0.932         0.869         0.730         0.633         0.936
+ ABUSE          0.921         0.857         0.716         0.623         0.915
+ SIBAGG         0.948         0.878         0.744         0.641         0.894
+ SHVICT         0.986         0.915         0.770         0.666         0.933
+ FEMALE         0.990         0.924         0.778         0.672         0.933
+ BLACK          0.992         0.926         0.779         0.673         0.936
+ WHITE          0.992         0.926         0.779         0.673         0.936
+ OTHERR         0.992         0.926         0.779         0.673         0.936
+ GRADES         0.869         0.810         0.687         0.600         0.823
+ AGXFC          0.820         0.765         0.646         0.565         0.823
+ AGXAB          0.805         0.750         0.630         0.555         0.803
+ AGXSA          0.832         0.769         0.657         0.573         0.785
+
+
+           Covariance Coverage
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+ ABUSE          0.924
+ SIBAGG         0.883         0.952
+ SHVICT         0.922         0.946         0.988
+ FEMALE         0.922         0.948         0.986         0.997
+ BLACK          0.924         0.952         0.988         0.997         1.000
+ WHITE          0.924         0.952         0.988         0.997         1.000
+ OTHERR         0.924         0.952         0.988         0.997         1.000
+ GRADES         0.808         0.834         0.868         0.872         0.874
+ AGXFC          0.803         0.785         0.821         0.821         0.823
+ AGXAB          0.808         0.771         0.806         0.806         0.808
+ AGXSA          0.771         0.834         0.833         0.832         0.834
+
+
+           Covariance Coverage
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+ WHITE          1.000
+ OTHERR         1.000         1.000
+ GRADES         0.874         0.874         0.874
+ AGXFC          0.823         0.823         0.823         0.823
+ AGXAB          0.808         0.808         0.808         0.803         0.808
+ AGXSA          0.834         0.834         0.834         0.785         0.771
+
+
+           Covariance Coverage
+              AGXSA
+              ________
+ AGXSA          0.834
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     SH_W1                 0.148       4.870       0.000   91.14%       0.000      0.000      0.000
+             925.000       0.316      27.347       5.000    0.22%       0.000      0.000
+     SH_W2                 0.146       4.401       0.000   89.92%       0.000      0.000      0.000
+             863.000       0.257      22.211       4.000    0.35%       0.000      0.000
+     SH_W3                 0.227       4.251       0.000   85.81%       0.000      0.000      0.000
+             726.000       0.468      22.904       6.000    0.28%       0.000      0.000
+     SH_W4                 0.262       3.596       0.000   82.93%       0.000      0.000      0.000
+             627.000       0.487      15.880       6.000    0.16%       0.000      0.000
+     FAMCON                0.690       1.661       0.000   35.09%       0.000      0.333      0.333
+             872.000       0.701       2.840       4.000    1.03%       0.667      1.333
+     ABUSE                 0.341       2.010       0.000   75.49%       0.000      0.000      0.000
+             861.000       0.448       3.462       3.000    1.51%       0.000      1.000
+     SIBAGG                0.298       3.886       0.000   81.17%       0.000      0.000      0.000
+             887.000       0.779      15.620       5.000    1.69%       0.000      0.000
+     SHVICT                0.220       1.349       0.000   77.96%       0.000      0.000      0.000
+             921.000       0.172      -0.180       1.000   22.04%       0.000      1.000
+     FEMALE                0.522      -0.088       0.000   47.79%       0.000      0.000      1.000
+             929.000       0.250      -1.992       1.000   52.21%       1.000      1.000
+     BLACK                 0.268       1.046       0.000   73.18%       0.000      0.000      0.000
+             932.000       0.196      -0.905       1.000   26.82%       0.000      1.000
+     WHITE                 0.198       1.512       0.000   80.15%       0.000      0.000      0.000
+             932.000       0.159       0.285       1.000   19.85%       0.000      0.000
+     OTHERR                0.117       2.384       0.000   88.30%       0.000      0.000      0.000
+             932.000       0.103       3.683       1.000   11.70%       0.000      0.000
+     GRADES                4.686      -1.422       0.000    0.98%       4.000      5.000      5.000
+             815.000       1.656       1.835       6.000   24.42%       5.000      6.000
+     AGXFC                 3.226       1.957       0.000   34.81%       0.000      1.333      1.667
+             767.000      16.827       4.621      24.000    0.39%       3.000      6.000
+     AGXAB                 1.579       2.459       0.000   75.96%       0.000      0.000      0.000
+             753.000      10.857       6.551      18.000    0.93%       0.000      4.000
+     AGXSA                 1.301       4.374       0.000   81.85%       0.000      0.000      0.000
+             777.000      16.941      20.819      30.000    0.26%       0.000      0.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.150D-15.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 18, [ AGXSA ]
+
+     THIS IS MOST LIKELY DUE TO HAVING MORE PARAMETERS THAN THE NUMBER
+     OF CLUSTERS MINUS THE NUMBER OF STRATA WITH MORE THAN ONE CLUSTER.
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                      121
+
+Loglikelihood
+
+          H0 Value                      -12620.750
+          H0 Scaling Correction Factor      3.7299
+            for MLR
+          H1 Value                      -12590.894
+          H1 Scaling Correction Factor      3.2391
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   25483.500
+          Bayesian (BIC)                 26068.817
+          Sample-Size Adjusted BIC       25684.532
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             45.118*
+          Degrees of Freedom                    31
+          P-Value                           0.0487
+          Scaling Correction Factor         1.3235
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.022
+          90 Percent C.I.                    0.002  0.035
+          Probability RMSEA <= .05           1.000
+
+CFI/TLI
+
+          CFI                                0.938
+          TLI                                0.893
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                            283.551
+          Degrees of Freedom                    54
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.022
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ I        |
+    SH_W1              1.000      0.000    999.000    999.000
+    SH_W2              1.000      0.000    999.000    999.000
+    SH_W3              1.000      0.000    999.000    999.000
+    SH_W4              1.000      0.000    999.000    999.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.500      0.000    999.000    999.000
+    SH_W3              1.500      0.000    999.000    999.000
+    SH_W4              2.500      0.000    999.000    999.000
+
+ I        ON
+    FAMCON             0.041      0.071      0.583      0.560
+    ABUSE             -0.118      0.111     -1.064      0.287
+    SIBAGG            -0.052      0.064     -0.802      0.423
+    SHVICT             0.301      0.057      5.288      0.000
+    FEMALE            -0.088      0.028     -3.120      0.002
+    BLACK             -0.015      0.025     -0.602      0.547
+    WHITE             -0.072      0.034     -2.148      0.032
+    OTHERR            -0.009      0.076     -0.116      0.908
+    GRADES            -0.002      0.011     -0.215      0.830
+    AGXFC             -0.009      0.016     -0.554      0.580
+    AGXAB              0.044      0.029      1.528      0.126
+    AGXSA              0.013      0.017      0.745      0.456
+
+ S        ON
+    FAMCON             0.065      0.110      0.593      0.553
+    ABUSE             -0.027      0.066     -0.406      0.684
+    SIBAGG             0.006      0.052      0.113      0.910
+    SHVICT            -0.051      0.051     -1.000      0.317
+    FEMALE            -0.024      0.027     -0.874      0.382
+    BLACK              0.051      0.037      1.385      0.166
+    WHITE              0.028      0.027      1.038      0.299
+    OTHERR             0.032      0.046      0.701      0.483
+    GRADES            -0.005      0.009     -0.592      0.554
+    AGXFC             -0.012      0.020     -0.605      0.545
+    AGXAB             -0.003      0.014     -0.180      0.857
+    AGXSA              0.000      0.010     -0.034      0.973
+
+ ABUSE    WITH
+    FAMCON             0.184      0.021      8.824      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.219      0.042      5.163      0.000
+    ABUSE              0.062      0.016      3.905      0.000
+
+ SHVICT   WITH
+    FAMCON             0.070      0.011      6.617      0.000
+    ABUSE              0.043      0.007      6.102      0.000
+    SIBAGG             0.042      0.016      2.570      0.010
+
+ FEMALE   WITH
+    FAMCON            -0.003      0.013     -0.265      0.791
+    ABUSE             -0.036      0.013     -2.845      0.004
+    SIBAGG            -0.017      0.011     -1.520      0.128
+    SHVICT             0.011      0.008      1.360      0.174
+
+ BLACK    WITH
+    FAMCON             0.030      0.012      2.488      0.013
+    ABUSE              0.036      0.009      4.161      0.000
+    SIBAGG            -0.011      0.010     -1.114      0.265
+    SHVICT             0.010      0.006      1.631      0.103
+    FEMALE            -0.006      0.007     -0.799      0.424
+
+ WHITE    WITH
+    FAMCON             0.023      0.011      2.149      0.032
+    ABUSE             -0.006      0.010     -0.575      0.565
+    SIBAGG            -0.016      0.011     -1.410      0.159
+    SHVICT             0.008      0.006      1.470      0.142
+    FEMALE             0.006      0.005      1.097      0.273
+    BLACK             -0.053      0.016     -3.406      0.001
+
+ OTHERR   WITH
+    FAMCON             0.008      0.008      1.006      0.314
+    ABUSE              0.002      0.009      0.265      0.791
+    SIBAGG            -0.006      0.008     -0.786      0.432
+    SHVICT             0.003      0.006      0.463      0.643
+    FEMALE             0.002      0.004      0.442      0.659
+    BLACK             -0.031      0.011     -2.897      0.004
+    WHITE             -0.023      0.008     -3.005      0.003
+
+ GRADES   WITH
+    FAMCON            -0.013      0.029     -0.428      0.668
+    ABUSE              0.006      0.042      0.131      0.896
+    SIBAGG            -0.024      0.042     -0.585      0.559
+    SHVICT             0.004      0.018      0.247      0.805
+    FEMALE             0.047      0.018      2.570      0.010
+    BLACK             -0.022      0.033     -0.669      0.503
+    WHITE              0.054      0.027      2.016      0.044
+    OTHERR             0.032      0.013      2.514      0.012
+
+ AGXFC    WITH
+    FAMCON             3.178      0.321      9.890      0.000
+    ABUSE              0.778      0.119      6.558      0.000
+    SIBAGG             0.986      0.192      5.151      0.000
+    SHVICT             0.308      0.045      6.848      0.000
+    FEMALE            -0.009      0.061     -0.151      0.880
+    BLACK              0.094      0.059      1.578      0.115
+    WHITE              0.143      0.061      2.355      0.019
+    OTHERR             0.089      0.045      1.983      0.047
+    GRADES             1.173      0.189      6.190      0.000
+
+ AGXAB    WITH
+    FAMCON             0.768      0.104      7.404      0.000
+    ABUSE              2.124      0.171     12.402      0.000
+    SIBAGG             0.217      0.052      4.192      0.000
+    SHVICT             0.198      0.036      5.413      0.000
+    FEMALE            -0.157      0.058     -2.707      0.007
+    BLACK              0.144      0.039      3.674      0.000
+    WHITE             -0.012      0.049     -0.240      0.810
+    OTHERR             0.032      0.044      0.735      0.462
+    GRADES             0.624      0.194      3.217      0.001
+    AGXFC              4.179      0.620      6.740      0.000
+
+ AGXSA    WITH
+    FAMCON             0.998      0.197      5.052      0.000
+    ABUSE              0.228      0.060      3.784      0.000
+    SIBAGG             3.583      0.419      8.555      0.000
+    SHVICT             0.208      0.084      2.470      0.014
+    FEMALE            -0.067      0.052     -1.293      0.196
+    BLACK             -0.064      0.051     -1.250      0.211
+    WHITE             -0.045      0.058     -0.764      0.445
+    OTHERR            -0.018      0.040     -0.452      0.652
+    GRADES             0.380      0.161      2.360      0.018
+    AGXFC              5.225      1.045      5.000      0.000
+    AGXAB              1.148      0.264      4.341      0.000
+
+ Means
+    FAMCON             0.690      0.040     17.195      0.000
+    ABUSE              0.345      0.022     15.939      0.000
+    SIBAGG             0.297      0.023     12.990      0.000
+    SHVICT             0.221      0.022     10.152      0.000
+    FEMALE             0.522      0.013     40.016      0.000
+    BLACK              0.268      0.058      4.663      0.000
+    WHITE              0.198      0.037      5.306      0.000
+    OTHERR             0.117      0.023      5.161      0.000
+    GRADES             4.688      0.142     33.104      0.000
+    AGXFC              3.230      0.221     14.603      0.000
+    AGXAB              1.623      0.134     12.072      0.000
+    AGXSA              1.362      0.125     10.921      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.115      0.061      1.883      0.060
+    S                  0.089      0.053      1.663      0.096
+
+ Variances
+    FAMCON             0.701      0.058     11.997      0.000
+    ABUSE              0.448      0.025     18.018      0.000
+    SIBAGG             0.780      0.080      9.734      0.000
+    SHVICT             0.172      0.012     14.211      0.000
+    FEMALE             0.250      0.001    424.654      0.000
+    BLACK              0.196      0.027      7.362      0.000
+    WHITE              0.159      0.023      7.053      0.000
+    OTHERR             0.103      0.017      5.949      0.000
+    GRADES             1.655      0.269      6.149      0.000
+    AGXFC             16.890      1.814      9.312      0.000
+    AGXAB             11.108      1.055     10.526      0.000
+    AGXSA             17.844      2.349      7.598      0.000
+
+ Residual Variances
+    SH_W1              0.204      0.040      5.062      0.000
+    SH_W2              0.166      0.036      4.570      0.000
+    SH_W3              0.346      0.056      6.224      0.000
+    SH_W4              0.409      0.132      3.095      0.002
+    I                  0.083      0.021      3.890      0.000
+    S                  0.000      0.000    999.000    999.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ I        |
+    SH_W1              0.590      0.058     10.207      0.000
+    SH_W2              0.634      0.049     13.031      0.000
+    SH_W3              0.493      0.056      8.885      0.000
+    SH_W4              0.462      0.081      5.710      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.044      0.016      2.842      0.004
+    SH_W3              0.103      0.036      2.896      0.004
+    SH_W4              0.161      0.045      3.557      0.000
+
+ I        ON
+    FAMCON             0.105      0.180      0.585      0.559
+    ABUSE             -0.240      0.218     -1.098      0.272
+    SIBAGG            -0.138      0.168     -0.821      0.411
+    SHVICT             0.378      0.069      5.490      0.000
+    FEMALE            -0.134      0.042     -3.159      0.002
+    BLACK             -0.020      0.032     -0.621      0.535
+    WHITE             -0.087      0.041     -2.110      0.035
+    OTHERR            -0.009      0.075     -0.115      0.909
+    GRADES            -0.009      0.045     -0.212      0.832
+    AGXFC             -0.109      0.194     -0.560      0.575
+    AGXAB              0.449      0.283      1.588      0.112
+    AGXSA              0.161      0.208      0.774      0.439
+
+ S        ON
+    FAMCON             1.187      1.742      0.681      0.496
+    ABUSE             -0.388      0.938     -0.413      0.679
+    SIBAGG             0.112      1.005      0.112      0.911
+    SHVICT            -0.458      0.411     -1.115      0.265
+    FEMALE            -0.258      0.310     -0.832      0.406
+    BLACK              0.491      0.300      1.636      0.102
+    WHITE              0.238      0.231      1.032      0.302
+    OTHERR             0.226      0.300      0.754      0.451
+    GRADES            -0.144      0.264     -0.547      0.584
+    AGXFC             -1.096      1.639     -0.669      0.504
+    AGXAB             -0.188      1.050     -0.179      0.858
+    AGXSA             -0.030      0.903     -0.034      0.973
+
+ ABUSE    WITH
+    FAMCON             0.328      0.035      9.287      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.296      0.053      5.635      0.000
+    ABUSE              0.104      0.028      3.689      0.000
+
+ SHVICT   WITH
+    FAMCON             0.201      0.026      7.662      0.000
+    ABUSE              0.154      0.027      5.629      0.000
+    SIBAGG             0.114      0.043      2.684      0.007
+
+ FEMALE   WITH
+    FAMCON            -0.008      0.031     -0.265      0.791
+    ABUSE             -0.108      0.038     -2.842      0.004
+    SIBAGG            -0.038      0.026     -1.457      0.145
+    SHVICT             0.055      0.041      1.363      0.173
+
+ BLACK    WITH
+    FAMCON             0.080      0.036      2.240      0.025
+    ABUSE              0.122      0.033      3.720      0.000
+    SIBAGG            -0.029      0.025     -1.134      0.257
+    SHVICT             0.055      0.036      1.519      0.129
+    FEMALE            -0.027      0.034     -0.790      0.430
+
+ WHITE    WITH
+    FAMCON             0.069      0.030      2.280      0.023
+    ABUSE             -0.021      0.037     -0.573      0.566
+    SIBAGG            -0.045      0.031     -1.447      0.148
+    SHVICT             0.051      0.035      1.461      0.144
+    FEMALE             0.029      0.025      1.148      0.251
+    BLACK             -0.301      0.058     -5.178      0.000
+
+ OTHERR   WITH
+    FAMCON             0.031      0.032      0.967      0.334
+    ABUSE              0.011      0.042      0.268      0.789
+    SIBAGG            -0.021      0.028     -0.762      0.446
+    SHVICT             0.020      0.041      0.478      0.633
+    FEMALE             0.011      0.026      0.439      0.660
+    BLACK             -0.220      0.048     -4.599      0.000
+    WHITE             -0.181      0.036     -5.052      0.000
+
+ GRADES   WITH
+    FAMCON            -0.012      0.027     -0.435      0.663
+    ABUSE              0.006      0.049      0.131      0.895
+    SIBAGG            -0.021      0.037     -0.583      0.560
+    SHVICT             0.008      0.032      0.250      0.802
+    FEMALE             0.073      0.028      2.582      0.010
+    BLACK             -0.039      0.059     -0.655      0.512
+    WHITE              0.105      0.046      2.307      0.021
+    OTHERR             0.078      0.030      2.577      0.010
+
+ AGXFC    WITH
+    FAMCON             0.924      0.022     42.228      0.000
+    ABUSE              0.283      0.040      7.127      0.000
+    SIBAGG             0.272      0.049      5.552      0.000
+    SHVICT             0.181      0.025      7.265      0.000
+    FEMALE            -0.004      0.030     -0.151      0.880
+    BLACK              0.051      0.036      1.443      0.149
+    WHITE              0.087      0.036      2.411      0.016
+    OTHERR             0.067      0.037      1.843      0.065
+    GRADES             0.222      0.023      9.571      0.000
+
+ AGXAB    WITH
+    FAMCON             0.275      0.036      7.645      0.000
+    ABUSE              0.952      0.014     67.154      0.000
+    SIBAGG             0.074      0.018      4.193      0.000
+    SHVICT             0.143      0.029      4.983      0.000
+    FEMALE            -0.094      0.034     -2.736      0.006
+    BLACK              0.098      0.030      3.295      0.001
+    WHITE             -0.009      0.037     -0.239      0.811
+    OTHERR             0.030      0.039      0.759      0.448
+    GRADES             0.145      0.035      4.111      0.000
+    AGXFC              0.305      0.041      7.471      0.000
+
+ AGXSA    WITH
+    FAMCON             0.282      0.054      5.234      0.000
+    ABUSE              0.081      0.022      3.663      0.000
+    SIBAGG             0.960      0.016     60.595      0.000
+    SHVICT             0.119      0.045      2.627      0.009
+    FEMALE            -0.032      0.026     -1.240      0.215
+    BLACK             -0.034      0.027     -1.266      0.206
+    WHITE             -0.026      0.034     -0.782      0.434
+    OTHERR            -0.013      0.030     -0.443      0.658
+    GRADES             0.070      0.025      2.807      0.005
+    AGXFC              0.301      0.058      5.152      0.000
+    AGXAB              0.082      0.018      4.438      0.000
+
+ Means
+    FAMCON             0.824      0.037     22.014      0.000
+    ABUSE              0.515      0.022     23.674      0.000
+    SIBAGG             0.336      0.014     23.338      0.000
+    SHVICT             0.532      0.034     15.791      0.000
+    FEMALE             1.045      0.027     38.219      0.000
+    BLACK              0.605      0.089      6.825      0.000
+    WHITE              0.498      0.059      8.506      0.000
+    OTHERR             0.364      0.040      9.115      0.000
+    GRADES             3.644      0.400      9.113      0.000
+    AGXFC              0.786      0.030     26.215      0.000
+    AGXAB              0.487      0.024     20.054      0.000
+    AGXSA              0.322      0.016     19.753      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.349      0.184      1.892      0.058
+    S                  1.924      1.551      1.240      0.215
+
+ Variances
+    FAMCON             1.000      0.000    999.000    999.000
+    ABUSE              1.000      0.000    999.000    999.000
+    SIBAGG             1.000      0.000    999.000    999.000
+    SHVICT             1.000      0.000    999.000    999.000
+    FEMALE             1.000      0.000    999.000    999.000
+    BLACK              1.000      0.000    999.000    999.000
+    WHITE              1.000      0.000    999.000    999.000
+    OTHERR             1.000      0.000    999.000    999.000
+    GRADES             1.000      0.000    999.000    999.000
+    AGXFC              1.000      0.000    999.000    999.000
+    AGXAB              1.000      0.000    999.000    999.000
+    AGXSA              1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.652      0.068      9.552      0.000
+    SH_W2              0.612      0.060     10.155      0.000
+    SH_W3              0.774      0.044     17.766      0.000
+    SH_W4              0.802      0.060     13.429      0.000
+    I                  0.760      0.067     11.376      0.000
+    S                  0.000    999.000    999.000    999.000
+
+
+STDY Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ I        |
+    SH_W1              0.590      0.058     10.207      0.000
+    SH_W2              0.634      0.049     13.031      0.000
+    SH_W3              0.493      0.056      8.885      0.000
+    SH_W4              0.462      0.081      5.710      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.044      0.016      2.842      0.004
+    SH_W3              0.103      0.036      2.896      0.004
+    SH_W4              0.161      0.045      3.557      0.000
+
+ I        ON
+    FAMCON             0.105      0.180      0.585      0.559
+    ABUSE             -0.240      0.218     -1.098      0.272
+    SIBAGG            -0.138      0.168     -0.821      0.411
+    SHVICT             0.378      0.069      5.490      0.000
+    FEMALE            -0.134      0.042     -3.159      0.002
+    BLACK             -0.020      0.032     -0.621      0.535
+    WHITE             -0.087      0.041     -2.110      0.035
+    OTHERR            -0.009      0.075     -0.115      0.909
+    GRADES            -0.009      0.045     -0.212      0.832
+    AGXFC             -0.109      0.194     -0.560      0.575
+    AGXAB              0.449      0.283      1.588      0.112
+    AGXSA              0.161      0.208      0.774      0.439
+
+ S        ON
+    FAMCON             1.187      1.742      0.681      0.496
+    ABUSE             -0.388      0.938     -0.413      0.679
+    SIBAGG             0.112      1.005      0.112      0.911
+    SHVICT            -0.458      0.411     -1.115      0.265
+    FEMALE            -0.258      0.310     -0.832      0.406
+    BLACK              0.491      0.300      1.636      0.102
+    WHITE              0.238      0.231      1.032      0.302
+    OTHERR             0.226      0.300      0.754      0.451
+    GRADES            -0.144      0.264     -0.547      0.584
+    AGXFC             -1.096      1.639     -0.669      0.504
+    AGXAB             -0.188      1.050     -0.179      0.858
+    AGXSA             -0.030      0.903     -0.034      0.973
+
+ ABUSE    WITH
+    FAMCON             0.328      0.035      9.287      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.296      0.053      5.635      0.000
+    ABUSE              0.104      0.028      3.689      0.000
+
+ SHVICT   WITH
+    FAMCON             0.201      0.026      7.662      0.000
+    ABUSE              0.154      0.027      5.629      0.000
+    SIBAGG             0.114      0.043      2.684      0.007
+
+ FEMALE   WITH
+    FAMCON            -0.008      0.031     -0.265      0.791
+    ABUSE             -0.108      0.038     -2.842      0.004
+    SIBAGG            -0.038      0.026     -1.457      0.145
+    SHVICT             0.055      0.041      1.363      0.173
+
+ BLACK    WITH
+    FAMCON             0.080      0.036      2.240      0.025
+    ABUSE              0.122      0.033      3.720      0.000
+    SIBAGG            -0.029      0.025     -1.134      0.257
+    SHVICT             0.055      0.036      1.519      0.129
+    FEMALE            -0.027      0.034     -0.790      0.430
+
+ WHITE    WITH
+    FAMCON             0.069      0.030      2.280      0.023
+    ABUSE             -0.021      0.037     -0.573      0.566
+    SIBAGG            -0.045      0.031     -1.447      0.148
+    SHVICT             0.051      0.035      1.461      0.144
+    FEMALE             0.029      0.025      1.148      0.251
+    BLACK             -0.301      0.058     -5.178      0.000
+
+ OTHERR   WITH
+    FAMCON             0.031      0.032      0.967      0.334
+    ABUSE              0.011      0.042      0.268      0.789
+    SIBAGG            -0.021      0.028     -0.762      0.446
+    SHVICT             0.020      0.041      0.478      0.633
+    FEMALE             0.011      0.026      0.439      0.660
+    BLACK             -0.220      0.048     -4.599      0.000
+    WHITE             -0.181      0.036     -5.052      0.000
+
+ GRADES   WITH
+    FAMCON            -0.012      0.027     -0.435      0.663
+    ABUSE              0.006      0.049      0.131      0.895
+    SIBAGG            -0.021      0.037     -0.583      0.560
+    SHVICT             0.008      0.032      0.250      0.802
+    FEMALE             0.073      0.028      2.582      0.010
+    BLACK             -0.039      0.059     -0.655      0.512
+    WHITE              0.105      0.046      2.307      0.021
+    OTHERR             0.078      0.030      2.577      0.010
+
+ AGXFC    WITH
+    FAMCON             0.924      0.022     42.228      0.000
+    ABUSE              0.283      0.040      7.127      0.000
+    SIBAGG             0.272      0.049      5.552      0.000
+    SHVICT             0.181      0.025      7.265      0.000
+    FEMALE            -0.004      0.030     -0.151      0.880
+    BLACK              0.051      0.036      1.443      0.149
+    WHITE              0.087      0.036      2.411      0.016
+    OTHERR             0.067      0.037      1.843      0.065
+    GRADES             0.222      0.023      9.571      0.000
+
+ AGXAB    WITH
+    FAMCON             0.275      0.036      7.645      0.000
+    ABUSE              0.952      0.014     67.154      0.000
+    SIBAGG             0.074      0.018      4.193      0.000
+    SHVICT             0.143      0.029      4.983      0.000
+    FEMALE            -0.094      0.034     -2.736      0.006
+    BLACK              0.098      0.030      3.295      0.001
+    WHITE             -0.009      0.037     -0.239      0.811
+    OTHERR             0.030      0.039      0.759      0.448
+    GRADES             0.145      0.035      4.111      0.000
+    AGXFC              0.305      0.041      7.471      0.000
+
+ AGXSA    WITH
+    FAMCON             0.282      0.054      5.234      0.000
+    ABUSE              0.081      0.022      3.663      0.000
+    SIBAGG             0.960      0.016     60.595      0.000
+    SHVICT             0.119      0.045      2.627      0.009
+    FEMALE            -0.032      0.026     -1.240      0.215
+    BLACK             -0.034      0.027     -1.266      0.206
+    WHITE             -0.026      0.034     -0.782      0.434
+    OTHERR            -0.013      0.030     -0.443      0.658
+    GRADES             0.070      0.025      2.807      0.005
+    AGXFC              0.301      0.058      5.152      0.000
+    AGXAB              0.082      0.018      4.438      0.000
+
+ Means
+    FAMCON             0.824      0.037     22.014      0.000
+    ABUSE              0.515      0.022     23.674      0.000
+    SIBAGG             0.336      0.014     23.338      0.000
+    SHVICT             0.532      0.034     15.791      0.000
+    FEMALE             1.045      0.027     38.219      0.000
+    BLACK              0.605      0.089      6.825      0.000
+    WHITE              0.498      0.059      8.506      0.000
+    OTHERR             0.364      0.040      9.115      0.000
+    GRADES             3.644      0.400      9.113      0.000
+    AGXFC              0.786      0.030     26.215      0.000
+    AGXAB              0.487      0.024     20.054      0.000
+    AGXSA              0.322      0.016     19.753      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.349      0.184      1.892      0.058
+    S                  1.924      1.551      1.240      0.215
+
+ Variances
+    FAMCON             1.000      0.000    999.000    999.000
+    ABUSE              1.000      0.000    999.000    999.000
+    SIBAGG             1.000      0.000    999.000    999.000
+    SHVICT             1.000      0.000    999.000    999.000
+    FEMALE             1.000      0.000    999.000    999.000
+    BLACK              1.000      0.000    999.000    999.000
+    WHITE              1.000      0.000    999.000    999.000
+    OTHERR             1.000      0.000    999.000    999.000
+    GRADES             1.000      0.000    999.000    999.000
+    AGXFC              1.000      0.000    999.000    999.000
+    AGXAB              1.000      0.000    999.000    999.000
+    AGXSA              1.000      0.000    999.000    999.000
+
+ Residual Variances
+    SH_W1              0.652      0.068      9.552      0.000
+    SH_W2              0.612      0.060     10.155      0.000
+    SH_W3              0.774      0.044     17.766      0.000
+    SH_W4              0.802      0.060     13.429      0.000
+    I                  0.760      0.067     11.376      0.000
+    S                999.000    999.000    999.000    999.000
+
+
+STD Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ I        |
+    SH_W1              0.330      0.038      8.780      0.000
+    SH_W2              0.330      0.038      8.780      0.000
+    SH_W3              0.330      0.038      8.780      0.000
+    SH_W4              0.330      0.038      8.780      0.000
+
+ S        |
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.023      0.008      2.786      0.005
+    SH_W3              0.069      0.025      2.786      0.005
+    SH_W4              0.115      0.041      2.786      0.005
+
+ I        ON
+    FAMCON             0.125      0.215      0.583      0.560
+    ABUSE             -0.358      0.326     -1.098      0.272
+    SIBAGG            -0.156      0.191     -0.818      0.414
+    SHVICT             0.912      0.175      5.206      0.000
+    FEMALE            -0.267      0.085     -3.154      0.002
+    BLACK             -0.045      0.073     -0.619      0.536
+    WHITE             -0.219      0.105     -2.077      0.038
+    OTHERR            -0.027      0.232     -0.116      0.908
+    GRADES            -0.007      0.034     -0.214      0.830
+    AGXFC             -0.026      0.047     -0.559      0.576
+    AGXAB              0.135      0.084      1.603      0.109
+    AGXSA              0.038      0.050      0.760      0.447
+
+ S        ON
+    FAMCON             1.418      2.055      0.690      0.490
+    ABUSE             -0.579      1.400     -0.414      0.679
+    SIBAGG             0.127      1.137      0.112      0.911
+    SHVICT            -1.105      0.988     -1.119      0.263
+    FEMALE            -0.516      0.621     -0.832      0.406
+    BLACK              1.109      0.676      1.641      0.101
+    WHITE              0.597      0.584      1.022      0.307
+    OTHERR             0.704      0.901      0.782      0.434
+    GRADES            -0.112      0.204     -0.550      0.582
+    AGXFC             -0.267      0.391     -0.683      0.495
+    AGXAB             -0.056      0.315     -0.179      0.858
+    AGXSA             -0.007      0.214     -0.034      0.973
+
+ ABUSE    WITH
+    FAMCON             0.184      0.021      8.824      0.000
+
+ SIBAGG   WITH
+    FAMCON             0.219      0.042      5.163      0.000
+    ABUSE              0.062      0.016      3.905      0.000
+
+ SHVICT   WITH
+    FAMCON             0.070      0.011      6.617      0.000
+    ABUSE              0.043      0.007      6.102      0.000
+    SIBAGG             0.042      0.016      2.570      0.010
+
+ FEMALE   WITH
+    FAMCON            -0.003      0.013     -0.265      0.791
+    ABUSE             -0.036      0.013     -2.845      0.004
+    SIBAGG            -0.017      0.011     -1.520      0.128
+    SHVICT             0.011      0.008      1.360      0.174
+
+ BLACK    WITH
+    FAMCON             0.030      0.012      2.488      0.013
+    ABUSE              0.036      0.009      4.161      0.000
+    SIBAGG            -0.011      0.010     -1.114      0.265
+    SHVICT             0.010      0.006      1.631      0.103
+    FEMALE            -0.006      0.007     -0.799      0.424
+
+ WHITE    WITH
+    FAMCON             0.023      0.011      2.149      0.032
+    ABUSE             -0.006      0.010     -0.575      0.565
+    SIBAGG            -0.016      0.011     -1.410      0.159
+    SHVICT             0.008      0.006      1.470      0.142
+    FEMALE             0.006      0.005      1.097      0.273
+    BLACK             -0.053      0.016     -3.406      0.001
+
+ OTHERR   WITH
+    FAMCON             0.008      0.008      1.006      0.314
+    ABUSE              0.002      0.009      0.265      0.791
+    SIBAGG            -0.006      0.008     -0.786      0.432
+    SHVICT             0.003      0.006      0.463      0.643
+    FEMALE             0.002      0.004      0.442      0.659
+    BLACK             -0.031      0.011     -2.897      0.004
+    WHITE             -0.023      0.008     -3.005      0.003
+
+ GRADES   WITH
+    FAMCON            -0.013      0.029     -0.428      0.668
+    ABUSE              0.006      0.042      0.131      0.896
+    SIBAGG            -0.024      0.042     -0.585      0.559
+    SHVICT             0.004      0.018      0.247      0.805
+    FEMALE             0.047      0.018      2.570      0.010
+    BLACK             -0.022      0.033     -0.669      0.503
+    WHITE              0.054      0.027      2.016      0.044
+    OTHERR             0.032      0.013      2.514      0.012
+
+ AGXFC    WITH
+    FAMCON             3.178      0.321      9.890      0.000
+    ABUSE              0.778      0.119      6.558      0.000
+    SIBAGG             0.986      0.192      5.151      0.000
+    SHVICT             0.308      0.045      6.848      0.000
+    FEMALE            -0.009      0.061     -0.151      0.880
+    BLACK              0.094      0.059      1.578      0.115
+    WHITE              0.143      0.061      2.355      0.019
+    OTHERR             0.089      0.045      1.983      0.047
+    GRADES             1.173      0.189      6.190      0.000
+
+ AGXAB    WITH
+    FAMCON             0.768      0.104      7.404      0.000
+    ABUSE              2.124      0.171     12.402      0.000
+    SIBAGG             0.217      0.052      4.192      0.000
+    SHVICT             0.198      0.036      5.413      0.000
+    FEMALE            -0.157      0.058     -2.707      0.007
+    BLACK              0.144      0.039      3.674      0.000
+    WHITE             -0.012      0.049     -0.240      0.810
+    OTHERR             0.032      0.044      0.735      0.462
+    GRADES             0.624      0.194      3.217      0.001
+    AGXFC              4.179      0.620      6.740      0.000
+
+ AGXSA    WITH
+    FAMCON             0.998      0.197      5.052      0.000
+    ABUSE              0.228      0.060      3.784      0.000
+    SIBAGG             3.583      0.419      8.555      0.000
+    SHVICT             0.208      0.084      2.470      0.014
+    FEMALE            -0.067      0.052     -1.293      0.196
+    BLACK             -0.064      0.051     -1.250      0.211
+    WHITE             -0.045      0.058     -0.764      0.445
+    OTHERR            -0.018      0.040     -0.452      0.652
+    GRADES             0.380      0.161      2.360      0.018
+    AGXFC              5.225      1.045      5.000      0.000
+    AGXAB              1.148      0.264      4.341      0.000
+
+ Means
+    FAMCON             0.690      0.040     17.195      0.000
+    ABUSE              0.345      0.022     15.939      0.000
+    SIBAGG             0.297      0.023     12.990      0.000
+    SHVICT             0.221      0.022     10.152      0.000
+    FEMALE             0.522      0.013     40.016      0.000
+    BLACK              0.268      0.058      4.663      0.000
+    WHITE              0.198      0.037      5.306      0.000
+    OTHERR             0.117      0.023      5.161      0.000
+    GRADES             4.688      0.142     33.104      0.000
+    AGXFC              3.230      0.221     14.603      0.000
+    AGXAB              1.623      0.134     12.072      0.000
+    AGXSA              1.362      0.125     10.921      0.000
+
+ Intercepts
+    SH_W1              0.000      0.000    999.000    999.000
+    SH_W2              0.000      0.000    999.000    999.000
+    SH_W3              0.000      0.000    999.000    999.000
+    SH_W4              0.000      0.000    999.000    999.000
+    I                  0.349      0.184      1.892      0.058
+    S                  1.924      1.551      1.240      0.215
+
+ Variances
+    FAMCON             0.701      0.058     11.997      0.000
+    ABUSE              0.448      0.025     18.018      0.000
+    SIBAGG             0.780      0.080      9.734      0.000
+    SHVICT             0.172      0.012     14.211      0.000
+    FEMALE             0.250      0.001    424.654      0.000
+    BLACK              0.196      0.027      7.362      0.000
+    WHITE              0.159      0.023      7.053      0.000
+    OTHERR             0.103      0.017      5.949      0.000
+    GRADES             1.655      0.269      6.149      0.000
+    AGXFC             16.890      1.814      9.312      0.000
+    AGXAB             11.108      1.055     10.526      0.000
+    AGXSA             17.844      2.349      7.598      0.000
+
+ Residual Variances
+    SH_W1              0.204      0.040      5.062      0.000
+    SH_W2              0.166      0.036      4.570      0.000
+    SH_W3              0.346      0.056      6.224      0.000
+    SH_W4              0.409      0.132      3.095      0.002
+    I                  0.760      0.067     11.376      0.000
+    S                999.000    999.000    999.000    999.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    SH_W1              0.348      0.068      5.103      0.000
+    SH_W2              0.388      0.060      6.447      0.000
+    SH_W3              0.226      0.044      5.182      0.000
+    SH_W4              0.198      0.060      3.320      0.001
+
+     Latent                                         Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    I                  0.240      0.067      3.583      0.000
+    S                  1.000    999.000    999.000    999.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.259E-05
+       (ratio of smallest to largest eigenvalue)
+
+
+CONFIDENCE INTERVALS OF MODEL RESULTS
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ I        |
+    SH_W1            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W2            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W3            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SH_W4            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.500       0.500       0.500       0.500       0.500       0.500       0.500
+    SH_W3            1.500       1.500       1.500       1.500       1.500       1.500       1.500
+    SH_W4            2.500       2.500       2.500       2.500       2.500       2.500       2.500
+
+ I        ON
+    FAMCON          -0.141      -0.098      -0.075       0.041       0.158       0.181       0.224
+    ABUSE           -0.404      -0.336      -0.301      -0.118       0.064       0.099       0.168
+    SIBAGG          -0.217      -0.178      -0.157      -0.052       0.054       0.075       0.114
+    SHVICT           0.154       0.189       0.207       0.301       0.395       0.412       0.447
+    FEMALE          -0.161      -0.144      -0.135      -0.088      -0.042      -0.033      -0.015
+    BLACK           -0.079      -0.064      -0.056      -0.015       0.026       0.034       0.049
+    WHITE           -0.159      -0.138      -0.127      -0.072      -0.017      -0.006       0.014
+    OTHERR          -0.205      -0.158      -0.134      -0.009       0.117       0.141       0.188
+    GRADES          -0.032      -0.025      -0.021      -0.002       0.016       0.020       0.027
+    AGXFC           -0.049      -0.040      -0.035      -0.009       0.017       0.022       0.032
+    AGXAB           -0.030      -0.013      -0.003       0.044       0.092       0.101       0.119
+    AGXSA           -0.031      -0.021      -0.015       0.013       0.040       0.046       0.056
+
+ S        ON
+    FAMCON          -0.219      -0.151      -0.116       0.065       0.247       0.281       0.349
+    ABUSE           -0.196      -0.156      -0.135      -0.027       0.081       0.102       0.143
+    SIBAGG          -0.127      -0.095      -0.079       0.006       0.091       0.107       0.139
+    SHVICT          -0.182      -0.151      -0.135      -0.051       0.033       0.049       0.080
+    FEMALE          -0.094      -0.077      -0.069      -0.024       0.021       0.030       0.046
+    BLACK           -0.044      -0.021      -0.010       0.051       0.112       0.124       0.146
+    WHITE           -0.041      -0.024      -0.016       0.028       0.071       0.080       0.096
+    OTHERR          -0.087      -0.058      -0.044       0.032       0.109       0.123       0.152
+    GRADES          -0.028      -0.022      -0.020      -0.005       0.009       0.012       0.017
+    AGXFC           -0.065      -0.052      -0.046      -0.012       0.021       0.028       0.040
+    AGXAB           -0.040      -0.031      -0.026      -0.003       0.021       0.026       0.035
+    AGXSA           -0.026      -0.020      -0.016       0.000       0.016       0.019       0.025
+
+ ABUSE    WITH
+    FAMCON           0.130       0.143       0.150       0.184       0.218       0.225       0.237
+
+ SIBAGG   WITH
+    FAMCON           0.110       0.136       0.149       0.219       0.289       0.302       0.328
+    ABUSE            0.021       0.031       0.036       0.062       0.088       0.093       0.102
+
+ SHVICT   WITH
+    FAMCON           0.043       0.049       0.052       0.070       0.087       0.090       0.097
+    ABUSE            0.025       0.029       0.031       0.043       0.054       0.057       0.061
+    SIBAGG           0.000       0.010       0.015       0.042       0.068       0.074       0.084
+
+ FEMALE   WITH
+    FAMCON          -0.037      -0.029      -0.025      -0.003       0.018       0.022       0.030
+    ABUSE           -0.069      -0.061      -0.057      -0.036      -0.015      -0.011      -0.003
+    SIBAGG          -0.045      -0.038      -0.035      -0.017       0.001       0.005       0.012
+    SHVICT          -0.010      -0.005      -0.002       0.011       0.025       0.028       0.033
+
+ BLACK    WITH
+    FAMCON          -0.001       0.006       0.010       0.030       0.049       0.053       0.060
+    ABUSE            0.014       0.019       0.022       0.036       0.051       0.053       0.059
+    SIBAGG          -0.037      -0.031      -0.028      -0.011       0.005       0.009       0.015
+    SHVICT          -0.006      -0.002       0.000       0.010       0.020       0.022       0.026
+    FEMALE          -0.025      -0.020      -0.018      -0.006       0.006       0.009       0.013
+
+ WHITE    WITH
+    FAMCON          -0.005       0.002       0.005       0.023       0.041       0.044       0.051
+    ABUSE           -0.031      -0.025      -0.022      -0.006       0.010       0.014       0.020
+    SIBAGG          -0.045      -0.038      -0.034      -0.016       0.003       0.006       0.013
+    SHVICT          -0.006      -0.003      -0.001       0.008       0.018       0.020       0.023
+    FEMALE          -0.008      -0.005      -0.003       0.006       0.015       0.016       0.019
+    BLACK           -0.094      -0.084      -0.079      -0.053      -0.028      -0.023      -0.013
+
+ OTHERR   WITH
+    FAMCON          -0.013      -0.008      -0.005       0.008       0.022       0.025       0.030
+    ABUSE           -0.021      -0.015      -0.013       0.002       0.017       0.020       0.026
+    SIBAGG          -0.026      -0.021      -0.019      -0.006       0.007       0.009       0.014
+    SHVICT          -0.012      -0.008      -0.007       0.003       0.012       0.014       0.017
+    FEMALE          -0.009      -0.006      -0.005       0.002       0.009       0.010       0.012
+    BLACK           -0.059      -0.053      -0.049      -0.031      -0.014      -0.010      -0.003
+    WHITE           -0.043      -0.038      -0.036      -0.023      -0.011      -0.008      -0.003
+
+ GRADES   WITH
+    FAMCON          -0.088      -0.070      -0.061      -0.013       0.036       0.045       0.063
+    ABUSE           -0.103      -0.077      -0.064       0.006       0.075       0.088       0.114
+    SIBAGG          -0.132      -0.106      -0.093      -0.024       0.044       0.057       0.083
+    SHVICT          -0.041      -0.030      -0.025       0.004       0.033       0.039       0.050
+    FEMALE           0.000       0.011       0.017       0.047       0.077       0.083       0.094
+    BLACK           -0.107      -0.087      -0.076      -0.022       0.032       0.042       0.063
+    WHITE           -0.015       0.002       0.010       0.054       0.098       0.106       0.123
+    OTHERR          -0.001       0.007       0.011       0.032       0.054       0.058       0.065
+
+ AGXFC    WITH
+    FAMCON           2.350       2.548       2.649       3.178       3.707       3.808       4.006
+    ABUSE            0.472       0.545       0.582       0.778       0.973       1.010       1.083
+    SIBAGG           0.493       0.611       0.671       0.986       1.301       1.362       1.480
+    SHVICT           0.192       0.220       0.234       0.308       0.382       0.396       0.423
+    FEMALE          -0.167      -0.129      -0.110      -0.009       0.092       0.111       0.149
+    BLACK           -0.059      -0.023      -0.004       0.094       0.191       0.210       0.246
+    WHITE           -0.013       0.024       0.043       0.143       0.243       0.262       0.300
+    OTHERR          -0.027       0.001       0.015       0.089       0.163       0.177       0.204
+    GRADES           0.685       0.801       0.861       1.173       1.484       1.544       1.660
+
+ AGXAB    WITH
+    FAMCON           0.501       0.564       0.597       0.768       0.938       0.971       1.035
+    ABUSE            1.683       1.788       1.842       2.124       2.406       2.460       2.565
+    SIBAGG           0.084       0.116       0.132       0.217       0.302       0.319       0.350
+    SHVICT           0.104       0.126       0.137       0.198       0.258       0.269       0.291
+    FEMALE          -0.306      -0.270      -0.252      -0.157      -0.061      -0.043      -0.008
+    BLACK            0.043       0.067       0.080       0.144       0.209       0.221       0.245
+    WHITE           -0.137      -0.107      -0.092      -0.012       0.068       0.084       0.114
+    OTHERR          -0.080      -0.053      -0.040       0.032       0.104       0.117       0.144
+    GRADES           0.124       0.244       0.305       0.624       0.943       1.004       1.123
+    AGXFC            2.582       2.964       3.159       4.179       5.199       5.395       5.777
+
+ AGXSA    WITH
+    FAMCON           0.489       0.611       0.673       0.998       1.323       1.385       1.506
+    ABUSE            0.073       0.110       0.129       0.228       0.328       0.347       0.384
+    SIBAGG           2.504       2.762       2.894       3.583       4.272       4.404       4.662
+    SHVICT          -0.009       0.043       0.069       0.208       0.346       0.372       0.424
+    FEMALE          -0.202      -0.169      -0.153      -0.067       0.018       0.035       0.067
+    BLACK           -0.196      -0.164      -0.148      -0.064       0.020       0.036       0.068
+    WHITE           -0.195      -0.159      -0.141      -0.045       0.051       0.070       0.106
+    OTHERR          -0.122      -0.097      -0.085      -0.018       0.048       0.061       0.086
+    GRADES          -0.035       0.064       0.115       0.380       0.645       0.695       0.795
+    AGXFC            2.533       3.177       3.506       5.225       6.944       7.273       7.917
+    AGXAB            0.467       0.630       0.713       1.148       1.583       1.666       1.829
+
+ Means
+    FAMCON           0.587       0.611       0.624       0.690       0.756       0.769       0.793
+    ABUSE            0.289       0.302       0.309       0.345       0.380       0.387       0.400
+    SIBAGG           0.238       0.252       0.259       0.297       0.334       0.342       0.356
+    SHVICT           0.165       0.178       0.185       0.221       0.256       0.263       0.276
+    FEMALE           0.488       0.496       0.501       0.522       0.543       0.548       0.556
+    BLACK            0.120       0.155       0.174       0.268       0.363       0.381       0.416
+    WHITE            0.102       0.125       0.137       0.198       0.260       0.272       0.295
+    OTHERR           0.059       0.073       0.080       0.117       0.154       0.161       0.175
+    GRADES           4.323       4.410       4.455       4.688       4.921       4.965       5.053
+    AGXFC            2.660       2.796       2.866       3.230       3.593       3.663       3.799
+    AGXAB            1.277       1.360       1.402       1.623       1.845       1.887       1.970
+    AGXSA            1.041       1.118       1.157       1.362       1.567       1.607       1.683
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.042      -0.005       0.015       0.115       0.216       0.235       0.272
+    S               -0.049      -0.016       0.001       0.089       0.176       0.193       0.226
+
+ Variances
+    FAMCON           0.550       0.586       0.605       0.701       0.797       0.815       0.851
+    ABUSE            0.384       0.399       0.407       0.448       0.489       0.497       0.512
+    SIBAGG           0.574       0.623       0.648       0.780       0.912       0.937       0.987
+    SHVICT           0.141       0.148       0.152       0.172       0.192       0.195       0.203
+    FEMALE           0.248       0.248       0.249       0.250       0.251       0.251       0.251
+    BLACK            0.128       0.144       0.152       0.196       0.240       0.249       0.265
+    WHITE            0.101       0.115       0.122       0.159       0.196       0.203       0.217
+    OTHERR           0.059       0.069       0.075       0.103       0.132       0.137       0.148
+    GRADES           0.962       1.128       1.212       1.655       2.098       2.183       2.348
+    AGXFC           12.218      13.335      13.907      16.890      19.874      20.445      21.562
+    AGXAB            8.390       9.040       9.372      11.108      12.844      13.177      13.827
+    AGXSA           11.794      13.241      13.981      17.844      21.707      22.447      23.893
+
+ Residual Variances
+    SH_W1            0.100       0.125       0.138       0.204       0.270       0.283       0.308
+    SH_W2            0.072       0.095       0.106       0.166       0.225       0.237       0.259
+    SH_W3            0.203       0.237       0.255       0.346       0.438       0.455       0.489
+    SH_W4            0.069       0.150       0.191       0.409       0.626       0.668       0.749
+    I                0.028       0.041       0.048       0.083       0.118       0.125       0.138
+    S                0.000       0.000       0.000       0.000       0.000       0.000       0.000
+
+
+CONFIDENCE INTERVALS OF STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ I        |
+    SH_W1            0.441       0.477       0.495       0.590       0.685       0.703       0.739
+    SH_W2            0.509       0.539       0.554       0.634       0.714       0.729       0.759
+    SH_W3            0.350       0.385       0.402       0.493       0.585       0.602       0.636
+    SH_W4            0.254       0.304       0.329       0.462       0.595       0.621       0.671
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.004       0.014       0.019       0.044       0.070       0.075       0.084
+    SH_W3            0.011       0.033       0.045       0.103       0.162       0.173       0.195
+    SH_W4            0.045       0.072       0.087       0.161       0.236       0.250       0.278
+
+ I        ON
+    FAMCON          -0.358      -0.247      -0.190       0.105       0.400       0.457       0.568
+    ABUSE           -0.801      -0.667      -0.598      -0.240       0.119       0.188       0.322
+    SIBAGG          -0.571      -0.468      -0.415      -0.138       0.139       0.192       0.295
+    SHVICT           0.201       0.243       0.265       0.378       0.491       0.513       0.555
+    FEMALE          -0.243      -0.216      -0.203      -0.134      -0.064      -0.051      -0.025
+    BLACK           -0.103      -0.083      -0.073      -0.020       0.033       0.043       0.063
+    WHITE           -0.194      -0.168      -0.155      -0.087      -0.019      -0.006       0.019
+    OTHERR          -0.202      -0.156      -0.132      -0.009       0.115       0.139       0.185
+    GRADES          -0.124      -0.097      -0.083      -0.009       0.064       0.078       0.105
+    AGXFC           -0.608      -0.488      -0.427      -0.109       0.210       0.271       0.390
+    AGXAB           -0.279      -0.105      -0.016       0.449       0.913       1.002       1.176
+    AGXSA           -0.375      -0.247      -0.181       0.161       0.503       0.569       0.697
+
+ S        ON
+    FAMCON          -3.300      -2.228      -1.679       1.187       4.052       4.601       5.674
+    ABUSE           -2.803      -2.226      -1.930      -0.388       1.155       1.450       2.028
+    SIBAGG          -2.476      -1.857      -1.541       0.112       1.765       2.081       2.700
+    SHVICT          -1.516      -1.263      -1.133      -0.458       0.217       0.347       0.600
+    FEMALE          -1.057      -0.866      -0.768      -0.258       0.252       0.350       0.541
+    BLACK           -0.282      -0.097      -0.003       0.491       0.986       1.080       1.265
+    WHITE           -0.356      -0.214      -0.142       0.238       0.618       0.691       0.833
+    OTHERR          -0.547      -0.362      -0.267       0.226       0.720       0.815       0.999
+    GRADES          -0.824      -0.661      -0.578      -0.144       0.290       0.373       0.535
+    AGXFC           -5.319      -4.309      -3.793      -1.096       1.600       2.117       3.126
+    AGXAB           -2.892      -2.245      -1.915      -0.188       1.539       1.870       2.516
+    AGXSA           -2.356      -1.800      -1.516      -0.030       1.455       1.739       2.295
+
+ ABUSE    WITH
+    FAMCON           0.237       0.259       0.270       0.328       0.386       0.397       0.419
+
+ SIBAGG   WITH
+    FAMCON           0.161       0.193       0.210       0.296       0.382       0.399       0.431
+    ABUSE            0.031       0.049       0.058       0.104       0.151       0.160       0.177
+
+ SHVICT   WITH
+    FAMCON           0.134       0.150       0.158       0.201       0.244       0.253       0.269
+    ABUSE            0.084       0.100       0.109       0.154       0.199       0.208       0.225
+    SIBAGG           0.005       0.031       0.044       0.114       0.184       0.197       0.224
+
+ FEMALE   WITH
+    FAMCON          -0.089      -0.070      -0.060      -0.008       0.043       0.053       0.072
+    ABUSE           -0.206      -0.183      -0.171      -0.108      -0.046      -0.034      -0.010
+    SIBAGG          -0.104      -0.088      -0.080      -0.038       0.005       0.013       0.029
+    SHVICT          -0.049      -0.024      -0.011       0.055       0.122       0.135       0.160
+
+ BLACK    WITH
+    FAMCON          -0.012       0.010       0.021       0.080       0.139       0.150       0.172
+    ABUSE            0.038       0.058       0.068       0.122       0.176       0.186       0.207
+    SIBAGG          -0.094      -0.078      -0.070      -0.029       0.013       0.021       0.037
+    SHVICT          -0.038      -0.016      -0.005       0.055       0.115       0.127       0.149
+    FEMALE          -0.114      -0.093      -0.082      -0.027       0.029       0.040       0.060
+
+ WHITE    WITH
+    FAMCON          -0.009       0.010       0.019       0.069       0.119       0.129       0.148
+    ABUSE           -0.116      -0.093      -0.082      -0.021       0.040       0.051       0.074
+    SIBAGG          -0.125      -0.106      -0.096      -0.045       0.006       0.016       0.035
+    SHVICT          -0.039      -0.017      -0.006       0.051       0.108       0.119       0.141
+    FEMALE          -0.036      -0.021      -0.013       0.029       0.071       0.079       0.095
+    BLACK           -0.451      -0.415      -0.397      -0.301      -0.206      -0.187      -0.151
+
+ OTHERR   WITH
+    FAMCON          -0.052      -0.032      -0.022       0.031       0.084       0.094       0.114
+    ABUSE           -0.097      -0.071      -0.058       0.011       0.080       0.093       0.119
+    SIBAGG          -0.093      -0.076      -0.067      -0.021       0.025       0.034       0.051
+    SHVICT          -0.086      -0.060      -0.048       0.020       0.087       0.099       0.125
+    FEMALE          -0.055      -0.039      -0.031       0.011       0.054       0.062       0.078
+    BLACK           -0.344      -0.314      -0.299      -0.220      -0.142      -0.126      -0.097
+    WHITE           -0.273      -0.251      -0.240      -0.181      -0.122      -0.111      -0.089
+
+ GRADES   WITH
+    FAMCON          -0.081      -0.064      -0.056      -0.012       0.032       0.041       0.057
+    ABUSE           -0.119      -0.089      -0.074       0.006       0.087       0.102       0.132
+    SIBAGG          -0.116      -0.094      -0.082      -0.021       0.039       0.051       0.073
+    SHVICT          -0.076      -0.056      -0.045       0.008       0.062       0.072       0.092
+    FEMALE           0.000       0.018       0.027       0.073       0.120       0.129       0.146
+    BLACK           -0.191      -0.154      -0.136      -0.039       0.058       0.077       0.113
+    WHITE           -0.012       0.016       0.030       0.105       0.180       0.194       0.222
+    OTHERR           0.000       0.019       0.028       0.078       0.128       0.138       0.156
+
+ AGXFC    WITH
+    FAMCON           0.867       0.881       0.888       0.924       0.960       0.967       0.980
+    ABUSE            0.180       0.205       0.217       0.283       0.348       0.360       0.385
+    SIBAGG           0.146       0.176       0.191       0.272       0.352       0.368       0.398
+    SHVICT           0.117       0.132       0.140       0.181       0.221       0.229       0.245
+    FEMALE          -0.081      -0.063      -0.054      -0.004       0.045       0.054       0.072
+    BLACK           -0.040      -0.018      -0.007       0.051       0.110       0.121       0.143
+    WHITE           -0.006       0.016       0.028       0.087       0.147       0.158       0.181
+    OTHERR          -0.027      -0.004       0.007       0.067       0.127       0.139       0.161
+    GRADES           0.162       0.176       0.184       0.222       0.260       0.267       0.281
+
+ AGXAB    WITH
+    FAMCON           0.182       0.205       0.216       0.275       0.334       0.346       0.368
+    ABUSE            0.915       0.924       0.929       0.952       0.975       0.980       0.988
+    SIBAGG           0.028       0.039       0.045       0.074       0.103       0.108       0.119
+    SHVICT           0.069       0.087       0.096       0.143       0.190       0.199       0.217
+    FEMALE          -0.183      -0.161      -0.151      -0.094      -0.038      -0.027      -0.005
+    BLACK            0.021       0.040       0.049       0.098       0.146       0.156       0.174
+    WHITE           -0.103      -0.081      -0.069      -0.009       0.052       0.063       0.086
+    OTHERR          -0.072      -0.047      -0.035       0.030       0.095       0.107       0.131
+    GRADES           0.054       0.076       0.087       0.145       0.204       0.215       0.237
+    AGXFC            0.200       0.225       0.238       0.305       0.372       0.385       0.410
+
+ AGXSA    WITH
+    FAMCON           0.143       0.177       0.193       0.282       0.371       0.388       0.421
+    ABUSE            0.024       0.038       0.044       0.081       0.117       0.124       0.137
+    SIBAGG           0.919       0.929       0.934       0.960       0.986       0.991       1.001
+    SHVICT           0.002       0.030       0.044       0.119       0.193       0.207       0.235
+    FEMALE          -0.098      -0.082      -0.074      -0.032       0.010       0.019       0.034
+    BLACK           -0.104      -0.087      -0.079      -0.034       0.010       0.019       0.035
+    WHITE           -0.114      -0.093      -0.082      -0.026       0.029       0.040       0.061
+    OTHERR          -0.091      -0.073      -0.063      -0.013       0.036       0.046       0.065
+    GRADES           0.006       0.021       0.029       0.070       0.111       0.119       0.134
+    AGXFC            0.150       0.186       0.205       0.301       0.397       0.415       0.451
+    AGXAB            0.034       0.046       0.051       0.082       0.112       0.118       0.129
+
+ Means
+    FAMCON           0.728       0.751       0.763       0.824       0.886       0.898       0.921
+    ABUSE            0.459       0.472       0.479       0.515       0.550       0.557       0.571
+    SIBAGG           0.299       0.308       0.312       0.336       0.360       0.364       0.373
+    SHVICT           0.445       0.466       0.477       0.532       0.588       0.598       0.619
+    FEMALE           0.975       0.991       1.000       1.045       1.090       1.099       1.115
+    BLACK            0.377       0.432       0.460       0.605       0.751       0.779       0.834
+    WHITE            0.347       0.383       0.401       0.498       0.594       0.612       0.648
+    OTHERR           0.261       0.286       0.298       0.364       0.430       0.442       0.467
+    GRADES           2.614       2.860       2.986       3.644       4.302       4.428       4.674
+    AGXFC            0.709       0.727       0.737       0.786       0.835       0.845       0.863
+    AGXAB            0.425       0.439       0.447       0.487       0.527       0.535       0.550
+    AGXSA            0.280       0.290       0.296       0.322       0.349       0.354       0.365
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.126      -0.012       0.046       0.349       0.652       0.710       0.823
+    S               -2.072      -1.117      -0.628       1.924       4.475       4.964       5.919
+
+ Variances
+    FAMCON           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ABUSE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SIBAGG           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SHVICT           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    FEMALE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    BLACK            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    WHITE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    OTHERR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    GRADES           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXFC            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXAB            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXSA            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.476       0.518       0.540       0.652       0.764       0.786       0.828
+    SH_W2            0.457       0.494       0.513       0.612       0.711       0.730       0.767
+    SH_W3            0.662       0.689       0.702       0.774       0.846       0.860       0.886
+    SH_W4            0.648       0.685       0.704       0.802       0.900       0.919       0.956
+    I                0.588       0.629       0.651       0.760       0.870       0.892       0.933
+    S              999.000     999.000     999.000       0.000     999.000     999.000     999.000
+
+
+STDY Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ I        |
+    SH_W1            0.441       0.477       0.495       0.590       0.685       0.703       0.739
+    SH_W2            0.509       0.539       0.554       0.634       0.714       0.729       0.759
+    SH_W3            0.350       0.385       0.402       0.493       0.585       0.602       0.636
+    SH_W4            0.254       0.304       0.329       0.462       0.595       0.621       0.671
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.004       0.014       0.019       0.044       0.070       0.075       0.084
+    SH_W3            0.011       0.033       0.045       0.103       0.162       0.173       0.195
+    SH_W4            0.045       0.072       0.087       0.161       0.236       0.250       0.278
+
+ I        ON
+    FAMCON          -0.358      -0.247      -0.190       0.105       0.400       0.457       0.568
+    ABUSE           -0.801      -0.667      -0.598      -0.240       0.119       0.188       0.322
+    SIBAGG          -0.571      -0.468      -0.415      -0.138       0.139       0.192       0.295
+    SHVICT           0.201       0.243       0.265       0.378       0.491       0.513       0.555
+    FEMALE          -0.243      -0.216      -0.203      -0.134      -0.064      -0.051      -0.025
+    BLACK           -0.103      -0.083      -0.073      -0.020       0.033       0.043       0.063
+    WHITE           -0.194      -0.168      -0.155      -0.087      -0.019      -0.006       0.019
+    OTHERR          -0.202      -0.156      -0.132      -0.009       0.115       0.139       0.185
+    GRADES          -0.124      -0.097      -0.083      -0.009       0.064       0.078       0.105
+    AGXFC           -0.608      -0.488      -0.427      -0.109       0.210       0.271       0.390
+    AGXAB           -0.279      -0.105      -0.016       0.449       0.913       1.002       1.176
+    AGXSA           -0.375      -0.247      -0.181       0.161       0.503       0.569       0.697
+
+ S        ON
+    FAMCON          -3.300      -2.228      -1.679       1.187       4.052       4.601       5.674
+    ABUSE           -2.803      -2.226      -1.930      -0.388       1.155       1.450       2.028
+    SIBAGG          -2.476      -1.857      -1.541       0.112       1.765       2.081       2.700
+    SHVICT          -1.516      -1.263      -1.133      -0.458       0.217       0.347       0.600
+    FEMALE          -1.057      -0.866      -0.768      -0.258       0.252       0.350       0.541
+    BLACK           -0.282      -0.097      -0.003       0.491       0.986       1.080       1.265
+    WHITE           -0.356      -0.214      -0.142       0.238       0.618       0.691       0.833
+    OTHERR          -0.547      -0.362      -0.267       0.226       0.720       0.815       0.999
+    GRADES          -0.824      -0.661      -0.578      -0.144       0.290       0.373       0.535
+    AGXFC           -5.319      -4.309      -3.793      -1.096       1.600       2.117       3.126
+    AGXAB           -2.892      -2.245      -1.915      -0.188       1.539       1.870       2.516
+    AGXSA           -2.356      -1.800      -1.516      -0.030       1.455       1.739       2.295
+
+ ABUSE    WITH
+    FAMCON           0.237       0.259       0.270       0.328       0.386       0.397       0.419
+
+ SIBAGG   WITH
+    FAMCON           0.161       0.193       0.210       0.296       0.382       0.399       0.431
+    ABUSE            0.031       0.049       0.058       0.104       0.151       0.160       0.177
+
+ SHVICT   WITH
+    FAMCON           0.134       0.150       0.158       0.201       0.244       0.253       0.269
+    ABUSE            0.084       0.100       0.109       0.154       0.199       0.208       0.225
+    SIBAGG           0.005       0.031       0.044       0.114       0.184       0.197       0.224
+
+ FEMALE   WITH
+    FAMCON          -0.089      -0.070      -0.060      -0.008       0.043       0.053       0.072
+    ABUSE           -0.206      -0.183      -0.171      -0.108      -0.046      -0.034      -0.010
+    SIBAGG          -0.104      -0.088      -0.080      -0.038       0.005       0.013       0.029
+    SHVICT          -0.049      -0.024      -0.011       0.055       0.122       0.135       0.160
+
+ BLACK    WITH
+    FAMCON          -0.012       0.010       0.021       0.080       0.139       0.150       0.172
+    ABUSE            0.038       0.058       0.068       0.122       0.176       0.186       0.207
+    SIBAGG          -0.094      -0.078      -0.070      -0.029       0.013       0.021       0.037
+    SHVICT          -0.038      -0.016      -0.005       0.055       0.115       0.127       0.149
+    FEMALE          -0.114      -0.093      -0.082      -0.027       0.029       0.040       0.060
+
+ WHITE    WITH
+    FAMCON          -0.009       0.010       0.019       0.069       0.119       0.129       0.148
+    ABUSE           -0.116      -0.093      -0.082      -0.021       0.040       0.051       0.074
+    SIBAGG          -0.125      -0.106      -0.096      -0.045       0.006       0.016       0.035
+    SHVICT          -0.039      -0.017      -0.006       0.051       0.108       0.119       0.141
+    FEMALE          -0.036      -0.021      -0.013       0.029       0.071       0.079       0.095
+    BLACK           -0.451      -0.415      -0.397      -0.301      -0.206      -0.187      -0.151
+
+ OTHERR   WITH
+    FAMCON          -0.052      -0.032      -0.022       0.031       0.084       0.094       0.114
+    ABUSE           -0.097      -0.071      -0.058       0.011       0.080       0.093       0.119
+    SIBAGG          -0.093      -0.076      -0.067      -0.021       0.025       0.034       0.051
+    SHVICT          -0.086      -0.060      -0.048       0.020       0.087       0.099       0.125
+    FEMALE          -0.055      -0.039      -0.031       0.011       0.054       0.062       0.078
+    BLACK           -0.344      -0.314      -0.299      -0.220      -0.142      -0.126      -0.097
+    WHITE           -0.273      -0.251      -0.240      -0.181      -0.122      -0.111      -0.089
+
+ GRADES   WITH
+    FAMCON          -0.081      -0.064      -0.056      -0.012       0.032       0.041       0.057
+    ABUSE           -0.119      -0.089      -0.074       0.006       0.087       0.102       0.132
+    SIBAGG          -0.116      -0.094      -0.082      -0.021       0.039       0.051       0.073
+    SHVICT          -0.076      -0.056      -0.045       0.008       0.062       0.072       0.092
+    FEMALE           0.000       0.018       0.027       0.073       0.120       0.129       0.146
+    BLACK           -0.191      -0.154      -0.136      -0.039       0.058       0.077       0.113
+    WHITE           -0.012       0.016       0.030       0.105       0.180       0.194       0.222
+    OTHERR           0.000       0.019       0.028       0.078       0.128       0.138       0.156
+
+ AGXFC    WITH
+    FAMCON           0.867       0.881       0.888       0.924       0.960       0.967       0.980
+    ABUSE            0.180       0.205       0.217       0.283       0.348       0.360       0.385
+    SIBAGG           0.146       0.176       0.191       0.272       0.352       0.368       0.398
+    SHVICT           0.117       0.132       0.140       0.181       0.221       0.229       0.245
+    FEMALE          -0.081      -0.063      -0.054      -0.004       0.045       0.054       0.072
+    BLACK           -0.040      -0.018      -0.007       0.051       0.110       0.121       0.143
+    WHITE           -0.006       0.016       0.028       0.087       0.147       0.158       0.181
+    OTHERR          -0.027      -0.004       0.007       0.067       0.127       0.139       0.161
+    GRADES           0.162       0.176       0.184       0.222       0.260       0.267       0.281
+
+ AGXAB    WITH
+    FAMCON           0.182       0.205       0.216       0.275       0.334       0.346       0.368
+    ABUSE            0.915       0.924       0.929       0.952       0.975       0.980       0.988
+    SIBAGG           0.028       0.039       0.045       0.074       0.103       0.108       0.119
+    SHVICT           0.069       0.087       0.096       0.143       0.190       0.199       0.217
+    FEMALE          -0.183      -0.161      -0.151      -0.094      -0.038      -0.027      -0.005
+    BLACK            0.021       0.040       0.049       0.098       0.146       0.156       0.174
+    WHITE           -0.103      -0.081      -0.069      -0.009       0.052       0.063       0.086
+    OTHERR          -0.072      -0.047      -0.035       0.030       0.095       0.107       0.131
+    GRADES           0.054       0.076       0.087       0.145       0.204       0.215       0.237
+    AGXFC            0.200       0.225       0.238       0.305       0.372       0.385       0.410
+
+ AGXSA    WITH
+    FAMCON           0.143       0.177       0.193       0.282       0.371       0.388       0.421
+    ABUSE            0.024       0.038       0.044       0.081       0.117       0.124       0.137
+    SIBAGG           0.919       0.929       0.934       0.960       0.986       0.991       1.001
+    SHVICT           0.002       0.030       0.044       0.119       0.193       0.207       0.235
+    FEMALE          -0.098      -0.082      -0.074      -0.032       0.010       0.019       0.034
+    BLACK           -0.104      -0.087      -0.079      -0.034       0.010       0.019       0.035
+    WHITE           -0.114      -0.093      -0.082      -0.026       0.029       0.040       0.061
+    OTHERR          -0.091      -0.073      -0.063      -0.013       0.036       0.046       0.065
+    GRADES           0.006       0.021       0.029       0.070       0.111       0.119       0.134
+    AGXFC            0.150       0.186       0.205       0.301       0.397       0.415       0.451
+    AGXAB            0.034       0.046       0.051       0.082       0.112       0.118       0.129
+
+ Means
+    FAMCON           0.728       0.751       0.763       0.824       0.886       0.898       0.921
+    ABUSE            0.459       0.472       0.479       0.515       0.550       0.557       0.571
+    SIBAGG           0.299       0.308       0.312       0.336       0.360       0.364       0.373
+    SHVICT           0.445       0.466       0.477       0.532       0.588       0.598       0.619
+    FEMALE           0.975       0.991       1.000       1.045       1.090       1.099       1.115
+    BLACK            0.377       0.432       0.460       0.605       0.751       0.779       0.834
+    WHITE            0.347       0.383       0.401       0.498       0.594       0.612       0.648
+    OTHERR           0.261       0.286       0.298       0.364       0.430       0.442       0.467
+    GRADES           2.614       2.860       2.986       3.644       4.302       4.428       4.674
+    AGXFC            0.709       0.727       0.737       0.786       0.835       0.845       0.863
+    AGXAB            0.425       0.439       0.447       0.487       0.527       0.535       0.550
+    AGXSA            0.280       0.290       0.296       0.322       0.349       0.354       0.365
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.126      -0.012       0.046       0.349       0.652       0.710       0.823
+    S               -2.072      -1.117      -0.628       1.924       4.475       4.964       5.919
+
+ Variances
+    FAMCON           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    ABUSE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SIBAGG           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    SHVICT           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    FEMALE           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    BLACK            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    WHITE            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    OTHERR           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    GRADES           1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXFC            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXAB            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+    AGXSA            1.000       1.000       1.000       1.000       1.000       1.000       1.000
+
+ Residual Variances
+    SH_W1            0.476       0.518       0.540       0.652       0.764       0.786       0.828
+    SH_W2            0.457       0.494       0.513       0.612       0.711       0.730       0.767
+    SH_W3            0.662       0.689       0.702       0.774       0.846       0.860       0.886
+    SH_W4            0.648       0.685       0.704       0.802       0.900       0.919       0.956
+    I                0.588       0.629       0.651       0.760       0.870       0.892       0.933
+    S              999.000     999.000     999.000     999.000     999.000     999.000     999.000
+
+
+STD Standardization
+
+                  Lower .5%  Lower 2.5%    Lower 5%    Estimate    Upper 5%  Upper 2.5%   Upper .5%
+
+ I        |
+    SH_W1            0.233       0.256       0.268       0.330       0.392       0.404       0.427
+    SH_W2            0.233       0.256       0.268       0.330       0.392       0.404       0.427
+    SH_W3            0.233       0.256       0.268       0.330       0.392       0.404       0.427
+    SH_W4            0.233       0.256       0.268       0.330       0.392       0.404       0.427
+
+ S        |
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.002       0.007       0.009       0.023       0.037       0.039       0.044
+    SH_W3            0.005       0.021       0.028       0.069       0.110       0.118       0.133
+    SH_W4            0.009       0.034       0.047       0.115       0.183       0.196       0.222
+
+ I        ON
+    FAMCON          -0.429      -0.296      -0.228       0.125       0.479       0.547       0.680
+    ABUSE           -1.197      -0.996      -0.894      -0.358       0.178       0.281       0.481
+    SIBAGG          -0.649      -0.531      -0.471      -0.156       0.158       0.219       0.336
+    SHVICT           0.461       0.569       0.624       0.912       1.200       1.255       1.363
+    FEMALE          -0.486      -0.434      -0.407      -0.267      -0.128      -0.101      -0.049
+    BLACK           -0.234      -0.189      -0.166      -0.045       0.075       0.098       0.143
+    WHITE           -0.490      -0.425      -0.392      -0.219      -0.046      -0.012       0.052
+    OTHERR          -0.624      -0.481      -0.408      -0.027       0.355       0.428       0.570
+    GRADES          -0.096      -0.075      -0.064      -0.007       0.049       0.060       0.081
+    AGXFC           -0.148      -0.119      -0.104      -0.026       0.051       0.066       0.095
+    AGXAB           -0.082      -0.030      -0.004       0.135       0.273       0.299       0.351
+    AGXSA           -0.091      -0.060      -0.044       0.038       0.121       0.136       0.167
+
+ S        ON
+    FAMCON          -3.876      -2.610      -1.963       1.418       4.798       5.446       6.711
+    ABUSE           -4.186      -3.324      -2.882      -0.579       1.724       2.165       3.027
+    SIBAGG          -2.802      -2.101      -1.743       0.127       1.997       2.355       3.055
+    SHVICT          -3.649      -3.041      -2.730      -1.105       0.519       0.831       1.439
+    FEMALE          -2.116      -1.733      -1.538      -0.516       0.505       0.700       1.083
+    BLACK           -0.632      -0.216      -0.003       1.109       2.221       2.434       2.850
+    WHITE           -0.908      -0.548      -0.364       0.597       1.558       1.742       2.102
+    OTHERR          -1.616      -1.062      -0.778       0.704       2.186       2.470       3.025
+    GRADES          -0.637      -0.512      -0.448      -0.112       0.223       0.287       0.413
+    AGXFC           -1.273      -1.033      -0.909      -0.267       0.376       0.499       0.740
+    AGXAB           -0.867      -0.673      -0.574      -0.056       0.461       0.561       0.754
+    AGXSA           -0.558      -0.426      -0.359      -0.007       0.344       0.412       0.543
+
+ ABUSE    WITH
+    FAMCON           0.130       0.143       0.150       0.184       0.218       0.225       0.237
+
+ SIBAGG   WITH
+    FAMCON           0.110       0.136       0.149       0.219       0.289       0.302       0.328
+    ABUSE            0.021       0.031       0.036       0.062       0.088       0.093       0.102
+
+ SHVICT   WITH
+    FAMCON           0.043       0.049       0.052       0.070       0.087       0.090       0.097
+    ABUSE            0.025       0.029       0.031       0.043       0.054       0.057       0.061
+    SIBAGG           0.000       0.010       0.015       0.042       0.068       0.074       0.084
+
+ FEMALE   WITH
+    FAMCON          -0.037      -0.029      -0.025      -0.003       0.018       0.022       0.030
+    ABUSE           -0.069      -0.061      -0.057      -0.036      -0.015      -0.011      -0.003
+    SIBAGG          -0.045      -0.038      -0.035      -0.017       0.001       0.005       0.012
+    SHVICT          -0.010      -0.005      -0.002       0.011       0.025       0.028       0.033
+
+ BLACK    WITH
+    FAMCON          -0.001       0.006       0.010       0.030       0.049       0.053       0.060
+    ABUSE            0.014       0.019       0.022       0.036       0.051       0.053       0.059
+    SIBAGG          -0.037      -0.031      -0.028      -0.011       0.005       0.009       0.015
+    SHVICT          -0.006      -0.002       0.000       0.010       0.020       0.022       0.026
+    FEMALE          -0.025      -0.020      -0.018      -0.006       0.006       0.009       0.013
+
+ WHITE    WITH
+    FAMCON          -0.005       0.002       0.005       0.023       0.041       0.044       0.051
+    ABUSE           -0.031      -0.025      -0.022      -0.006       0.010       0.014       0.020
+    SIBAGG          -0.045      -0.038      -0.034      -0.016       0.003       0.006       0.013
+    SHVICT          -0.006      -0.003      -0.001       0.008       0.018       0.020       0.023
+    FEMALE          -0.008      -0.005      -0.003       0.006       0.015       0.016       0.019
+    BLACK           -0.094      -0.084      -0.079      -0.053      -0.028      -0.023      -0.013
+
+ OTHERR   WITH
+    FAMCON          -0.013      -0.008      -0.005       0.008       0.022       0.025       0.030
+    ABUSE           -0.021      -0.015      -0.013       0.002       0.017       0.020       0.026
+    SIBAGG          -0.026      -0.021      -0.019      -0.006       0.007       0.009       0.014
+    SHVICT          -0.012      -0.008      -0.007       0.003       0.012       0.014       0.017
+    FEMALE          -0.009      -0.006      -0.005       0.002       0.009       0.010       0.012
+    BLACK           -0.059      -0.053      -0.049      -0.031      -0.014      -0.010      -0.003
+    WHITE           -0.043      -0.038      -0.036      -0.023      -0.011      -0.008      -0.003
+
+ GRADES   WITH
+    FAMCON          -0.088      -0.070      -0.061      -0.013       0.036       0.045       0.063
+    ABUSE           -0.103      -0.077      -0.064       0.006       0.075       0.088       0.114
+    SIBAGG          -0.132      -0.106      -0.093      -0.024       0.044       0.057       0.083
+    SHVICT          -0.041      -0.030      -0.025       0.004       0.033       0.039       0.050
+    FEMALE           0.000       0.011       0.017       0.047       0.077       0.083       0.094
+    BLACK           -0.107      -0.087      -0.076      -0.022       0.032       0.042       0.063
+    WHITE           -0.015       0.002       0.010       0.054       0.098       0.106       0.123
+    OTHERR          -0.001       0.007       0.011       0.032       0.054       0.058       0.065
+
+ AGXFC    WITH
+    FAMCON           2.350       2.548       2.649       3.178       3.707       3.808       4.006
+    ABUSE            0.472       0.545       0.582       0.778       0.973       1.010       1.083
+    SIBAGG           0.493       0.611       0.671       0.986       1.301       1.362       1.480
+    SHVICT           0.192       0.220       0.234       0.308       0.382       0.396       0.423
+    FEMALE          -0.167      -0.129      -0.110      -0.009       0.092       0.111       0.149
+    BLACK           -0.059      -0.023      -0.004       0.094       0.191       0.210       0.246
+    WHITE           -0.013       0.024       0.043       0.143       0.243       0.262       0.300
+    OTHERR          -0.027       0.001       0.015       0.089       0.163       0.177       0.204
+    GRADES           0.685       0.801       0.861       1.173       1.484       1.544       1.660
+
+ AGXAB    WITH
+    FAMCON           0.501       0.564       0.597       0.768       0.938       0.971       1.035
+    ABUSE            1.683       1.788       1.842       2.124       2.406       2.460       2.565
+    SIBAGG           0.084       0.116       0.132       0.217       0.302       0.319       0.350
+    SHVICT           0.104       0.126       0.137       0.198       0.258       0.269       0.291
+    FEMALE          -0.306      -0.270      -0.252      -0.157      -0.061      -0.043      -0.008
+    BLACK            0.043       0.067       0.080       0.144       0.209       0.221       0.245
+    WHITE           -0.137      -0.107      -0.092      -0.012       0.068       0.084       0.114
+    OTHERR          -0.080      -0.053      -0.040       0.032       0.104       0.117       0.144
+    GRADES           0.124       0.244       0.305       0.624       0.943       1.004       1.123
+    AGXFC            2.582       2.964       3.159       4.179       5.199       5.395       5.777
+
+ AGXSA    WITH
+    FAMCON           0.489       0.611       0.673       0.998       1.323       1.385       1.506
+    ABUSE            0.073       0.110       0.129       0.228       0.328       0.347       0.384
+    SIBAGG           2.504       2.762       2.894       3.583       4.272       4.404       4.662
+    SHVICT          -0.009       0.043       0.069       0.208       0.346       0.372       0.424
+    FEMALE          -0.202      -0.169      -0.153      -0.067       0.018       0.035       0.067
+    BLACK           -0.196      -0.164      -0.148      -0.064       0.020       0.036       0.068
+    WHITE           -0.195      -0.159      -0.141      -0.045       0.051       0.070       0.106
+    OTHERR          -0.122      -0.097      -0.085      -0.018       0.048       0.061       0.086
+    GRADES          -0.035       0.064       0.115       0.380       0.645       0.695       0.795
+    AGXFC            2.533       3.177       3.506       5.225       6.944       7.273       7.917
+    AGXAB            0.467       0.630       0.713       1.148       1.583       1.666       1.829
+
+ Means
+    FAMCON           0.587       0.611       0.624       0.690       0.756       0.769       0.793
+    ABUSE            0.289       0.302       0.309       0.345       0.380       0.387       0.400
+    SIBAGG           0.238       0.252       0.259       0.297       0.334       0.342       0.356
+    SHVICT           0.165       0.178       0.185       0.221       0.256       0.263       0.276
+    FEMALE           0.488       0.496       0.501       0.522       0.543       0.548       0.556
+    BLACK            0.120       0.155       0.174       0.268       0.363       0.381       0.416
+    WHITE            0.102       0.125       0.137       0.198       0.260       0.272       0.295
+    OTHERR           0.059       0.073       0.080       0.117       0.154       0.161       0.175
+    GRADES           4.323       4.410       4.455       4.688       4.921       4.965       5.053
+    AGXFC            2.660       2.796       2.866       3.230       3.593       3.663       3.799
+    AGXAB            1.277       1.360       1.402       1.623       1.845       1.887       1.970
+    AGXSA            1.041       1.118       1.157       1.362       1.567       1.607       1.683
+
+ Intercepts
+    SH_W1            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W2            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W3            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    SH_W4            0.000       0.000       0.000       0.000       0.000       0.000       0.000
+    I               -0.126      -0.012       0.046       0.349       0.652       0.710       0.823
+    S               -2.072      -1.117      -0.628       1.924       4.475       4.964       5.919
+
+ Variances
+    FAMCON           0.550       0.586       0.605       0.701       0.797       0.815       0.851
+    ABUSE            0.384       0.399       0.407       0.448       0.489       0.497       0.512
+    SIBAGG           0.574       0.623       0.648       0.780       0.912       0.937       0.987
+    SHVICT           0.141       0.148       0.152       0.172       0.192       0.195       0.203
+    FEMALE           0.248       0.248       0.249       0.250       0.251       0.251       0.251
+    BLACK            0.128       0.144       0.152       0.196       0.240       0.249       0.265
+    WHITE            0.101       0.115       0.122       0.159       0.196       0.203       0.217
+    OTHERR           0.059       0.069       0.075       0.103       0.132       0.137       0.148
+    GRADES           0.962       1.128       1.212       1.655       2.098       2.183       2.348
+    AGXFC           12.218      13.335      13.907      16.890      19.874      20.445      21.562
+    AGXAB            8.390       9.040       9.372      11.108      12.844      13.177      13.827
+    AGXSA           11.794      13.241      13.981      17.844      21.707      22.447      23.893
+
+ Residual Variances
+    SH_W1            0.100       0.125       0.138       0.204       0.270       0.283       0.308
+    SH_W2            0.072       0.095       0.106       0.166       0.225       0.237       0.259
+    SH_W3            0.203       0.237       0.255       0.346       0.438       0.455       0.489
+    SH_W4            0.069       0.150       0.191       0.409       0.626       0.668       0.749
+    I                0.588       0.629       0.651       0.760       0.870       0.892       0.933
+    S              999.000     999.000     999.000     999.000     999.000     999.000     999.000
+
+
+RESIDUAL OUTPUT
+
+
+     ESTIMATED MODEL AND RESIDUALS (OBSERVED - ESTIMATED)
+
+
+           Model Estimated Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.138         0.167         0.224         0.281         0.690
+
+
+           Model Estimated Means
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+                0.345         0.297         0.221         0.522         0.268
+
+
+           Model Estimated Means
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+                0.198         0.117         4.688         3.230         1.623
+
+
+           Model Estimated Means
+              AGXSA
+              ________
+                1.362
+
+
+           Residuals for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.012        -0.017         0.023        -0.006         0.000
+
+
+           Residuals for Means
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           Residuals for Means
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.001
+
+
+           Residuals for Means
+              AGXSA
+              ________
+                0.000
+
+
+           Standardized Residuals (z-scores) for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                3.433        -1.325         1.549        -0.230         0.020
+
+
+           Standardized Residuals (z-scores) for Means
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+                0.008       999.000       999.000        -0.266         0.000
+
+
+           Standardized Residuals (z-scores) for Means
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+                0.000         0.000       999.000         0.010         0.056
+
+
+           Standardized Residuals (z-scores) for Means
+              AGXSA
+              ________
+              999.000
+
+
+           Normalized Residuals for Means
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.648        -0.843         0.909        -0.143         0.002
+
+
+           Normalized Residuals for Means
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+                0.001        -0.003        -0.003        -0.004         0.000
+
+
+           Normalized Residuals for Means
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+                0.000         0.000        -0.001         0.001         0.008
+
+
+           Normalized Residuals for Means
+              AGXSA
+              ________
+               -0.001
+
+
+           Model Estimated Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.313
+ SH_W2          0.107         0.271
+ SH_W3          0.103         0.102         0.447
+ SH_W4          0.098         0.099         0.100         0.510
+ FAMCON         0.034         0.034         0.034         0.034         0.701
+ ABUSE          0.058         0.051         0.036         0.022         0.184
+ SIBAGG         0.023         0.023         0.024         0.024         0.219
+ SHVICT         0.054         0.050         0.041         0.032         0.070
+ FEMALE        -0.022        -0.025        -0.030        -0.036        -0.003
+ BLACK          0.007         0.010         0.017         0.024         0.030
+ WHITE         -0.008        -0.009        -0.009        -0.009         0.023
+ OTHERR         0.003         0.003         0.003         0.003         0.008
+ GRADES         0.012        -0.001        -0.027        -0.053        -0.013
+ AGXFC          0.171         0.152         0.115         0.077         3.178
+ AGXAB          0.311         0.268         0.180         0.093         0.768
+ AGXSA          0.131         0.127         0.117         0.108         0.998
+
+
+           Model Estimated Covariances
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+ ABUSE          0.448
+ SIBAGG         0.062         0.780
+ SHVICT         0.043         0.042         0.172
+ FEMALE        -0.036        -0.017         0.011         0.250
+ BLACK          0.036        -0.011         0.010        -0.006         0.196
+ WHITE         -0.006        -0.016         0.008         0.006        -0.053
+ OTHERR         0.002        -0.006         0.003         0.002        -0.031
+ GRADES         0.006        -0.024         0.004         0.047        -0.022
+ AGXFC          0.778         0.986         0.308        -0.009         0.094
+ AGXAB          2.124         0.217         0.198        -0.157         0.144
+ AGXSA          0.228         3.583         0.208        -0.067        -0.064
+
+
+           Model Estimated Covariances
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+ WHITE          0.159
+ OTHERR        -0.023         0.103
+ GRADES         0.054         0.032         1.655
+ AGXFC          0.143         0.089         1.173        16.890
+ AGXAB         -0.012         0.032         0.624         4.179        11.108
+ AGXSA         -0.045        -0.018         0.380         5.225         1.148
+
+
+           Model Estimated Covariances
+              AGXSA
+              ________
+ AGXSA         17.844
+
+
+           Model Estimated Correlations
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          1.000
+ SH_W2          0.367         1.000
+ SH_W3          0.274         0.293         1.000
+ SH_W4          0.246         0.266         0.209         1.000
+ FAMCON         0.073         0.078         0.060         0.056         1.000
+ ABUSE          0.154         0.145         0.081         0.046         0.328
+ SIBAGG         0.047         0.051         0.040         0.039         0.296
+ SHVICT         0.234         0.231         0.148         0.108         0.201
+ FEMALE        -0.078        -0.095        -0.091        -0.101        -0.008
+ BLACK          0.029         0.045         0.058         0.075         0.080
+ WHITE         -0.038        -0.041        -0.032        -0.031         0.069
+ OTHERR         0.014         0.015         0.012         0.012         0.031
+ GRADES         0.016        -0.002        -0.031        -0.058        -0.012
+ AGXFC          0.074         0.071         0.042         0.026         0.924
+ AGXAB          0.167         0.154         0.081         0.039         0.275
+ AGXSA          0.056         0.058         0.042         0.036         0.282
+
+
+           Model Estimated Correlations
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+ ABUSE          1.000
+ SIBAGG         0.104         1.000
+ SHVICT         0.154         0.114         1.000
+ FEMALE        -0.108        -0.038         0.055         1.000
+ BLACK          0.122        -0.029         0.055        -0.027         1.000
+ WHITE         -0.021        -0.045         0.051         0.029        -0.301
+ OTHERR         0.011        -0.021         0.020         0.011        -0.220
+ GRADES         0.006        -0.021         0.008         0.073        -0.039
+ AGXFC          0.283         0.272         0.181        -0.004         0.051
+ AGXAB          0.952         0.074         0.143        -0.094         0.098
+ AGXSA          0.081         0.960         0.119        -0.032        -0.034
+
+
+           Model Estimated Correlations
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+ WHITE          1.000
+ OTHERR        -0.181         1.000
+ GRADES         0.105         0.078         1.000
+ AGXFC          0.087         0.067         0.222         1.000
+ AGXAB         -0.009         0.030         0.145         0.305         1.000
+ AGXSA         -0.026        -0.013         0.070         0.301         0.082
+
+
+           Model Estimated Correlations
+              AGXSA
+              ________
+ AGXSA          1.000
+
+
+           Residuals for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.006
+ SH_W2         -0.012        -0.012
+ SH_W3          0.069         0.012         0.043
+ SH_W4         -0.030        -0.012         0.003        -0.019
+ FAMCON         0.020        -0.024         0.013         0.006         0.001
+ ABUSE          0.010        -0.014         0.001         0.003         0.000
+ SIBAGG         0.005        -0.006         0.016        -0.005         0.000
+ SHVICT         0.011        -0.011        -0.004         0.014         0.000
+ FEMALE         0.003        -0.001        -0.013         0.012         0.000
+ BLACK          0.004        -0.005         0.003         0.002         0.000
+ WHITE          0.002        -0.002        -0.005         0.003         0.000
+ OTHERR        -0.001         0.001        -0.001         0.002         0.000
+ GRADES         0.013        -0.005        -0.036         0.040         0.002
+ AGXFC          0.094        -0.108         0.055         0.034         0.004
+ AGXAB          0.040        -0.041        -0.023         0.036         0.000
+ AGXSA          0.020        -0.026         0.060        -0.013         0.000
+
+
+           Residuals for Covariances
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+ ABUSE          0.000
+ SIBAGG         0.000         0.000
+ SHVICT         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.001         0.001         0.001         0.000         0.000
+ AGXFC          0.001        -0.001         0.003         0.002         0.001
+ AGXAB         -0.001         0.000        -0.001        -0.001         0.000
+ AGXSA         -0.001         0.000         0.000         0.000         0.000
+
+
+           Residuals for Covariances
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+ WHITE          0.000
+ OTHERR         0.000         0.000
+ GRADES         0.000         0.000         0.000
+ AGXFC          0.001         0.000         0.009         0.022
+ AGXAB         -0.001         0.001         0.003         0.003        -0.007
+ AGXSA         -0.001         0.000         0.003         0.000         0.001
+
+
+           Residuals for Covariances
+              AGXSA
+              ________
+ AGXSA          0.003
+
+
+           Residuals for Correlations
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.000
+ SH_W2         -0.036         0.000
+ SH_W3          0.161         0.026         0.000
+ SH_W4         -0.074        -0.022         0.001         0.000
+ FAMCON         0.041        -0.055         0.019         0.011         0.000
+ ABUSE          0.026        -0.037        -0.002         0.008         0.000
+ SIBAGG         0.009        -0.013         0.025        -0.008         0.000
+ SHVICT         0.046        -0.048        -0.022         0.050         0.001
+ FEMALE         0.012        -0.007        -0.032         0.032         0.001
+ BLACK          0.016        -0.023         0.006         0.007         0.001
+ WHITE          0.011        -0.010        -0.016         0.011         0.000
+ OTHERR        -0.007         0.009        -0.006         0.008         0.000
+ GRADES         0.018        -0.007        -0.038         0.043         0.002
+ AGXFC          0.040        -0.050         0.017         0.012         0.000
+ AGXAB          0.020        -0.020        -0.014         0.016         0.000
+ AGXSA          0.008        -0.011         0.019        -0.004         0.000
+
+
+           Residuals for Correlations
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+ ABUSE          0.000
+ SIBAGG         0.000         0.000
+ SHVICT         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.001         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000        -0.001         0.000         0.000
+ GRADES         0.001         0.000         0.001         0.000         0.000
+ AGXFC          0.000         0.000         0.002         0.001         0.000
+ AGXAB          0.000         0.000        -0.001         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           Residuals for Correlations
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+ WHITE          0.000
+ OTHERR         0.000         0.000
+ GRADES         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.002         0.000
+ AGXAB          0.000         0.001         0.001         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           Residuals for Correlations
+              AGXSA
+              ________
+ AGXSA          0.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.942
+ SH_W2         -0.760        -0.427
+ SH_W3          2.887         0.435         1.107
+ SH_W4         -1.283        -0.854         0.291       999.000
+ FAMCON         1.001        -6.300         0.783         0.321         0.150
+ ABUSE          6.666        -1.069         0.040         0.464       999.000
+ SIBAGG         0.765        -2.934         1.053        -1.153       999.000
+ SHVICT         1.418        -1.852        -0.348         2.636       999.000
+ FEMALE         0.768        -0.245        -1.590         1.466       999.000
+ BLACK          0.744        -2.118         0.261         0.349       999.000
+ WHITE          0.850        -1.420        -1.155         0.656       999.000
+ OTHERR       999.000         0.209        -0.121         0.199       999.000
+ GRADES         8.458        -0.325        -3.501         1.342         1.439
+ AGXFC          0.903        -3.808         0.851         5.995         0.186
+ AGXAB        999.000        -0.524        -0.293         0.929        -0.007
+ AGXSA          1.414        -0.748         0.805       999.000       999.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+ ABUSE        999.000
+ SIBAGG        -0.081        -0.024
+ SHVICT       999.000       999.000       999.000
+ FEMALE       999.000         0.135       999.000         0.691
+ BLACK          0.152       999.000         0.205       999.000         0.000
+ WHITE        999.000       999.000       999.000       999.000         0.000
+ OTHERR         0.065         0.057        -0.125         0.000         0.000
+ GRADES         0.506       999.000         0.190       999.000       999.000
+ AGXFC        999.000       999.000       999.000         0.881       999.000
+ AGXAB        999.000         0.070        -0.330        -0.080       999.000
+ AGXSA         -0.142         0.017        -0.007       999.000       999.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+ WHITE          0.000
+ OTHERR         0.000         0.000
+ GRADES       999.000       999.000       999.000
+ AGXFC        999.000       999.000         1.283         0.382
+ AGXAB        999.000         0.120       999.000         0.057       999.000
+ AGXSA        999.000         0.054       999.000       999.000       999.000
+
+
+           Standardized Residuals (z-scores) for Covariances
+              AGXSA
+              ________
+ AGXSA        999.000
+
+
+           Normalized Residuals for Covariances
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.133
+ SH_W2         -0.414        -0.216
+ SH_W3          2.105         0.333         0.581
+ SH_W4         -0.951        -0.464         0.138        -0.153
+ FAMCON         0.776        -1.946         0.514         0.150         0.010
+ ABUSE          0.425        -0.586         0.031         0.154         0.008
+ SIBAGG         0.271        -0.397         0.673        -0.224        -0.006
+ SHVICT         0.936        -1.209        -0.292         0.903         0.043
+ FEMALE         0.324        -0.146        -1.092         0.726         0.030
+ BLACK          0.536        -0.788         0.180         0.103         0.019
+ WHITE          0.320        -0.366        -0.793         0.347         0.014
+ OTHERR        -0.223         0.160        -0.105         0.149         0.008
+ GRADES         0.750        -0.194        -1.102         0.723         0.068
+ AGXFC          0.750        -1.864         0.570         0.259         0.012
+ AGXAB          0.308        -0.304        -0.208         0.371        -0.001
+ AGXSA          0.227        -0.266         0.486        -0.118         0.000
+
+
+           Normalized Residuals for Covariances
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+ ABUSE          0.004
+ SIBAGG        -0.013        -0.001
+ SHVICT         0.008        -0.001         0.004
+ FEMALE         0.004         0.004         0.001         0.038
+ BLACK          0.016        -0.002         0.025         0.002         0.000
+ WHITE          0.002        -0.008         0.002         0.002         0.000
+ OTHERR         0.009         0.009        -0.015         0.000         0.000
+ GRADES         0.012         0.013         0.044         0.004        -0.002
+ AGXFC          0.011        -0.005         0.064         0.034         0.016
+ AGXAB         -0.003         0.007        -0.024        -0.011        -0.006
+ AGXSA         -0.015         0.000         0.000         0.003        -0.003
+
+
+           Normalized Residuals for Covariances
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+ WHITE          0.000
+ OTHERR         0.000         0.000
+ GRADES        -0.005         0.013        -0.001
+ AGXFC          0.014         0.003         0.046         0.012
+ AGXAB         -0.013         0.021         0.015         0.004        -0.006
+ AGXSA         -0.010         0.008         0.016         0.000         0.003
+
+
+           Normalized Residuals for Covariances
+              AGXSA
+              ________
+ AGXSA          0.001
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              AGXSA
+              ________
+                  0
+
+
+           LAMBDA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ BLACK              0             0             0             0             0
+ WHITE              0             0             0             0             0
+ OTHERR             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           LAMBDA
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SH_W1              0             0             0             0             0
+ SH_W2              0             0             0             0             0
+ SH_W3              0             0             0             0             0
+ SH_W4              0             0             0             0             0
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ BLACK              0             0             0             0             0
+ WHITE              0             0             0             0             0
+ OTHERR             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           LAMBDA
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ SH_W1              0             0             0             0
+ SH_W2              0             0             0             0
+ SH_W3              0             0             0             0
+ SH_W4              0             0             0             0
+ FAMCON             0             0             0             0
+ ABUSE              0             0             0             0
+ SIBAGG             0             0             0             0
+ SHVICT             0             0             0             0
+ FEMALE             0             0             0             0
+ BLACK              0             0             0             0
+ WHITE              0             0             0             0
+ OTHERR             0             0             0             0
+ GRADES             0             0             0             0
+ AGXFC              0             0             0             0
+ AGXAB              0             0             0             0
+ AGXSA              0             0             0             0
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1              1
+ SH_W2              0             2
+ SH_W3              0             0             3
+ SH_W4              0             0             0             4
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ BLACK              0             0             0             0             0
+ WHITE              0             0             0             0             0
+ OTHERR             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           THETA
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+ ABUSE              0
+ SIBAGG             0             0
+ SHVICT             0             0             0
+ FEMALE             0             0             0             0
+ BLACK              0             0             0             0             0
+ WHITE              0             0             0             0             0
+ OTHERR             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           THETA
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+ WHITE              0
+ OTHERR             0             0
+ GRADES             0             0             0
+ AGXFC              0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           THETA
+              AGXSA
+              ________
+ AGXSA              0
+
+
+           ALPHA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                  5             6             7             8             9
+
+
+           ALPHA
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+                 10            11            12            13            14
+
+
+           ALPHA
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+                 15            16            17            18
+
+
+           BETA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I                  0             0            19            20            21
+ S                  0             0            31            32            33
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ BLACK              0             0             0             0             0
+ WHITE              0             0             0             0             0
+ OTHERR             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           BETA
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ I                 22            23            24            25            26
+ S                 34            35            36            37            38
+ FAMCON             0             0             0             0             0
+ ABUSE              0             0             0             0             0
+ SIBAGG             0             0             0             0             0
+ SHVICT             0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ BLACK              0             0             0             0             0
+ WHITE              0             0             0             0             0
+ OTHERR             0             0             0             0             0
+ GRADES             0             0             0             0             0
+ AGXFC              0             0             0             0             0
+ AGXAB              0             0             0             0             0
+ AGXSA              0             0             0             0             0
+
+
+           BETA
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ I                 27            28            29            30
+ S                 39            40            41            42
+ FAMCON             0             0             0             0
+ ABUSE              0             0             0             0
+ SIBAGG             0             0             0             0
+ SHVICT             0             0             0             0
+ FEMALE             0             0             0             0
+ BLACK              0             0             0             0
+ WHITE              0             0             0             0
+ OTHERR             0             0             0             0
+ GRADES             0             0             0             0
+ AGXFC              0             0             0             0
+ AGXAB              0             0             0             0
+ AGXSA              0             0             0             0
+
+
+           PSI
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I                 43
+ S                  0             0
+ FAMCON             0             0            44
+ ABUSE              0             0            45            46
+ SIBAGG             0             0            47            48            49
+ SHVICT             0             0            50            51            52
+ FEMALE             0             0            54            55            56
+ BLACK              0             0            59            60            61
+ WHITE              0             0            65            66            67
+ OTHERR             0             0            72            73            74
+ GRADES             0             0            80            81            82
+ AGXFC              0             0            89            90            91
+ AGXAB              0             0            99           100           101
+ AGXSA              0             0           110           111           112
+
+
+           PSI
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT            53
+ FEMALE            57            58
+ BLACK             62            63            64
+ WHITE             68            69            70            71
+ OTHERR            75            76            77            78            79
+ GRADES            83            84            85            86            87
+ AGXFC             92            93            94            95            96
+ AGXAB            102           103           104           105           106
+ AGXSA            113           114           115           116           117
+
+
+           PSI
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES            88
+ AGXFC             97            98
+ AGXAB            107           108           109
+ AGXSA            118           119           120           121
+
+
+     STARTING VALUES
+
+
+           NU
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              AGXSA
+              ________
+                0.000
+
+
+           LAMBDA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ SH_W1          1.000         0.000         0.000         0.000         0.000
+ SH_W2          1.000         0.500         0.000         0.000         0.000
+ SH_W3          1.000         1.500         0.000         0.000         0.000
+ SH_W4          1.000         2.500         0.000         0.000         0.000
+ FAMCON         0.000         0.000         1.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         1.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         1.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SH_W1          0.000         0.000         0.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         0.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000         0.000
+ SH_W4          0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         1.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         1.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         1.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         1.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000         1.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ SH_W1          0.000         0.000         0.000         0.000
+ SH_W2          0.000         0.000         0.000         0.000
+ SH_W3          0.000         0.000         0.000         0.000
+ SH_W4          0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000
+ GRADES         1.000         0.000         0.000         0.000
+ AGXFC          0.000         1.000         0.000         0.000
+ AGXAB          0.000         0.000         1.000         0.000
+ AGXSA          0.000         0.000         0.000         1.000
+
+
+           THETA
+              SH_W1         SH_W2         SH_W3         SH_W4         FAMCON
+              ________      ________      ________      ________      ________
+ SH_W1          0.158
+ SH_W2          0.000         0.128
+ SH_W3          0.000         0.000         0.234
+ SH_W4          0.000         0.000         0.000         0.243
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              ABUSE         SIBAGG        SHVICT        FEMALE        BLACK
+              ________      ________      ________      ________      ________
+ ABUSE          0.000
+ SIBAGG         0.000         0.000
+ SHVICT         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              WHITE         OTHERR        GRADES        AGXFC         AGXAB
+              ________      ________      ________      ________      ________
+ WHITE          0.000
+ OTHERR         0.000         0.000
+ GRADES         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              AGXSA
+              ________
+ AGXSA          0.000
+
+
+           ALPHA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                0.127         0.050         0.000         0.000         0.000
+
+
+           ALPHA
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           BETA
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ I              0.000         0.000         0.000         0.000
+ S              0.000         0.000         0.000         0.000
+ FAMCON         0.000         0.000         0.000         0.000
+ ABUSE          0.000         0.000         0.000         0.000
+ SIBAGG         0.000         0.000         0.000         0.000
+ SHVICT         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000
+
+
+           PSI
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.241
+ S              0.000         0.000
+ FAMCON         0.000         0.000         0.350
+ ABUSE          0.000         0.000         0.000         0.224
+ SIBAGG         0.000         0.000         0.000         0.000         0.389
+ SHVICT         0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ BLACK          0.000         0.000         0.000         0.000         0.000
+ WHITE          0.000         0.000         0.000         0.000         0.000
+ OTHERR         0.000         0.000         0.000         0.000         0.000
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT         0.086
+ FEMALE         0.000         0.125
+ BLACK          0.000         0.000         0.098
+ WHITE          0.000         0.000         0.000         0.080
+ OTHERR         0.000         0.000         0.000         0.000         0.052
+ GRADES         0.000         0.000         0.000         0.000         0.000
+ AGXFC          0.000         0.000         0.000         0.000         0.000
+ AGXAB          0.000         0.000         0.000         0.000         0.000
+ AGXSA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES         0.828
+ AGXFC          0.000         8.413
+ AGXAB          0.000         0.000         5.429
+ AGXSA          0.000         0.000         0.000         8.471
+
+
+TECHNICAL 4 OUTPUT
+
+
+     ESTIMATES DERIVED FROM THE MODEL
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                0.138         0.057         0.690         0.345         0.297
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+                0.221         0.522         0.268         0.198         0.117
+
+
+           ESTIMATED MEANS FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+                4.688         3.230         1.623         1.362
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                0.019         0.015         0.040         0.022         0.023
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+                0.022         0.013         0.058         0.037         0.023
+
+
+           S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+                0.142         0.221         0.134         0.125
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                7.438         3.778        17.195        15.939        12.990
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+               10.152        40.016         4.663         5.306         5.161
+
+
+           EST./S.E. FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+               33.104        14.603        12.072        10.921
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED MEANS FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.109
+ S             -0.004         0.002
+ FAMCON         0.034         0.000         0.701
+ ABUSE          0.058        -0.014         0.184         0.448
+ SIBAGG         0.023         0.001         0.219         0.062         0.780
+ SHVICT         0.054        -0.009         0.070         0.043         0.042
+ FEMALE        -0.022        -0.006        -0.003        -0.036        -0.017
+ BLACK          0.007         0.007         0.030         0.036        -0.011
+ WHITE         -0.008         0.000         0.023        -0.006        -0.016
+ OTHERR         0.003         0.000         0.008         0.002        -0.006
+ GRADES         0.012        -0.026        -0.013         0.006        -0.024
+ AGXFC          0.171        -0.038         3.178         0.778         0.986
+ AGXAB          0.311        -0.087         0.768         2.124         0.217
+ AGXSA          0.131        -0.009         0.998         0.228         3.583
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT         0.172
+ FEMALE         0.011         0.250
+ BLACK          0.010        -0.006         0.196
+ WHITE          0.008         0.006        -0.053         0.159
+ OTHERR         0.003         0.002        -0.031        -0.023         0.103
+ GRADES         0.004         0.047        -0.022         0.054         0.032
+ AGXFC          0.308        -0.009         0.094         0.143         0.089
+ AGXAB          0.198        -0.157         0.144        -0.012         0.032
+ AGXSA          0.208        -0.067        -0.064        -0.045        -0.018
+
+
+           ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES         1.655
+ AGXFC          1.173        16.890
+ AGXAB          0.624         4.179        11.108
+ AGXSA          0.380         5.225         1.148        17.844
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.025
+ S              0.003         0.002
+ FAMCON         0.016         0.017         0.058
+ ABUSE          0.024         0.012         0.021         0.025
+ SIBAGG         0.016         0.007         0.042         0.016         0.080
+ SHVICT         0.009         0.008         0.011         0.007         0.016
+ FEMALE         0.009         0.007         0.013         0.013         0.011
+ BLACK          0.005         0.006         0.012         0.009         0.010
+ WHITE          0.007         0.005         0.011         0.010         0.011
+ OTHERR         0.006         0.004         0.008         0.009         0.008
+ GRADES         0.017         0.018         0.029         0.042         0.042
+ AGXFC          0.070         0.069         0.321         0.119         0.192
+ AGXAB          0.133         0.062         0.104         0.171         0.052
+ AGXSA          0.088         0.029         0.197         0.060         0.419
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT         0.012
+ FEMALE         0.008         0.001
+ BLACK          0.006         0.007         0.027
+ WHITE          0.006         0.005         0.016         0.023
+ OTHERR         0.006         0.004         0.011         0.008         0.017
+ GRADES         0.018         0.018         0.033         0.027         0.013
+ AGXFC          0.045         0.061         0.059         0.061         0.045
+ AGXAB          0.036         0.058         0.039         0.049         0.044
+ AGXSA          0.084         0.052         0.051         0.058         0.040
+
+
+           S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES         0.269
+ AGXFC          0.189         1.814
+ AGXAB          0.194         0.620         1.055
+ AGXSA          0.161         1.045         0.264         2.349
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              4.390
+ S             -1.573         1.393
+ FAMCON         2.125        -0.013        11.997
+ ABUSE          2.408        -1.160         8.824        18.018
+ SIBAGG         1.475         0.073         5.163         3.905         9.734
+ SHVICT         5.910        -1.170         6.617         6.102         2.570
+ FEMALE        -2.506        -0.780        -0.265        -2.845        -1.520
+ BLACK          1.378         1.037         2.488         4.161        -1.114
+ WHITE         -1.272        -0.018         2.149        -0.575        -1.410
+ OTHERR         0.398         0.012         1.006         0.265        -0.786
+ GRADES         0.682        -1.440        -0.428         0.131        -0.585
+ AGXFC          2.451        -0.546         9.890         6.558         5.151
+ AGXAB          2.344        -1.404         7.404        12.402         4.192
+ AGXSA          1.482        -0.320         5.052         3.784         8.555
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT        14.211
+ FEMALE         1.360       424.654
+ BLACK          1.631        -0.799         7.362
+ WHITE          1.470         1.097        -3.406         7.053
+ OTHERR         0.463         0.442        -2.897        -3.005         5.949
+ GRADES         0.247         2.570        -0.669         2.016         2.514
+ AGXFC          6.848        -0.151         1.578         2.355         1.983
+ AGXAB          5.413        -2.707         3.674        -0.240         0.735
+ AGXSA          2.470        -1.293        -1.250        -0.764        -0.452
+
+
+           EST./S.E. FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES         6.149
+ AGXFC          6.190         9.312
+ AGXAB          3.217         6.740        10.526
+ AGXSA          2.360         5.000         4.341         7.598
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.116         0.164
+ FAMCON         0.034         0.990         0.000
+ ABUSE          0.016         0.246         0.000         0.000
+ SIBAGG         0.140         0.942         0.000         0.000         0.000
+ SHVICT         0.000         0.242         0.000         0.000         0.010
+ FEMALE         0.012         0.435         0.791         0.004         0.128
+ BLACK          0.168         0.300         0.013         0.000         0.265
+ WHITE          0.203         0.985         0.032         0.565         0.159
+ OTHERR         0.691         0.991         0.314         0.791         0.432
+ GRADES         0.495         0.150         0.668         0.896         0.559
+ AGXFC          0.014         0.585         0.000         0.000         0.000
+ AGXAB          0.019         0.160         0.000         0.000         0.000
+ AGXSA          0.138         0.749         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT         0.000
+ FEMALE         0.174         0.000
+ BLACK          0.103         0.424         0.000
+ WHITE          0.142         0.273         0.001         0.000
+ OTHERR         0.643         0.659         0.004         0.003         0.000
+ GRADES         0.805         0.010         0.503         0.044         0.012
+ AGXFC          0.000         0.880         0.115         0.019         0.047
+ AGXAB          0.000         0.007         0.000         0.810         0.462
+ AGXSA          0.014         0.196         0.211         0.445         0.652
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED COVARIANCE MATRIX FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES         0.000
+ AGXFC          0.000         0.000
+ AGXAB          0.001         0.000         0.000
+ AGXSA          0.018         0.000         0.000         0.000
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              1.000
+ S             -0.278         1.000
+ FAMCON         0.123        -0.006         1.000
+ ABUSE          0.262        -0.464         0.328         1.000
+ SIBAGG         0.079         0.013         0.296         0.104         1.000
+ SHVICT         0.397        -0.466         0.201         0.154         0.114
+ FEMALE        -0.132        -0.246        -0.008        -0.108        -0.038
+ BLACK          0.049         0.328         0.080         0.122        -0.029
+ WHITE         -0.064        -0.005         0.069        -0.021        -0.045
+ OTHERR         0.024         0.003         0.031         0.011        -0.021
+ GRADES         0.027        -0.435        -0.012         0.006        -0.021
+ AGXFC          0.126        -0.198         0.924         0.283         0.272
+ AGXAB          0.283        -0.569         0.275         0.952         0.074
+ AGXSA          0.094        -0.047         0.282         0.081         0.960
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT         1.000
+ FEMALE         0.055         1.000
+ BLACK          0.055        -0.027         1.000
+ WHITE          0.051         0.029        -0.301         1.000
+ OTHERR         0.020         0.011        -0.220        -0.181         1.000
+ GRADES         0.008         0.073        -0.039         0.105         0.078
+ AGXFC          0.181        -0.004         0.051         0.087         0.067
+ AGXAB          0.143        -0.094         0.098        -0.009         0.030
+ AGXSA          0.119        -0.032        -0.034        -0.026        -0.013
+
+
+           ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES         1.000
+ AGXFC          0.222         1.000
+ AGXAB          0.145         0.305         1.000
+ AGXSA          0.070         0.301         0.082         1.000
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.139         0.000
+ FAMCON         0.063         0.451         0.000
+ ABUSE          0.104         0.453         0.035         0.000
+ SIBAGG         0.052         0.176         0.053         0.028         0.000
+ SHVICT         0.061         0.379         0.026         0.027         0.043
+ FEMALE         0.050         0.330         0.031         0.038         0.026
+ BLACK          0.038         0.261         0.036         0.033         0.025
+ WHITE          0.051         0.265         0.030         0.037         0.031
+ OTHERR         0.062         0.249         0.032         0.042         0.028
+ GRADES         0.039         0.268         0.027         0.049         0.037
+ AGXFC          0.055         0.408         0.022         0.040         0.049
+ AGXAB          0.112         0.440         0.036         0.014         0.018
+ AGXSA          0.064         0.151         0.054         0.022         0.016
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT         0.000
+ FEMALE         0.041         0.000
+ BLACK          0.036         0.034         0.000
+ WHITE          0.035         0.025         0.058         0.000
+ OTHERR         0.041         0.026         0.048         0.036         0.000
+ GRADES         0.032         0.028         0.059         0.046         0.030
+ AGXFC          0.025         0.030         0.036         0.036         0.037
+ AGXAB          0.029         0.034         0.030         0.037         0.039
+ AGXSA          0.045         0.026         0.027         0.034         0.030
+
+
+           S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES         0.000
+ AGXFC          0.023         0.000
+ AGXAB          0.035         0.041         0.000
+ AGXSA          0.025         0.058         0.018         0.000
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I            999.000
+ S             -1.999       999.000
+ FAMCON         1.966        -0.013       999.000
+ ABUSE          2.517        -1.025         9.287       999.000
+ SIBAGG         1.516         0.073         5.635         3.689       999.000
+ SHVICT         6.498        -1.230         7.662         5.629         2.684
+ FEMALE        -2.620        -0.745        -0.265        -2.842        -1.457
+ BLACK          1.276         1.253         2.240         3.720        -1.134
+ WHITE         -1.252        -0.018         2.280        -0.573        -1.447
+ OTHERR         0.391         0.012         0.967         0.268        -0.762
+ GRADES         0.711        -1.620        -0.435         0.131        -0.583
+ AGXFC          2.296        -0.486        42.228         7.127         5.552
+ AGXAB          2.519        -1.291         7.645        67.154         4.193
+ AGXSA          1.476        -0.310         5.234         3.663        60.595
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT       999.000
+ FEMALE         1.363       999.000
+ BLACK          1.519        -0.790       999.000
+ WHITE          1.461         1.148        -5.178       999.000
+ OTHERR         0.478         0.439        -4.599        -5.052       999.000
+ GRADES         0.250         2.582        -0.655         2.307         2.577
+ AGXFC          7.265        -0.151         1.443         2.411         1.843
+ AGXAB          4.983        -2.736         3.295        -0.239         0.759
+ AGXSA          2.627        -1.240        -1.266        -0.782        -0.443
+
+
+           EST./S.E. FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES       999.000
+ AGXFC          9.571       999.000
+ AGXAB          4.111         7.471       999.000
+ AGXSA          2.807         5.152         4.438       999.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              I             S             FAMCON        ABUSE         SIBAGG
+              ________      ________      ________      ________      ________
+ I              0.000
+ S              0.046         0.000
+ FAMCON         0.049         0.990         0.000
+ ABUSE          0.012         0.305         0.000         0.000
+ SIBAGG         0.129         0.942         0.000         0.000         0.000
+ SHVICT         0.000         0.219         0.000         0.000         0.007
+ FEMALE         0.009         0.456         0.791         0.004         0.145
+ BLACK          0.202         0.210         0.025         0.000         0.257
+ WHITE          0.211         0.985         0.023         0.566         0.148
+ OTHERR         0.696         0.991         0.334         0.789         0.446
+ GRADES         0.477         0.105         0.663         0.895         0.560
+ AGXFC          0.022         0.627         0.000         0.000         0.000
+ AGXAB          0.012         0.197         0.000         0.000         0.000
+ AGXSA          0.140         0.756         0.000         0.000         0.000
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              SHVICT        FEMALE        BLACK         WHITE         OTHERR
+              ________      ________      ________      ________      ________
+ SHVICT         0.000
+ FEMALE         0.173         0.000
+ BLACK          0.129         0.430         0.000
+ WHITE          0.144         0.251         0.000         0.000
+ OTHERR         0.633         0.660         0.000         0.000         0.000
+ GRADES         0.802         0.010         0.512         0.021         0.010
+ AGXFC          0.000         0.880         0.149         0.016         0.065
+ AGXAB          0.000         0.006         0.001         0.811         0.448
+ AGXSA          0.009         0.215         0.206         0.434         0.658
+
+
+           TWO-TAILED P-VALUE FOR ESTIMATED CORRELATION MATRIX FOR THE LATENT VARIABLES
+              GRADES        AGXFC         AGXAB         AGXSA
+              ________      ________      ________      ________
+ GRADES         0.000
+ AGXFC          0.000         0.000
+ AGXAB          0.000         0.000         0.000
+ AGXSA          0.005         0.000         0.000         0.000
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    c:\users\kylenick\onedrive - university of north carolina at chapel hill\dorothy\ipa\paper_1_ace_sv\mplus files\with
+
+     Beginning Time:  13:00:15
+        Ending Time:  13:00:16
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen
