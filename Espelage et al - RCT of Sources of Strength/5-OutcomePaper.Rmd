@@ -1,0 +1,539 @@
+---
+title: "Outcome Paper"
+author: "KN"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: TRUE
+  word_document:
+    toc: TRUE
+    toc_depth: 2
+    reference_docx: "Markdown Template.docx"
+---
+
+```{r setup, include=FALSE}
+
+# Note: This rmarkdown is named 5-OutcomePaper because it aligns with output from:
+#       4-ReadRun.R and saved in Mplus_Automatr_Results.RData
+
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, results = "asis")
+
+library(knitr)
+library(rmarkdown)
+library(flextable)
+library(dplyr)
+
+load("../Output/SoS_Miss_Demos.RData")
+load("../Output/Mplus_Automatr_Results.RData")
+# load("../Output/Mplus_Wave1Sample_Results.RData") # Must pick one (and only one) set of results; accordingly must change line 80 to gtdemos or gtdemosw1
+load("../Output/PS_Results.RData")
+
+
+format_flex <- function(df, bold = FALSE, digits = 2, width = 8){
+  
+  numericcols <- which(unlist(lapply(df, is.numeric)))
+  
+  ftab <- flextable(df)
+  ftab <- colformat_double(ftab, j = numericcols, digits = digits)
+  ftab <- flextable::font(ftab, fontname = "Times New Roman", part = "all")
+  ftab <- flextable::padding(ftab, padding = 1, part = "all")
+  
+  if(bold == TRUE){
+  ftab <- bold(ftab, i = ~ is.na(pvalue) == FALSE & pvalue < .05, part =  "body")
+  # ftab <- bold(ftab, i = ~ est.std > .20, part = "body")
+  }
+  
+  ftab <- autofit(ftab)
+  ftab <- fit_to_width(ftab, width)
+  
+  return(ftab)
+}
+
+two_level_flex <- function(flex, mapping, vert.cols, border){
+
+  flex <- flextable::set_header_df(flex, mapping = mapping)
+  flex <- flextable::merge_h(flex, part = "header")
+  flex <- flextable::merge_v(flex, j = vert.cols, part = "header")
+  flex <- flextable::fix_border_issues(flex)
+  flex <- flextable::border_inner_h(flex, border = border, part = "header")
+  flex <- flextable::hline_top(flex, border = border, part = "all")
+  # flex <- flextable::theme_vanilla(flex)
+  flex <- flextable::align(flex, align = "center", part = "all")
+  flex <- flextable::font(flex, fontname = "Times New Roman", part = "all")
+  flex <- flextable::padding(flex, padding = 1, part = "all")
+  flex <- flextable::autofit(flex)
+}
+
+border <- officer::fp_border(width = 2) # manual horizontal flextable border width
+
+# CONSORT DIAGRAM student participation rates
+(2605+2262)/(3227+2805)
+(2097+1416)/(3086+2040)
+
+# Number of waves participated
+(238 + 314 + 257 + 633) / 6461 # 1
+(317 + 60 + 171 + 73 + 191 + 637) / 6461 # 2
+(269 + 255 + 285 + 758) / 6461 # 3 
+```
+
+# Data Notes and Analysis Decisions
+
+ - Analysis uses data file w1-w4 SoS_Cleaned_05-17-22.sav (referred to as dsclean).
+ - Adding Transgender and Transgender x Tx interaction as covariates introduced problematic levels of error
+ - second order growth models had convergence issues; factor score models had poor fit even for the unconditional latent growth models
+
+# Sample Characteristics
+
+```{r Demos}
+# knit_print(AllDemosFlex)
+gtdemos %>%  # gtdemos or gtdemosw1
+  flextable::font(fontname = "Times New Roman", part = "all") %>%
+  flextable::padding(padding = 1, part = "all") %>%
+  flextable::autofit() %>%
+  knit_print() 
+```
+
+By wave
+
+```{r}
+for(i in 1:4){
+  cat("### Wave", i)
+  cat("\n\n")
+  cat(knit_print(gtdemos.wave[[i]]))
+  cat("\n\n")
+}
+```
+
+
+
+\newpage
+
+
+# Attrition
+
+## Participation Pattern
+
+```{r participation}
+attritiontable %>%
+  flextable::font(fontname = "Times New Roman", part = "all") %>%
+  flextable::padding(padding = 1, part = "all") %>%
+  flextable::autofit() %>%
+  knit_print() 
+```
+
+*Note:* The Surveyed column indicates whether a student took a survey in each of the 4 waves with 1 = Yes & 0 = No. For example, the row “1, 0, 1, 0” shows the count of students who participated in waves 1 and 3, but not in waves 2 and 4. 
+
+
+```{r}
+gt.participation %>%
+  flextable::font(fontname = "Times New Roman", part = "all") %>%
+  flextable::padding(padding = 1, part = "all") %>%
+  flextable::autofit() %>%
+  knit_print()
+```
+
+\newpage
+
+## Predicting Participation
+
+Wave 1 variables were entered into a multilevel logistic regression model predicting survey participation in Waves 2-4. Larger odds ratios indicate higher likelihood to participate.  
+
+```{r ORs}
+for(i in names(ORs.sig)){
+  cat("**", i, "**", sep = "")
+  cat("\n\n")
+  cat(knit_print(format_flex(ORs.sig[[i]])))
+  cat("\n\n")
+}
+```
+
+\newpage
+
+# Baseline Equivalence
+
+Baseline equivalence in the primary outcome variables was assessed by calculating the standardized mean difference (e.g., Hedges's *g*) between the SoS students and Waitlist students using methods for cluster randomized trials (Hedges, 2007). When estimating *g*, we used the raw scale score for the outcome and protective factors. Our previous assessments of baseline equivalence were derived from model-based statistical tests rather than the raw score effect sizes used here. Despite the different approach, we still find evidence of baseline non-equivalence for some outcomes. What Works Clearinghouse (WWC, 2020) considers *g* <= .05 as equivalent, .05 < *g* <= .25 to require adjustments, and *g* > .25 as non-equivalent.
+
+
+```{r outcomebe, fig.width = 12, fig.height = 8}
+print(OutBaseDistPlot)
+```
+
+*Note:* Vertical lines indicate mean score  
+
+Additionally, we calculated the baseline differences on other student- and school-level characteristics. 
+
+```{r basequiv, fig.width = 12, fig.height = 14}
+print(BaseEquivPlot)
+```
+
+*Note:* Solid line at .05 and dashed line at .25 indicating WWC (2020) cutoffs for equivalence and non-equivalence. Variables ending in "Per" are school-level variables.  
+
+\newpage
+
+# Exposure to Sources of Strength
+
+This section presents a description of passive and active exposure to Sources of Strength (for intervention schools) at in waves 2-4 by different groups. Active exposure measures participation in SoS activities (e.g., “Shared what I’m thankful for”) and has a score range of 0 – 8. Passive exposure measures seeing presentations, messages, videos from SoS or other students talking about SoS and has a score range of 0 – 6. Passive and Active scores are not directly comparable because they are not on the same scale.
+
+For each group, the table contains the mean exposure score (and standard deviation) at each wave along with a Kruskal-Wallis test of rank, which is a non-parametric equivalent to a one-way ANOVA. The ridge plot then displays the full distribution of scores for each group at each wave. Finally, a 3-level (wave within student within school) mixed effects model was fit to examine the collective association of the groups with each type of exposure.
+
+
+**Findings**
+
+ - mean scores were typically in the middle or lower half of the scale for both Active (0 – 8 range) and Passive (0 – 6) range, suggesting there is room to increase exposure.
+ - The full range of scores are represented implying that Sources is both reaching and missing students from each group.
+ - Looking at the ridge plots, Active exposure often has a slight bimodal distribution, suggesting many students do a lot of activities or no activities with few students participating in only some activities.
+ - There do not appear to be firm trends across time. Some groups increased each wave, some decreased, and some had a particularly high or low wave. Overall, scores were fairly consistent across each wave.
+ - There are some small differences by race and sexual orientation
+ - The starkest differences were by school, grade, gender, and wave 1 perpetration. Both active and passive exposure was consistently lower for younger students, males, and wave 1 perpetrators of forced sexual contact, homophobic name-calling, and sexual violence dismissiveness.
+ - The mixed effects models, however, suggest that the demographic and perpetration variables only account for 1-2% of the variation in exposure.
+ 
+```{r}
+knit_print(exp.overall)
+cat("\n\n")
+cat("kruskal-wallis statistic if needed (see 0-Prep.R line 533")
+format_flex(hnc.exp.test) %>% knit_print()
+```
+
+
+
+```{r exposure, message=FALSE, warning=FALSE, error=FALSE, fig.width=5, fig.height=6, results="asis"}
+for(i in names(exp.tables.wave)){
+  cat("## By", i)
+  cat("\n\n")
+  cat(knit_print(exp.tables.wave[[i]]))
+  cat("\n\n")
+  cat("**Exposure Averaged Across Waves**")
+  cat("\n\n")
+  cat(knit_print(exp.tables.avg[[i]]))
+  cat("\n\n")
+  print(exp.ridges[[i]])
+  cat("\n\n")
+}
+
+```
+
+
+```{r ridges, fig.width = 7, fig.height = 5, eval = FALSE}
+cowplot::plot_grid(exp.ridges.avg$HNC, exp.ridges.avg$Sexual_Violence, align = "v", ncol = 1)
+```
+
+
+## 3-level mixed effect model
+
+```{r mlm, message=FALSE, warning=FALSE, error=FALSE, fig.width=5, fig.height=6, results="asis"}
+for(i in names(exp.icc)){
+  cat("###", i, "Exposure")
+  cat("\n\n")
+  cat("**Intraclass correlation**")
+  cat(knit_print(format_flex(exp.icc[[i]])))
+  cat("\n\n")
+  cat("**Model Performance**")
+  cat("\n\n")
+  cat(knit_print(format_flex(exp.perform[[i]])))
+  cat("\n\n")
+  cat("**Unstandardized Estimates**")
+  cat("\n\n")
+  exp.params[[i]] %>%
+    filter(!stringr::str_detect(Parameter, "SD ")) %>%
+    select(Parameter, Coefficient, SE, CI_low, CI_high, p) %>%
+    format_flex() %>% knit_print() %>% cat()
+  cat("\n\n")
+}
+```
+
+
+
+# Results
+
+## Descriptive Statistics
+
+
+*Mean (Standard Deviation) of Outcome Scores by Intervention Group and Wave*
+
+```{r}
+vd.map <- data.frame(col_keys = names(VariableDescrips.wide),
+                     top = c("Variable", rep(c("Sources of Strength", "Waitlist"), each = 4)),
+                     bottom = c("Variable", rep(paste0("W", 1:4), times = 2)))
+
+vd.flex <- flextable(VariableDescrips.wide) %>%
+  two_level_flex(mapping = vd.map, vert.cols = "Variable", border = border) %>%
+  autofit()
+knit_print(vd.flex)
+```
+*Note.* W = Wave
+
+## Unconditional and Treatment Effect Models
+
+*Comparing Linear and Quadratic Models*
+
+```{r}
+format_flex(lq.comp) %>% knit_print()
+```
+*Note.* Test statistic is from a Sattora & Bentler (2001) chi-square difference test
+
+*Supplemental Materials: Fit Statistics For Unconditional Latent Growth and Treatment Effect Predictor Models*
+
+```{r}
+fit.map <- data.frame(col_keys = names(unctx.fit),
+                            top = c("outcome", rep(c("Unconditional Model", "Treatment Effect Model"), each = 8)),
+                           bottom = c("outcome", rep(c("n", "X2", "df", "p", "CFI", "RMSEA", "90% CI", "SRMR"), times = 2)))
+
+
+fit.flex <- flextable(unctx.fit) %>% two_level_flex(mapping = fit.map, vert.cols = "outcome", border = border) %>%
+  autofit() %>% fit_to_width(9)
+knit_print(fit.flex)
+```
+
+
+*Estimates from Unconditional Latent Growth and Treatment Effect Predictor Models*
+
+
+```{r}
+unctx.map <- data.frame(col_keys = names(unctx.est),
+                            top = c("outcome", rep("Unconditional Model", 5), "blank", rep("Treatment Effect Model", 4)),
+                        middle = c("outcome", rep("Intercept", 2), rep("Slope", 2), "Int-Slope", "blank", rep("Intercept", 2), rep("Slope", 2)),
+                           bottom = c("outcome", rep(c("Mean", "Variance"), times = 2), "Correlation", "blank", rep(c("Beta", "R2"), times = 2)))
+
+
+unctx.flex <- flextable(unctx.est) %>% two_level_flex(mapping = unctx.map, vert.cols = c("outcome", "blank"), border = border) %>%
+  autofit() %>% fit_to_width(9)
+knit_print(unctx.flex)
+```
+
+*Note.* Unconditional Model estimates are unstandardized. Treatment Effect Model estimates are standardized. SH = Sexual Harassment, FSC = Forced Sexual Contact, HNC = Homophobic Name-Calling, SV = Sexual Violence. Cluster-robust standard errors in parentheses (). ^a^Scale score has a range of 0 - 3. All other scales have a range of 0 - 4. Model fit indices for all models indicated acceptable fit (see Supplemental Materials for details and sample sizes). \**p* < .05, \*\**p* < .01
+
+
+*Fit Statistics For Unconditional Latent Growth and Treatment Effect Predictor Models For Other Outcomes*
+
+```{r}
+fit.map2 <- data.frame(col_keys = names(nopubtx.fit),
+                            top = c("outcome", rep(c("Unconditional Model", "Treatment Effect Model"), each = 8)),
+                           bottom = c("outcome", rep(c("n", "X2", "df", "p", "CFI", "RMSEA", "90% CI", "SRMR"), times = 2)))
+
+
+fit.flex2 <- flextable(nopubtx.fit) %>% two_level_flex(mapping = fit.map2, vert.cols = "outcome", border = border) %>%
+  autofit() %>% fit_to_width(9)
+knit_print(fit.flex2)
+```
+
+
+*Estimates from Unconditional Latent Growth and Treatment Effect Predictor Models For Other Outcomes*
+
+```{r}
+unctx.map2 <- data.frame(col_keys = names(nopubtx.est),
+                            top = c("outcome", rep("Unconditional Model", 5), "blank", rep("Treatment Effect Model", 4)),
+                        middle = c("outcome", rep("Intercept", 2), rep("Slope", 2), "Int-Slope", "blank", rep("Intercept", 2), rep("Slope", 2)),
+                           bottom = c("outcome", rep(c("Mean", "Variance"), times = 2), "Correlation", "blank", rep(c("Beta", "R2"), times = 2)))
+
+
+unctx.flex2 <- flextable(nopubtx.est) %>% two_level_flex(mapping = unctx.map2, vert.cols = c("outcome", "blank"), border = border) %>%
+  autofit() %>% fit_to_width(9)
+knit_print(unctx.flex2)
+```
+
+
+
+## Sexual Violence
+
+*Standardized Estimates for Moderators of Sources of Strength from Latent Growth Model of Sexual Violence Outcomes (n = 6461)*
+
+```{r}
+sv.est <- inner_join(tx.covs.results$`SH Perpetration`, tx.covs.results$`SH Victimization`, by = "predictor", suffix = c(".ncp", ".ncv")) %>%
+   inner_join(inner_join(tx.covs.results$`FSC Perpetration`, tx.covs.results$`FCS Victimization`, by = "predictor", suffix = c(".cp", ".cv")), by = "predictor")
+
+sv.map <- data.frame(col_keys = names(sv.est),
+                            top = c("predictor", rep(c("Sexual Harassment", "Forced Sexual Contact"), each = 4)),
+                            middle = c("predictor", rep(rep(c("Perpetration", "Victimization"), each = 2),
+                                                        times = 2)),
+                           bottom = c("predictor", rep(c("Intercept", "Slope"), times = (ncol(sv.est)-1)/2)))
+
+sv.est.flex <- flextable(sv.est) %>% two_level_flex(mapping = sv.map, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(sv.est.flex)
+```
+
+*Note.* SOC = Students of Color; LGBQ = Lesbian, Gay, Bisexual, Questioning; *CFI* = Comparative Fit Index; *RMSEA* = Root Mean Square Error of Approximation; CI = Confidence Interval; *SRMR* = Standardized Root Mean Squared Residual. Cluster-robust standard errors in parentheses (). \**p* < .05, \*\**p* < .01
+
+## Other Primary Outcomes
+
+*Standardized Estimates for Moderators of Sources of Strength from Latent Growth Model of Homophobic Name-Calling and Sexual Violence Dismissiveness (n = 6461)*
+
+```{r}
+po.est <- inner_join(tx.covs.results$`HNC Perpetration`, tx.covs.results$`HNC Victimization`, by = "predictor", suffix = c(".ncp", ".ncv")) %>%
+   inner_join(tx.covs.results$`SV Dismissiveness`, by = "predictor")
+
+po.map <- data.frame(col_keys = names(po.est),
+                            top = c("predictor", rep(c("HNC Perpetration", "HNC Victimization", "SV Dismissiveness"), each = 2)),
+                           bottom = c("predictor", rep(c("Intercept", "Slope"), times = (ncol(po.est)-1)/2)))
+
+po.est.flex <- flextable(po.est) %>% two_level_flex(mapping = po.map, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(po.est.flex)
+```
+
+*Note.* SOC = Students of Color; LGBQ = Lesbian, Gay, Bisexual, Questioning; *CFI* = Comparative Fit Index; *RMSEA* = Root Mean Square Error of Approximation; CI = Confidence Interval; *SRMR* = Standardized Root Mean Squared Residual. Cluster-robust standard errors in parentheses (). \**p* < .05, \*\**p* < .01
+
+## Protective Factors
+
+```{r}
+pf.est <- inner_join(tx.covs.results$`General Well-Being`, tx.covs.results$`SH Attitudes`, by = "predictor", suffix = c(".ncp", ".ncv")) %>%
+   inner_join(tx.covs.results$`SH Help Intent`, by = "predictor")
+
+pf.map <- data.frame(col_keys = names(pf.est),
+                            top = c("predictor", rep(c("General Well-being", "SH Attitudes", "SH Help Intention"), each = 2)),
+                           bottom = c("predictor", rep(c("Intercept", "Slope"), times = (ncol(pf.est)-1)/2)))
+
+pf.est.flex <- flextable(pf.est) %>% two_level_flex(mapping = pf.map, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(pf.est.flex)
+```
+
+*Note.* Cluster-robust standard errors in parentheses (). \**p* < .05, \*\**p* < .01
+
+## Interaction Plot
+
+```{r, fig.width=15, fig.height = 6, eval = FALSE}
+print(intx.plot)
+```
+
+
+
+## Bullying Outcomes
+
+```{r}
+bly.est <- inner_join(tx.covs.results$`Bully Perpetration`, tx.covs.results$`Cyberbully Perpetration`, by = "predictor", suffix = c(".bly", ".cbl")) %>%
+   inner_join(inner_join(tx.covs.results$`Peer Victimization`, tx.covs.results$`Depression/Anxiety`, by = "predictor", suffix = c(".pv", ".da")), by = "predictor")
+
+bly.map <- data.frame(col_keys = names(bly.est),
+                            top = c("predictor", rep(c("Bullying", "Cyberbullying", "Peer Victimization", "Depression/Anxiety"), each = 2)),
+                           bottom = c("predictor", rep(c("Intercept", "Slope"), times = (ncol(bly.est)-1)/2)))
+
+bly.est.flex <- flextable(bly.est) %>% two_level_flex(mapping = bly.map, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(bly.est.flex)
+```
+
+*Note.* Cluster-robust standard errors in parentheses (). \**p* < .05, \*\**p* < .01
+
+## Trusted Adult Nominations - Dichotomized
+
+With a dichotomized outcome, diagonally weighted least squares (DWLS) or robust maximum likelihood (MLR) can be used to estimate the models. DWLS allows for calculation of typical fit indices (e.g., CFI, RMSEA, SRMR), but pairwise or listwise deletion must be employed as DWLS is a limited information estimator. MLR is a full information estimator, and therefore, is favorable for handling missing data; however, when estimating random effects with categorical outcomes, MLR requires the raw data, as opposed to summary statistics (i.e., means, variances, and covariances), in order to conduct the numerical integration for model estimation, and therefore, fit indices cannot be calculated. We can approximate the indices by manually running the null model and using a likelihood ratio test though. Nonetheless, MLR was chosen for consistency with the other outcome models, which also used MLR. All models were estimated using the logit link function and cluster robust standard errors to adjust for students clustered within schools.
+
+The unconditional model shows that at baseline students, on average, were more likely to not nominate a trusted adult than to nominate one (OR = 0.73) with the slope indicating little change over time (OR = 1.03). In probability terms, the estimated proportion of students nominating a trusted adult in Waves 1 – 4 were 45%, 46%, 46%, and 47% , respectively.  Adding an intervention indicator to the model found no statistically significant differences between waitlist and Sources students on the intercept or slope for trusted adult nominations. Unlike the other outcomes, the “With Covariates” model failed to converge when school-level covariates and student characteristic by intervention interactions were added. Consequently, only student characteristics were included in the model. Girls were more likely than boys to nominate a trusted adult in Wave 1 (OR = 1.71) with the odds of nomination increasing at a higher rate over time (OR = 1.34). At baseline, Hispanic students and Students of Color were 36% and 27%, respectively, less likely than White students to nominate a trusted adult.
+
+*Unstandardized Estimates from Latent Growth Model for Naming a Trusted Adult*
+
+```{r}
+ta.map <- data.frame(col_keys = names(ta.results),
+                     top = c("Fixed Effects", rep(c("Unconditional", "Tx Only", "With Covariates"), each = 4)),
+                     mid = c("Fixed Effects", rep(rep(c("Intercept", "Slope"), each = 2), times = 3)),
+                     bottom = c("Fixed Effects", rep(c("b (SE)", "OR"), times = (ncol(ta.results)-1)/2)))
+
+ta.est.flex <- flextable(ta.results) %>% two_level_flex(mapping = ta.map, vert.cols = "parameter", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(ta.est.flex)
+```
+
+*Note.* Cluster-robust standard errors in parentheses (). \*p < .05, \*\*p < .01
+
+### Nomination Patterns
+
+In the table below, “Wave Count” is the number of waves a student nominated a trusted adult. “Pattern” shows whether a student nominated a trusted adult (1) or not (0), or had missing data (NA) at each of the 4 waves. No nominations across all 4 waves (0, 0, 0, 0) was the most common (7.0%) followed by nomination at all 4 waves (1, 1, 1, 1; 6.7%).
+
+```{r}
+knit_print(ta.pattern)
+```
+
+
+```{r trustedadults, message=FALSE, warning=FALSE, error=FALSE, fig.height = 5, fig.width=6.5, results="asis"}
+for(i in names(ta.tables.wave)){
+  cat("### By", i)
+  cat("\n\n")
+  cat(knit_print(ta.tables.wave[[i]]))
+  cat("\n\n")
+  if(i %in% names(ta.plots)){
+    print(ta.plots[[i]])
+    cat("\n\n")
+  }
+}
+
+```
+
+
+# Wave 1 Sample Results
+
+The analysis for Part A (Figure 1) was run using only students who participated in Wave 1 (n = 4836), meaning students who joined in later waves were excluded. Results did not meaningfully differ from the full sample of students (n = 6461)
+
+*Model Fit Indices For Sources of Strength Exposure Associations with Sexual Violence Constellation Outcomes (n = 4836)*
+
+```{r}
+fit.map1 <- data.frame(col_keys = names(unctx.fit1),
+                            top = c("outcome", rep(c("Unconditional Model", "Treatment Effect Model"), each = 8)),
+                           bottom = c("outcome", rep(c("n", "X2", "df", "p", "CFI", "RMSEA", "90% CI", "SRMR"), times = 2)))
+
+
+fit.flex1 <- flextable(unctx.fit1) %>% two_level_flex(mapping = fit.map1, vert.cols = "outcome", border = border) %>%
+  autofit() %>% fit_to_width(9)
+knit_print(fit.flex1)
+```
+
+
+*Estimates from Unconditional Latent Growth and Treatment Effect Predictor Models*
+
+
+```{r}
+unctx.map1 <- data.frame(col_keys = names(unctx.est1),
+                            top = c("outcome", rep("Unconditional Model", 5), "blank", rep("Treatment Effect Model", 4)),
+                        middle = c("outcome", rep("Intercept", 2), rep("Slope", 2), "Int-Slope", "blank", rep("Intercept", 2), rep("Slope", 2)),
+                           bottom = c("outcome", rep(c("Mean", "Variance"), times = 2), "Correlation", "blank", rep(c("Beta", "R2"), times = 2)))
+
+
+unctx.flex1 <- flextable(unctx.est1) %>% two_level_flex(mapping = unctx.map1, vert.cols = c("outcome", "blank"), border = border) %>%
+  autofit() %>% fit_to_width(9)
+knit_print(unctx.flex1)
+```
+
+*Note.* Unconditional Model estimates are unstandardized. Treatment Effect Model estimates are standardized. SH = Sexual Harassment, FSC = Forced Sexual Contact, HNC = Homophobic Name-Calling, SV = Sexual Violence. Cluster-robust standard errors in parentheses (). ^a^Scale score has a range of 0 - 3. All other scales have a range of 0 - 4. Model fit indices for all models indicated acceptable fit (see Supplemental Materials for details and sample sizes). \**p* < .05, \*\**p* < .01
+
+
+## Sexual Violence
+
+*Standardized Estimates for Moderators of Sources of Strength from Latent Growth Model of Sexual Violence Outcomes (n = 4836)*
+
+```{r}
+sv.est1 <- inner_join(tx.covs.results1$`SH Perpetration`, tx.covs.results1$`SH Victimization`, by = "predictor", suffix = c(".ncp", ".ncv")) %>%
+   inner_join(inner_join(tx.covs.results1$`FSC Perpetration`, tx.covs.results1$`FCS Victimization`, by = "predictor", suffix = c(".cp", ".cv")), by = "predictor")
+
+sv.map1 <- data.frame(col_keys = names(sv.est1),
+                            top = c("predictor", rep(c("Sexual Harassment", "Forced Sexual Contact"), each = 4)),
+                            middle = c("predictor", rep(rep(c("Perpetration", "Victimization"), each = 2),
+                                                        times = 2)),
+                           bottom = c("predictor", rep(c("Intercept", "Slope"), times = (ncol(sv.est1)-1)/2)))
+
+sv.est.flex1 <- flextable(sv.est1) %>% two_level_flex(mapping = sv.map1, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(sv.est.flex1)
+```
+
+*Note.* SOC = Students of Color; LGBQ = Lesbian, Gay, Bisexual, Questioning; *CFI* = Comparative Fit Index; *RMSEA* = Root Mean Square Error of Approximation; CI = Confidence Interval; *SRMR* = Standardized Root Mean Squared Residual. Cluster-robust standard errors in parentheses (). \**p* < .05, \*\**p* < .01
+
+## Other Primary Outcomes
+
+*Standardized Estimates for Moderators of Sources of Strength from Latent Growth Model of Homophobic Name-Calling (HNC) and Sexual Harassment (SH) Dismissiveness (n = 4836)*
+
+```{r}
+po.est1 <- inner_join(tx.covs.results1$`HNC Perpetration`, tx.covs.results1$`HNC Victimization`, by = "predictor", suffix = c(".ncp", ".ncv")) %>%
+   inner_join(tx.covs.results1$`SV Dismissiveness`, by = "predictor")
+
+po.map1 <- data.frame(col_keys = names(po.est1),
+                            top = c("predictor", rep(c("HNC Perpetration", "HNC Victimization", "SV Dismissiveness"), each = 2)),
+                           bottom = c("predictor", rep(c("Intercept", "Slope"), times = (ncol(po.est1)-1)/2)))
+
+po.est.flex1 <- flextable(po.est1) %>% two_level_flex(mapping = po.map1, vert.cols = "predictor", border = border) %>%
+  autofit() %>% fit_to_width(10)
+knit_print(po.est.flex1)
+```
+
+*Note.* SOC = Students of Color; LGBQ = Lesbian, Gay, Bisexual, Questioning; *CFI* = Comparative Fit Index; *RMSEA* = Root Mean Square Error of Approximation; CI = Confidence Interval; *SRMR* = Standardized Root Mean Squared Residual. Cluster-robust standard errors in parentheses (). \**p* < .05, \*\**p* < .01
+
+

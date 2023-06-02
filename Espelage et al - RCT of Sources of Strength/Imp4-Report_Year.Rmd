@@ -1,0 +1,273 @@
+---
+title: "Sources of Strength Implementation by Year and Exposure"
+author: "KN"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: TRUE
+    toc_depth: 2
+  word_document:
+    toc: TRUE
+    toc_depth: 2
+    reference_docx: "Markdown Template.docx"
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, results = "asis")
+
+library(knitr)
+library(rmarkdown)
+library(flextable)
+library(dplyr)
+
+load("../Output/Implmentation_Exposure_Year_Assoc.RData")
+load("../Output/Implmentation_Exposure_Models.RData")
+
+format_flex <- function(df, bold = FALSE, digits = 2, width = 8){
+  
+  numericcols <- which(unlist(lapply(df, is.numeric)))
+  
+  ftab <- flextable(df)
+  ftab <- colformat_double(ftab, j = numericcols, digits = digits)
+  ftab <- flextable::font(ftab, fontname = "Times New Roman", part = "all")
+  ftab <- flextable::padding(ftab, padding = 1, part = "all")
+  
+  if(bold == TRUE){
+  ftab <- bold(ftab, i = ~ is.na(pvalue) == FALSE & pvalue < .05, part =  "body")
+  # ftab <- bold(ftab, i = ~ est.std > .20, part = "body")
+  }
+  
+  ftab <- autofit(ftab)
+  ftab <- fit_to_width(ftab, width)
+  
+  return(ftab)
+}
+
+two_level_flex <- function(flex, mapping, vert.cols, border){
+
+  flex <- flextable::set_header_df(flex, mapping = mapping)
+  flex <- flextable::merge_h(flex, part = "header")
+  flex <- flextable::merge_v(flex, j = vert.cols, part = "header")
+  flex <- flextable::fix_border_issues(flex)
+  flex <- flextable::border_inner_h(flex, border = border, part = "header")
+  flex <- flextable::hline_top(flex, border = border, part = "all")
+  # flex <- flextable::theme_vanilla(flex)
+  flex <- flextable::align(flex, align = "center", part = "all")
+  flex <- flextable::font(flex, fontname = "Times New Roman", part = "all")
+  flex <- flextable::padding(flex, padding = 1, part = "all")
+  flex <- flextable::autofit(flex)
+}
+
+border <- officer::fp_border(width = 2) # manual horizontal flextable border width
+
+```
+
+# Implementation and Exposure Variables
+
+We reduced the full set of implementation variables to those that could potentially be predictive of student-level exposure to Sources of Strength. Variables were retained if they had sufficient variability and/or correlation > .30 with school-level exposure. The table below contains the variable codes and descriptions for the implementation and exposure variables in the analysis. Adult advisor variables begin with "aa", peer leader variables begin with "pl", campaign variables begin with "camp", and exposure variables end with "exp". Active exposure scores can range from 0 - 8. Passive exposure scores can range from 0 - 6. 
+
+```{r Variables}
+knit_print(critvar.tab)
+```
+
+
+# On School-level Exposure
+
+Students' self-reported exposure was aggregated at each wave to create a school-level measure of exposure. Aggregated variables were calculated for the full sample and for students who had ever been a peer leader. Implementation variables were aggregated by year. Waves 1 and 2 comprised Year 1 and Waves 3 and 4 comprised Year 2. The plots below display the correlation between implementation variables in each year with school-level exposure at the spring wave corresponding to that year.
+
+```{r corrs, fig.width = 14, fig.height=9}
+cat("**Year 1 Implementation and Wave 2 Exposure**")
+cat("\n\n")
+print(impcorr.plots[[1]])
+cat("\n\n")
+cat("**Year 2 Implementation and Wave 4 Exposure**")
+cat("\n\n")
+print(impcorr.plots[[2]])
+cat("\n\n")
+```
+
+Active and passive exposure were highly correlated (> .70). Correlations between peer leader exposure and non-peer leader exposure ranged from .13 - .68. Notable correlations (> |.40|) between exposure and implementation variables were (parenthesis indicate correlation was only present in one year):
+
+ - Active exposure
+    - positive: AA to PL ratio (Y1), % of school population that is a PL, average % of PLs attending meetings
+    - negative: school size, # of AAs, # of PLs (Y1), # of activities per campaign (Y1),
+ - Passive exposure
+    - positive: AA to PL ratio (Y1), % of school population that is a PL, average % of PLs attending meetings
+    - negative: school size, # of AAs, # of PLs (Y1), number of campaigns (Y1)
+    
+*For Supplemental Materials: Bivariate Correlations*
+
+```{r corrssm, fig.width = 10, fig.height=7}
+cat("**Year 1 Implementation and Wave 2 Exposure**")
+cat("\n\n")
+print(impcorr.sm.plots[[1]])
+cat("\n\n")
+cat("**Year 2 Implementation and Wave 4 Exposure**")
+cat("\n\n")
+print(impcorr.sm.plots[[2]])
+cat("\n\n")
+```
+
+    
+*Sources of Strength Program Implementation by School*
+
+```{r}
+imp.map <- data.frame(col_keys = names(imbyschool),
+                     top = c("Name", "School_n", rep(c("AA N", "%PL", "PL:AA Ratio", "Meeting N", "Avg PL Meeting Att", "Campaign N"), each = 2)),
+                     bottom = c("Name", "School_n", rep(paste0("Y", 1:2), times = 6)))
+
+imp.flex <- flextable(imbyschool) %>%
+  two_level_flex(mapping = imp.map, vert.cols = c("Name", "School_n"), border = border) %>%
+  autofit()
+knit_print(imp.flex)
+```
+
+
+\newpage
+
+# Student-level Exposure
+
+The figure below shows the distribution of active exposure and passive exposure (rows) by school (columns) with waves 2 - 4 represented by the colors green, orange, and purple, respectively. Active exposure scores can range from 0 - 8. Passive exposure scores can range from 0 - 6. Within each school the full range of scores is represented. This indicates that while there are clear differences between schools, there is also a lot of variability within each school.
+
+*Distribution of exposure scores by school and wave*
+
+```{r dist, fig.width=20, fig.height=6}
+print(schoolexp.dist)
+```
+
+
+*Average exposure by peer leader status*
+
+```{r plexp}
+plexp %>%
+  flextable::font(fontname = "Times New Roman", part = "all") %>%
+  flextable::padding(padding = 1, part = "all") %>%
+  flextable::autofit() %>%
+  knit_print()
+```
+
+kruskal-wallis test statistics
+
+```{r}
+pl.exp.test.flex <- format_flex(pl.exp.test)
+knit_print(pl.exp.test.flex)
+```
+
+
+## Multilevel Bivariate Associations
+
+We ran a series of multilevel models to understand the bivariate association between each school-level implementation variable at year *y* with the student-level exposure at the spring wave of year *y*. All models adjusted for school size. For instance, estimation of the association between the number of peer leader meetings in year 2 with active exposure in wave 4 used the model:
+
+`lmer(Active_Exposure_W4 ~ 1 + meet_n_y2 + school_n + Rural + (1|School))`
+
+Prior to running these models, we estimated the intraclass correlation (ICC), which is the proportion of variance in the exposure score due to differences between schools. The remaining proportion is due to differences between students within a school. The ICCs show that 12% of the variance in Wave 2 Active Exposure is between schools. Thus, as school-level variables, the implementation variables can explain, at most, 12% of the Wave 2 Active Exposure variance.
+
+*Exposure Intraclass Correlation*
+
+```{r icc}
+icc.flex <- format_flex(exp.icc)
+knit_print(icc.flex)
+```
+
+*Note.* ICC = intraclass correlation
+
+*Unstandardized Estimate and 95% Confidence Interval of the Association Between Implementation Variable and Exposure*
+
+```{r multilevel, fig.width = 8, fig.height=6}
+print(exp.plot)
+```
+
+*Note.* aa_pl_ratio was standardized; Implementation variables in Year 1 predicted exposure in Wave 2 whereas implementation variables in Year 2 predicted exposure in Wave 4; pstar: \*\*p < .01, \*p < .05, blank = p > .05
+
+**For Supplemental Materials**
+
+*Unstandardized Estimate and 95% Confidence Interval of the Association Between Implementation Variable and Exposure*
+
+```{r multilevelsm, fig.width = 8, fig.height=6}
+print(exp.sm.plot)
+```
+
+*Note.* PL-AA Ratio was standardized; Implementation variables in Year 1 predicted exposure in Wave 2 whereas implementation variables in Year 2 predicted exposure in Wave 4
+
+
+# Part B
+
+*Model Fit*
+
+```{r}
+format_flex(impexp.fit) %>% knit_print()
+```
+
+
+*Standardized Estimates of School-Level Implementation Variables Predicting Student-Level Exposure to Sources of Strength*
+
+```{r}
+impexp.map <- data.frame(col_keys = names(impexp.est),
+                     top = c("param", rep(c("Participatory", "Non-participatory"), each = 3)),
+                     bottom = c("param", rep(paste("Wave", 2:4), times = 2)))
+
+impexp.flex <- flextable(impexp.est) %>%
+  two_level_flex(mapping = impexp.map, vert.cols = c("param"), border = border) %>%
+  autofit()
+knit_print(impexp.flex)
+```
+
+*Note.* (dagger)Wave 4 exposure was predicted by Year 2 implementation. Wave 2 and 3 exposure was predicted by Year 1 implementation. %PL = Percent of School N who are a PL; PL Meeting Att = Average Attendance at PL Meetings. Model fit statistics were x2() = , *p* = , *CFI* = , *RMSEA* = [], *SRMR* = . Parentheses () contain cluster robust standard errors. \*p < .05, \*\*p < .01
+
+# Part C
+
+For supplemental materials
+
+*Model Fit Indices For Sources of Strength Exposure Associations with Sexual Violence Constellation Outcomes*
+
+```{r}
+format_flex(imp.results$Fit) %>% knit_print()
+```
+
+
+*Standardized Estimates (Standard Error) of Sources of Strength Exposure Associations with Sexual Violence Constellation Outcomes*
+
+```{r}
+imp.map <- data.frame(col_keys = names(imp.results$Estimate_Table)[c(1:8)],
+                     top = c("Effect", rep(c("Sexual Harassment", "Forced Sexual Contact", "Homophobic Name-Calling"), each = 2), "Sexual Harassment"),
+                     bottom = c("Effect", rep(c("Perpetration", "Victimization"), times = 3), "Dismissiveness"))
+
+imp.flex <- flextable(imp.results$Estimate_Table[, c(1:8)]) %>%
+  two_level_flex(mapping = imp.map, vert.cols = c("Effect"), border = border) %>%
+  autofit()
+knit_print(imp.flex)
+```
+
+*Note.* Parentheses () contain cluster robust standard errors. \*p < .05, \*\*p < .01
+
+
+*Standardized Estimates (Standard Error) of Sources of Strength Exposure Associations with Protective Factors*
+
+```{r}
+pf.map <- data.frame(col_keys = names(imp.results$Estimate_Table)[c(1, 10:12)],
+                     top = c("Effect", "General", "Sexual Harassment", "Sexual Harassment"),
+                     bottom = c("Effect","Well-Being", "Attitudes","Help Intention"))
+
+pf.flex <- flextable(imp.results$Estimate_Table[,c(1, 10:12)]) %>%
+  two_level_flex(mapping = pf.map, vert.cols = c("Effect"), border = border) %>%
+  autofit()
+knit_print(pf.flex)
+```
+
+*Note.* Parentheses () contain cluster robust standard errors. \*p < .05, \*\*p < .01
+
+*Standardized Estimates (Standard Error) of Sources of Strength Exposure Associations with Cyber and Bullying Outcomes*
+
+```{r}
+bly.map <- data.frame(col_keys = names(imp.results$Estimate_Table)[c(1, 13:16)],
+                     top = c("Effect", "Bullying", "Cyberbullying", "Peer", "Depression/"),
+                     bottom = c("Effect", rep("Perpetration", times = 2), "Victimization", "Anxiety"))
+
+bly.flex <- flextable(imp.results$Estimate_Table[,c(1, 13:16)]) %>%
+  two_level_flex(mapping = bly.map, vert.cols = c("Effect"), border = border) %>%
+  autofit()
+knit_print(bly.flex)
+```
+
+*Note.* Parentheses () contain cluster robust standard errors. \*p < .05, \*\*p < .01

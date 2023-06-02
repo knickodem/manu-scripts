@@ -1,0 +1,211 @@
+---
+title: "IES Goal 2: Cluster Random Assignment"
+author: "KN"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  word_document:
+    toc: TRUE
+    reference_docx: "Markdown Template.docx"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+## Packages
+library(dplyr)
+library(nbpMatching)
+
+## Importing Data - i.e., the clusters and possible covariates to match on
+ies2 <- readxl::read_excel("C:/Users/kylenick/OneDrive - University of North Carolina at Chapel Hill/Dorothy/IES Goal 2/IES Goal 2 match info.xlsx", 
+                   sheet = "RReady", .name_repair = "universal") %>%
+  as.data.frame()
+
+## custom function to streamline process
+get_matches <- function(data, idcol, seed){
+  
+  dist <- gendistance(data, idcol = idcol)  # calculates (Mahalanobis) distance measure
+  mat <- distancematrix(dist)               # reformats the distances for use in nonbimatch
+  match <- nonbimatch(mat)                  # creates the matched pairs that minimize the sum of the distances b/t pairs
+  quality <- qom(dist$cov, match$matches)   # quality of matches
+  assign <- assign.grp(match, seed = seed)  # random assignment to treatment (A) or control (B)
+  
+  return(list(Distances = dist,
+              Matches = match,
+              Quality = quality,
+              Assignment = assign))
+  
+}
+```
+
+
+## Introduction
+
+The nbpMatching package in R was used to match pairs of schools. The goal of the matching is to pair schools that are most similar on a set of variables related to the study outcome. Although we ideally want to balance the matches on as many variables as possible, we also want to minimize the Mahalanobis distance between the matched pairs. We evaluate the quality of matches based on a few sets of variables. Once the final set of variables is selected, one school in the pair is randomly assigned to the treatment group, while the other is assigned to the control group.
+
+
+## Defining sets of matching variables
+
+
+```{r variables}
+
+# ----- Defining the matching variables -----
+
+## Primary matching variables 
+matchvars.primary <- select(ies2, Number.of.enrolled.students, Full.time.teachers,
+                            Percent.English.Language.Learners, Percent.Students.with.disabilities) %>%
+  names()
+
+## Additional variables considered (this is not a set in and of itself, only used for report presentation)
+matchvars.add <- select(ies2, Percent.Free.and.reduced.lunch, Percent.African.American, Percent.Hispanic,
+                        School.Grade.1819, Percent.ELA.standardized.test.scores.below.satisfactory, Percent.Math.standardized.test.scores.below.satisfactory) %>%
+  names()
+
+
+## all matching variables - excluding redundant variables (e.g. student.teacher ratio calculated from Number.of.enrolled.students and full.time.teachers)
+matchvars.all <- select(ies2, Number.of.enrolled.students, Full.time.teachers,
+                        Percent.Free.and.reduced.lunch, Percent.African.American, Percent.Hispanic,
+                        Percent.English.Language.Learners, Percent.Students.with.disabilities, School.Grade.1819,
+                        Percent.ELA.standardized.test.scores.below.satisfactory, Percent.Math.standardized.test.scores.below.satisfactory) %>%
+  names()
+
+## Simplified sets (i.e, something between primary and all variables)
+matchvars.simp1 <- select(ies2, Number.of.enrolled.students, Full.time.teachers,
+                        Percent.Free.and.reduced.lunch, Total.Percent.Ethnic.minority,
+                        Percent.English.Language.Learners, Percent.Students.with.disabilities, School.Grade.1819) %>%
+  names()
+
+matchvars.simp2 <- select(ies2, Number.of.enrolled.students, Full.time.teachers,
+                          # Percent.Free.and.reduced.lunch, Total.Percent.Ethnic.minority,
+                          Percent.English.Language.Learners, Percent.Students.with.disabilities, School.Grade.1819) %>%
+  names()
+
+```
+
+**Primary Matching Variables**
+
+`r paste(gsub("\\.", " ", matchvars.primary), collapse = "\n\n")`
+
+**Additional Matching Variables**
+
+These variables were also considered for matching. Redundant variables were excluded from consideration. For instance, student-teacher ratio is calculated from # of enrolled students and # of full time teachers.
+
+`r paste(gsub("\\.", " ", matchvars.add), collapse = "\n\n")`
+
+The first set used for matching included only the primary matching variables. Various combinations of variables from the Additional list were added to the primary variables to determine whether distance between pairs could be minimized with the additional variables.
+
+
+```{r matching, warning=FALSE, error=FALSE}
+
+## Primary matching variables
+match.primary <- ies2 %>%
+  select(School.Name, all_of(matchvars.primary))             %>% # School and covariates to match on
+  get_matches(data = ., idcol = "School.Name", seed = 952)
+
+## All possible matching variables - excluding redundant ones
+match.all <- ies2 %>%
+  select(School.Name, all_of(matchvars.all))             %>% # School and covariates to match on
+  get_matches(data = ., idcol = "School.Name", seed = 952)
+# Produces a singular covariance matrix
+# Consequently, Euclidean distance, rather than Mahalanobis, were used, which does not account for the correlation b/t variables and assumes all variables are on the same scale (not true here)
+
+## Simplified set of variables
+match.simp1 <- ies2 %>%
+  select(School.Name, all_of(matchvars.simp1))             %>% # School and covariates to match on
+  get_matches(data = ., idcol = "School.Name", seed = 952)
+# Produces a singular covariance matrix
+# Consequently, Euclidean distance, rather than Mahalanobis, were used, which does not account for the correlation b/t variables and assumes all variables are on the same scale (not true here)
+
+
+match.simp2<- ies2 %>%
+  select(School.Name, all_of(matchvars.simp2))             %>% # School and covariates to match on
+  get_matches(data = ., idcol = "School.Name", seed = 952)
+
+
+
+# # ---- Conclusions ----
+# match.primary$Matches$mean
+# match.simp2$Matches$mean
+
+```
+
+
+## Results
+
+An adequate set of matches were produced using the primary matching variables (mean Mahalanobis distance = `r round(match.primary$Match$mean, 2)`). Other combination of variables often produced a singular covariance matrix, which is not surprising given the small number of schools. Adding School Grade to the primary matching variables yielded a non-singular covariance matrix, but the mean Mahalanobis distance between the pairs was worse (`r round(match.simp2$Match$mean, 2)`). Thus, only the primary matching variables were used to create the final matched pairs. The matched pairs and randomly assigned groups are shown in the Table 1. The standardized mean difference (SMD) between the intervention groups was calculated for each covariate. What Works Clearinghouse considers a SMD > .25 to be unbalanced. Unfortunately, as Table 2 shows the SMD is above that threshold on most covariates. No other set of variables, however, performed better.
+
+```{r with primary, results='asis'}
+# Matching Results with primary variables
+
+#### Refining output table ####
+assignment <- match.primary$Assignment %>%
+  mutate(treatment.grp = dplyr::recode(treatment.grp, A = "Immediate", B = "Delayed")) %>%
+  select(Group1.ID, Intervention = treatment.grp)
+
+matches <- match.primary$Matches$halves %>%
+  left_join(assignment, by = "Group1.ID") %>%
+  left_join(assignment, by = c("Group2.ID" = "Group1.ID")) %>%
+  select(Pair_ID = Group1.Row, School1_Name = Group1.ID, School1_Intervention = Intervention.x, School2_Name = Group2.ID, School2_Intervention = Intervention.y, Distance)
+
+cat("**Table 1.** *Matched Pairs and Intervention Group*")
+knitr::kable(matches)
+cat("\n\n")
+
+#### Evaluating group differences ####
+## adding intervention group to dataset
+ies2.p <- ies2 %>% left_join(assignment, by = c("School.Name" = "Group1.ID"))
+
+## calculate mean, sd, and standardized mean difference by intervention group
+t1.p <- tableone::CreateTableOne(matchvars.all, strata = "Intervention", data = ies2.p, test = FALSE, smd = TRUE)
+cat("**Table 2.** *Covariate Mean, SD, and Standardized Mean Difference by Intervention Group*")
+tableone::kableone(t1.p, smd = TRUE)
+
+## checking if smds match
+# library(cobalt)
+# check <- ies2 %>%
+#   select(-Incidences.of.violence.1819, -Notes, -School.Name) %>%
+# bal.tab(x = f.build("treatment.grp", matchvars.all), data = .,
+#         s.d.denom = "pooled", un = TRUE, disp.means = TRUE, disp.sd = TRUE)
+
+```
+
+
+```{r rank, eval = FALSE}
+## Calculating Mahalanobis and ranking with primary variables
+short <- ies2 %>% select(all_of(matchvars.primary))
+mds <- data.frame(School = ies2$School.Name, Distance = mahalanobis(short, colMeans(short), cov(short))) %>%
+  arrange(Distance)
+# produces same pairs as match.primary
+```
+
+
+
+```{r with simp2, eval = FALSE}
+
+# Matching Results with simp2 variables
+
+#### Refining output table ####
+assignment2 <- match.simp2$Assignment %>%
+  mutate(treatment.grp = dplyr::recode(treatment.grp, A = "Immediate", B = "Delayed")) %>%
+  select(Group1.ID, Intervention2 = treatment.grp)
+
+
+matches2 <- match.simp2$Matches$halves %>%
+  left_join(assignment2, by = "Group1.ID") %>%
+  left_join(assignment2, by = c("Group2.ID" = "Group1.ID")) %>%
+  select(Pair_ID = Group1.Row, School1_Name = Group1.ID, School1_Intervention = Intervention2.x, School2_Name = Group2.ID, School2_Intervention = Intervention2.y, Distance)
+
+#### Evaluating group differences ####
+## adding intervention group to dataset
+ies2.2 <- ies2 %>% left_join(assignment2, by = c("School.Name" = "Group1.ID"))
+
+t1.2 <- tableone::CreateTableOne(matchvars.all, strata = "Intervention2", data = ies2.2, test = FALSE, smd = TRUE)
+tableone::kableone(t1.2, smd = TRUE)
+
+## comparing primary and simp 2
+print(t1.2, smd = TRUE)
+print(t1.p, smd = TRUE) # smaller differences
+```
+
+
+
+

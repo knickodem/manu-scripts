@@ -1,0 +1,286 @@
+---
+title: "DIAL Effectiveness Results"
+author: "Kyle Nickodem"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  word_document:
+    toc: TRUE
+    toc_depth: 3
+    reference_docx: "Markdown Template.docx"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, results = "asis", warning = FALSE, message = FALSE)
+flextable::set_flextable_defaults(fonts_ignore = TRUE)
+
+library(knitr)
+library(flextable)
+library(dplyr)
+
+two_level_flex <- function(flex, mapping, vert.cols, border){
+  
+  flex <- flextable::set_header_df(flex, mapping = mapping)
+  flex <- flextable::merge_h(flex, part = "header")
+  flex <- flextable::merge_v(flex, j = vert.cols, part = "header")
+  flex <- flextable::fix_border_issues(flex)
+  flex <- flextable::border_inner_h(flex, border = border, part = "header")
+  flex <- flextable::hline_top(flex, border = border, part = "all")
+  # flex <- flextable::theme_vanilla(flex)
+  flex <- flextable::align(flex, i = NULL, j = -1, align = "center", part = "all")
+  flex <- flextable::font(flex, fontname = "Times New Roman", part = "all")
+  flex <- flextable::padding(flex, padding = 0, part = "all")
+  flex <- flextable::autofit(flex)
+  return(flex)
+}
+
+load("../Output/Analysis_Results.RData")
+load("../Output/Missing_Data_Results.RData")
+
+```
+
+# Methods
+
+
+## Baseline equivalence and unadjusted intervention effects
+
+For each scale, the standardized mean difference - Hedges's *g* - between DIAL and control participants was calculated at each wave. For the teacher reports of students and student self-reports, the estimate of *g* accounts for the clustering of students within teachers using the formulas from Hedges (2007). At Wave 1, *g* indicates baseline equivalence and reflects the degree to which the random assignment balanced the DIAL and control participants on the scales. What Works Clearinghouse (WWC, 2020) defines equivalence as *g* < .05, inequivalence as *g* > .25, with a *g* between .05 and .25 requiring the outcome model to adjust for the baseline (Wave 1) score. When baseline equivalence is achieved, *g* at Wave 2 is the intervention effect.
+
+## Intervention effects adjusting for baseline
+
+A separate linear regression model was run to estimate DIAL effects on Wave 2 scores for each teacher, student, and teacher report of student outcomes while adjusting for Wave 1 scores. All models were run with lavaan (Rosseel, 2012) in R (R Core Team, 2022) with full information maximum likelihood (FIML) estimation. Cluster robust standard errors were estimated for student outcomes to account for the nesting of students within teachers. Huber-White robust standard errors were estimated for teacher outcomes. We attempted to run multilevel models to account for the clustering of students and teachers within the 6 schools, but models produced inadmissible solutions for most outcomes, which is not surprising given the small number of schools. We included the Wave 1 and 2 scores for the other measures as auxiliary variables in the FIML estimation using the sem.auxiliary function from the semTools package (Jorgensen, et al., 2021) to improve the MAR assumption for the missing data (Enders, 2022, p. 17-20).
+
+## Mediation
+
+We fit two-wave mediation models with the full ANCOVA latent change score specification described by and using the code presented in Valente and colleagues (2021). This was a saturated model, which means the model had 0 degrees of freedom and fit the data perfectly. We estimated a separate model for each combination of student outcome (8 self-report and 5 teacher report) and teacher mediator shown to be significantly related to DIAL at $\alpha$ < .10 in the linear regressions (i.e., student engagement, instructional strategies, avoidance attitude, maladaptive attitude, and aggression problems). As with the linear regressions, the mediation models were run with Wave 1 and 2 scores from other measures as auxiliary variables to improve the FIML estimation along with cluster robust standard errors.
+
+## Demographics
+
+*Teacher Demographics*
+
+```{r}
+knit_print(t.demos)
+```
+
+
+*Student Demographics (self-report sample)*
+
+```{r}
+knit_print(st.demos)
+```
+
+*Student Demographics (Teacher report sample)*
+
+```{r}
+knit_print(tr.demos)
+```
+
+
+
+## Attrition and Missing Data
+
+**Students**
+
+*Student Participation Rates (p = `r format(round(fishers[[1]]$p.value, 2), nsmall = 2)`)*
+
+```{r}
+knit_print(attrition$`Student self-report`)
+```
+
+*Logistic Regression Estimates Predicting Wave 2 Attrition for Students*
+
+```{r}
+knit_print(drop.st.params)
+```
+
+
+**Teachers**
+
+*Teacher Participation Rates (p = `r format(round(fishers[[3]]$p.value, 2), nsmall = 2)`)*
+
+```{r}
+knit_print(attrition$`Teacher self-report`)
+```
+
+
+*Logistic Regression Estimates Predicting Wave 2 Attrition for Teachers*
+
+```{r}
+knit_print(drop.t.params)
+```
+
+**Teacher Reports of Students**
+
+*Teacher Reports of Students Participation Rates (p = `r format(round(fishers[[2]]$p.value, 2), nsmall = 2)`)*
+
+```{r}
+knit_print(attrition$`Teacher report of students`)
+```
+
+
+*Logistic Regression Estimates Predicting Wave 2 Attrition for Teacher Reports of Students*
+
+```{r}
+knit_print(drop.tr.params)
+```
+
+\newpage
+
+# Analytic Results
+
+*Unstandardized Linear Regression Estimates of DIAL Effects*
+
+```{r}
+
+outs.map <- data.frame(col_keys = names(reg.outs),
+                      top = c("Outcome", rep(c("DIAL", "Wave 1 Score"), each = 2), "R2", "g"),
+                      bottom = c("Outcome", rep(c("b", "95%CI"), times = 2), "R2", "g"))
+
+reg.outs.flex <- two_level_flex(flextable(reg.outs), mapping = outs.map, vert.cols = c("Outcome", "R2", "g"), border = officer::fp_border(width = 2))
+knit_print(reg.outs.flex)
+```
+
+*Note.* 95%CI = 95% Confidence intervals; *g* = standardized mean difference between DIAL and delayed intervention condition at Wave 2. For student measures, estimate accounts for the clustering of students within teachers using formulas from Hedges (2007). ^a^estimated with Huber-White robust standard errors, ^b^estimated with cluster robust standard errors given clustering within 37 teachers, ^c^estimated with cluster robust standard errors given clustering within 60 teachers. \^*p* < .10, \**p* < .05, \*\**p* < .01
+
+\newpage
+
+## Mediation Models
+
+### Student Self-Reports
+
+```{r}
+  for(j in names(st.aux.lcs.out)){
+    cat("**", j, "**", sep = "")
+    cat("\n\n")
+    knit_print(st.aux.lcs.out[[j]]) %>% cat()
+    cat("\n\n")
+  }
+```
+
+\newpage
+
+### Teacher Reports of Students
+
+```{r}
+  for(j in names(tr.aux.lcs.out)){
+    cat("**", j, "**", sep = "")
+    cat("\n\n")
+    knit_print(tr.aux.lcs.out[[j]]) %>% cat()
+    cat("\n\n")
+  }
+```
+
+\newpage
+
+
+# Preliminary Results
+
+## Teacher Self-Reports
+
+```{r fig.width = 4, fig.height = 5}
+
+for(i in names(t.distplots)){
+  cat("###", gsub("_", " ", i))
+  cat("\n\n")
+  cat("**Standardized Mean Difference by Condition and Wave**")
+  cat("\n\n")
+  print(t.distplots[[i]])
+  cat("\n\n")
+  cat("**Intervention Effect Model**")
+  cat("\n\n")
+  t.results[[i]]$Parameters %>%
+  knit_print() %>% cat()
+  cat("\n\n")
+  cat("\\newpage")
+}
+```
+
+
+## Teacher Reports of Students
+
+```{r fig.width = 4, fig.height = 5}
+
+
+for(i in names(tr.distplots)){
+  cat("###", gsub("_", " ", i))
+  cat("\n\n")
+  cat("**Standardized Mean Difference by Condition and Wave**")
+  cat("\n\n")
+  print(tr.distplots[[i]])
+  cat("\n\n")
+  cat("**Intervention Effect Model**")
+  cat("\n\n")
+  tr.results[[i]]$Parameters %>%
+  knit_print() %>% cat()
+  cat("\n\n")
+  cat("#### Mediation Models")
+  cat("\n\n")
+  med.mods <- tr.lcs.out[which(grepl(gsub("_", " ", i), names(tr.lcs.out)))]
+  for(j in names(med.mods)){
+    cat("**", j, "**", sep = "")
+    cat("\n\n")
+    knit_print(med.mods[[j]]) %>% cat()
+    cat("\n\n")
+  }
+  cat("\\newpage")
+}
+
+
+```
+
+```{r eval=FALSE}
+for(i in names(tr.distplots)){
+  cat("**Model Checks**")
+  cat("\n\n")
+  print(tr.results[[i]]$Model_Check)
+  cat("\n\n")
+}
+```
+
+```{r, fig.width = 4, fig.height = 5, eval = FALSE}
+print(tr.distplots$Behavior_Risk)
+```
+
+## Student Self-Reports
+
+```{r fig.width = 4, fig.height = 5}
+
+for(i in names(st.distplots)){
+  cat("###", gsub("_", " ", i))
+  cat("\n\n")
+  cat("**Standardized Mean Difference by Condition and Wave**")
+  cat("\n\n")
+  print(st.distplots[[i]])
+  cat("\n\n")
+  cat("**Intervention Effect Model**")
+  cat("\n\n")
+  st.results[[i]]$Parameters %>%
+  knit_print() %>% cat()
+  cat("\n\n")
+    cat("#### Mediation Models")
+  cat("\n\n")
+  str.med.mods <- st.lcs.out[which(grepl(paste("to", gsub("_", " ", i)), names(st.lcs.out)))]
+  for(j in names(str.med.mods)){
+    cat("**", j, "**", sep = "")
+    cat("\n\n")
+    knit_print(str.med.mods[[j]]) %>% cat()
+    cat("\n\n")
+  }
+  cat("\\newpage")
+}
+```
+
+\newpage
+
+# References
+
+Hedges, L. V. (2007). Effect sizes in cluster-randomized designs. *Journal of Educational and Behavioral Statistics, 32*(4), 341–370. https://doi.org/10.3102/1076998606298043.
+
+Jorgensen, T. D., Pornprasertmanit, S., Schoemann, A. M., & Rosseel, Y. (2021). semTools: Useful tools for structural equation modeling (v0.5-5) [R package]. https://CRAN.R-project.org/package=semTools
+
+R Core Team (2022). R: A language and environment for statistical computing (v4.2.0) [software]. https://www.R-project.org/.
+
+Rosseel, Y. (2012). lavaan: An R package for structural equation modeling (v0.6.11). *Journal of Statistical Software, 48*(2), 1-36. doi:10.18637/jss.v048.i02
+
+Valente, M. J., Georgeson, A. R., & Gonzalez, O. (2021). Clarifying the implicit assumptions of two-wave mediation models via the latent change score specification: An evaluation of model fit indices. *Frontiers in Psychology, 12*(709198), 1-16. doi:10.3389/fpsyg.2021.70919
+
+What Works Clearinghouse. (2020). *What Works Clearinghouse Standards Handbook, Version 4.1.* Washington, DC: U.S. Department of Education, Institute of Education Sciences, National Center for Education Evaluation and Regional Assistance. Retrieved from https://ies.ed.gov/ncee/wwc/handbooks.

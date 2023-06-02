@@ -1,0 +1,157 @@
+---
+title: "Disability Anti-Bullying Training Demographic and Score Psychometric Summary"
+author: "Kyle Nickodem"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  word_document:
+    toc: TRUE
+    reference_docx: "Markdown Template.docx"
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, results = "asis", warning = FALSE, message = FALSE)
+flextable::set_flextable_defaults(fonts_ignore = TRUE)
+
+library(knitr)
+library(flextable)
+library(dplyr)
+
+load("../Psychometric Reports/Score_Report_Results.RData")
+
+format_flex <- function(df, bold = FALSE, digits = 2){
+  
+  numericcols <- which(unlist(lapply(df, is.numeric)))
+  
+  if("flextable" %in% class(df)){
+  ftab <- df
+  } else {
+  ftab <- flextable(df)  
+  }
+  ftab <- colformat_double(ftab, j = numericcols, digits = digits)
+  ftab <- flextable::font(ftab, fontname = "Times New Roman", part = "all")
+  ftab <- flextable::padding(ftab, padding = 0, part = "all")
+  
+  if(bold == TRUE){
+  ftab <- bold(ftab, i = ~ p < .05, part =  "body")
+  # ftab <- bold(ftab, i = ~ est.std > .20, part = "body")
+  }
+  
+  ftab <- autofit(ftab)
+  # ftab <- fit_to_width(ftab, 6.5)
+  
+  return(ftab)
+}
+
+two_level_flex <- function(flex, mapping, vert.cols, border){
+
+  flex <- flextable::set_header_df(flex, mapping = mapping)
+  flex <- flextable::merge_h(flex, part = "header")
+  flex <- flextable::merge_v(flex, j = vert.cols, part = "header")
+  flex <- flextable::fix_border_issues(flex)
+  flex <- flextable::border_inner_h(flex, border = border, part = "header")
+  flex <- flextable::hline_top(flex, border = border, part = "all")
+  # flex <- flextable::theme_vanilla(flex)
+  flex <- flextable::align(flex, align = "left", part = "body")
+  flex <- flextable::align(flex, align = "center", part = "header")
+  flex <- flextable::font(flex, fontname = "Times New Roman", part = "all")
+  flex <- flextable::padding(flex, padding = 0, part = "all")
+  flex <- flextable::autofit(flex)
+}
+
+border <- officer::fp_border(width = 2) # manual horizontal flextable border width
+
+# Might add a Demographic Summary section
+```
+
+
+# Psychometric Summary Introduction
+
+
+This report provides psychometric information for the scales used to measure the effectiveness of the Disability Anti-Bullying (DIAL) Training. Preliminary exploration of scale dimensionality was carried out using k-fold cross-validation with the kfa package (Nickodem & Halpin, 2021). Results from the preliminary explorations can be found in the "Psychometric Reports" folder. The psychometric evidence presented here is for the best fitting structure for the scale; however, a suitable structure for score interpretation was not found for all scales. Consequently, scores were only created when there was evidence of an interpretable structure. The psychometric evidence for the scale scores might be sufficient for certain uses, but insufficient for others. For instance, making decisions about individuals requires stronger psychometric evidence than understanding how two constructs are correlated.
+
+**Model Fit and Reliability**
+
+All scales employed ordinal items with Likert-type response options. Therefore, the confirmatory factor analysis models were estimated using diagonally weighted least squares. Missing data was handled via listwise deletion. Scale reliability was estimated using both alpha ($\alpha$) and hierarchical omega ($\omega_h$).
+
+**Scoring**
+
+All scale scores were calculated as the mean of the item responses. Participants must have responded to all items in the scale to receive a score. In an analysis with the scale scores, this is the equivalent of listwise deletion. To include all participants, use the items directly in a structural equation model.
+
+# Teacher Reports of Students
+
+```{r}
+for(i in names(tst.comments)){
+  cat("##", gsub("_", " ", i))
+  cat("\n\n")
+  cat(tst.comments[[i]])
+  cat("\n\n")
+  cat("**Confirmatory Factor Analysis Model Fit for Unidimensionality**")
+  cat("\n\n")
+  filter(tst.fits, stringr::str_detect(Model, gsub("_", " ", i))) %>%
+    format_flex(digits = 0) %>% knit_print() %>% cat()
+  cat("\n\n")
+  cat("**Reliability**")
+  cat("\n\n")
+    filter(tst.relis, stringr::str_detect(Model, gsub("_", " ", i))) %>%
+    format_flex() %>% knit_print() %>% cat()
+  cat("\n\n")
+  cat("**Standardized Factor Loadings**")
+  cat("\n\n")
+  format_flex(tst.loadings[[i]]) %>% knit_print() %>% cat()
+  cat("\n\n")
+}
+```
+
+
+# Teacher Self-Reports
+
+```{r}
+for(i in names(tslf.comments)){
+  cat("##", gsub("_", " ", i))
+  cat("\n\n")
+  cat(tslf.comments[[i]])
+  cat("\n\n")
+  cat("**Confirmatory Factor Analysis Model Fit for Unidimensionality**")
+  cat("\n\n")
+  filter(tslf.fits, stringr::str_detect(Model, gsub("_", " ", i))) %>%
+    format_flex(digits = 0) %>% knit_print() %>% cat()
+  cat("\n\n")
+  cat("**Reliability**")
+  cat("\n\n")
+    filter(tslf.relis, stringr::str_detect(Model, gsub("_", " ", i))) %>%
+    format_flex() %>% knit_print() %>% cat()
+  cat("\n\n")
+  cat("**Standardized Factor Loadings**")
+  cat("\n\n")
+  format_flex(tslf.loadings[[i]]) %>% knit_print() %>% cat()
+  cat("\n\n")
+}
+```
+
+
+# Student Self-Reports
+
+```{r}
+for(i in names(sslf.comments)){
+  cat("##", gsub("_", " ", i))
+  cat("\n\n")
+  cat(sslf.comments[[i]])
+  cat("\n\n")
+  cat("**Confirmatory Factor Analysis Model Fit for Unidimensionality**")
+  cat("\n\n")
+  filter(sslf.fits, stringr::str_detect(Model, gsub("_", " ", i))) %>%
+    format_flex(digits = 0) %>% knit_print() %>% cat()
+  cat("\n\n")
+  cat("**Reliability**")
+  cat("\n\n")
+    filter(sslf.relis, stringr::str_detect(Model, gsub("_", " ", i))) %>%
+    format_flex() %>% knit_print() %>% cat()
+  cat("\n\n")
+  cat("**Standardized Factor Loadings**")
+  cat("\n\n")
+  format_flex(sslf.loadings[[i]]) %>% knit_print() %>% cat()
+  cat("\n\n")
+}
+```
+

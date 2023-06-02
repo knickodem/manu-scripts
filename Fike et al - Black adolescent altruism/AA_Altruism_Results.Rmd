@@ -1,0 +1,151 @@
+---
+title: "Black Adolescent Altruism Results"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  word_document:
+    toc: FALSE
+    reference_docx: "analysis_word_reference_landscape.docx"
+  html_document:
+    toc: FALSE
+---
+
+```{r setup, include=FALSE, results = 'asis'}
+library(knitr)
+library(flextable)
+library(magrittr)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, error = FALSE, results  = 'asis')
+load("Altruism_Results.RData")
+
+```
+
+**Table 1**
+
+*Pearson Zero-order Correlations by Gender and Descriptive Statistics For `r nrow(data2)` Black Adolescents*
+
+```{r}
+knit_print(tab1)
+```
+
+*Note* Correlations in lower triangle are for girls and in upper triangle are for boys. Descriptive statistics are for the full sample. \**p* < .05.
+
+\newpage
+
+Correlations in long format.
+
+```{r}
+knit_print(corrs.sig)
+```
+
+\newpage
+
+**Table 2**
+
+*Descriptive Statistics by Gender and Test For Mean Difference*
+
+```{r}
+knit_print(t.tab.flex)
+```
+
+
+**Table 3**
+
+*Model Fit and Comparison of Multigroup Analysis by Gender*
+
+```{r}
+knit_print(indices.flex)
+```
+
+*Note.* CFI = comparative fit index, RMSEA = root mean squared error of approximation, SRMR = standardized root mean squared residual, AIC = Akaike Information Criterion, BIC = Bayesian Information Criterion. In the Free model, regression estimates were estimated separately for boys and girls. In the Constrained model, the estimates were constrained to equality between boys and girls. Mean and variance adjusted x2 was used for model fit and accompanying robust CFI and RSMEA. Satorra and Bentler (2001) scaled difference test statistic and naïve CFI and RMSEA was used for model comparisons.
+
+\newpage
+
+Standardized Regression Estimates Constrained to Equality Between Boys and Girls (n = 1263) With Altruism as the Criterion
+
+```{r}
+knit_print(con.params)
+```
+
+
+
+Standardized Regression Estimates With Altruism as the Criterion for Boys and Girls (n = 1263)
+
+```{r}
+knit_print(uncon.params)
+```
+
+\newpage
+
+# Main Effects Model Results
+
+*Model Fit and Comparison of Multigroup Analysis by Gender*
+
+```{r}
+knit_print(maineff.indices.flex)
+```
+
+*Note.* CFI = comparative fit index, RMSEA = root mean squared error of approximation, SRMR = standardized root mean squared residual, AIC = Akaike Information Criterion, BIC = Bayesian Information Criterion. In the Free model, regression estimates were estimated separately for boys and girls. In the Constrained model, the estimates were constrained to equality between boys and girls. Mean and variance adjusted x2 was used for model fit and accompanying robust CFI and RSMEA. Satorra and Bentler (2001) scaled difference test statistic and naïve CFI and RMSEA was used for model comparisons.
+
+\newpage
+
+Standardized Regression Estimates Constrained to Equality Between Boys and Girls (n = 1263) With Altruism as the Criterion
+
+```{r}
+knit_print(maineff.con.params)
+```
+
+
+
+Standardized Regression Estimates With Altruism as the Criterion for Boys and Girls (n = 1263)
+
+```{r}
+knit_print(maineff.uncon.params)
+```
+
+Standardized Regression Estimates Constrained to Equality Between Boys and Girls (n = 1263) With Altruism as the Criterion
+
+```{r}
+knit_print(combo.con.params.flex)
+```
+
+
+
+Standardized Regression Estimates With Altruism as the Criterion for Boys and Girls (n = 1263)
+
+```{r}
+knit_print(combo.unc.params.flex)
+```
+
+
+\newpage
+
+
+# Measurement Invariance Procedures
+
+We then investigated measurement invariance of each measure by gender following procedures outlined in Svetina and colleagues (2020) using constraints suggested by Wu and Estabrook (2016) to identify models with ordinal items. The procedure consisted of first testing the configural model where item thresholds and factor loadings were freely estimated for both boys and girls. Overall fit of the model was evaluated using a mean and variance scaled $\chi^2$ test statistic along with the fit indices: comparative fit index (CFI) > .95, root mean squared error of approximation (RMSEA) < .06, and standardized root mean squared residual (SRMR) < .08 (Li, 2016). If the model fit the groups well, then the metric model constraining the thresholds to equality between the groups was run. The configural and metric models were compared with a non-significant Satorra and Bentler (2001) scaled difference test and change ($\Delta$) in the fit indices of CFI ≤ -.004, RMSEA ≤ .01, and SRMR ≤ .01 indicating measurement invariance (Svetina et al, 2020). If metric invariance was achieved, the scalar model added equality constraints to the factor loadings was run and compared to the metric model. All models were estimated with diagonally weighted least squares and listwise deletion (Li, 2016). The analysis was conducted in R (R Core Team, 2022) with model syntax generated using semTools (Jorgensen et al., 2018) and models run with lavaan (Rosseel, 2012).
+
+
+
+```{r}
+for(i in 1:length(mi.tabs)){
+  cat("*", stringr::str_replace_all(names(mi.tabs)[[i]], "_", " "), " Measurement Invariance by Gender*", sep = "")
+  cat("\n\n")
+  cat(knit_print(mi.tabs[[i]]))
+  cat("\n\n")
+  cat("*Note.* Mean and variance adjusted x2 used for model fit and Satorra and Bentler (2001) scaled difference test statistic () and p-value () used for model comparisons.")
+  cat("\n\n")
+}
+```
+
+
+# References
+
+Jorgensen, T. D., Pornprasertmanit, S., Schoemann, A. M., & Rosseel, Y. (2021). semTools: Useful tools for structural equation modeling [R package v.0.5-5]. Retrieved from https://CRAN.R-project.org/package=semTools
+Li, C. H. (2016). Confirmatory factor analysis with ordinal data: Comparing robust maximum likelihood and diagonally weighted least squares. *Behavior Research Methods, 48*(3), 936-949. doi: 10.3758/s13428-015-0619-7
+Nickodem K, Halpin P (2022). kfa: K-fold cross validation for factor analysis [R package v.0.2.0]. Retrieved from https://CRAN.R-project.org/package=kfa. 
+R Core Team (2022). R: A language and environment for statistical computing [software v.4.2.0]. https://www.R-project.org/
+Rosseel, Y. (2012). lavaan: An R package for structural equation modeling. *Journal of Statistical Software, 48*(2), 1-36. https://doi.org/10.18637/jss.v048.i02
+Satorra, A., & Bentler, P. M. (2001). A scaled difference chi-square test statistic for moment structure analysis. *Psychometrika, 66*(4), 507-514.
+Svetina, D., Rutkowski, L., & Rutkowski, D. (2020). Multiple-group invariance with categorical outcomes using updated guidelines: an illustration using M plus and the lavaan/semtools packages. *Structural Equation Modeling: A Multidisciplinary Journal, 27*(1), 111-130. https://doi.org/10.1080/10705511.2019.1602776
+Wu, H., & Estabrook, R. (2016). Identification of confirmatory factor analysis models of different levels of invariance for ordered categorical outcomes. *Psychometrika, 81*(4), 1014-1045. doi: 10.1007/s11336-016-9506-0
+
+

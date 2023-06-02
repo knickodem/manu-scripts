@@ -1,0 +1,1188 @@
+---
+title: "Scale Development Results"
+author: "KN"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  word_document:
+    toc: TRUE
+    toc_depth: 2
+    reference_docx: "Markdown Template.docx"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, results = "asis", message = FALSE, warning = FALSE)
+
+load("../Output/SoS_Miss_Demos.RData")
+load("../Output/Construct_EFA_CFA.RData")
+load("../Output/Longitudinal_MI.RData")
+library(flextable)
+library(dplyr)
+library(knitr)
+
+format_flex <- function(df, bold = FALSE, digits = 2, width = 8){
+  
+  numericcols <- which(unlist(lapply(df, is.numeric)))
+  
+  ftab <- flextable(df)
+  ftab <- colformat_double(ftab, j = numericcols, digits = digits)
+  ftab <- flextable::font(ftab, fontname = "Times New Roman", part = "all")
+  ftab <- flextable::padding(ftab, padding = 1, part = "all")
+  
+  if(bold == TRUE){
+  ftab <- bold(ftab, i = ~ is.na(pvalue) == FALSE & pvalue < .05, part =  "body")
+  # ftab <- bold(ftab, i = ~ est.std > .20, part = "body")
+  }
+  
+  ftab <- autofit(ftab)
+  ftab <- fit_to_width(ftab, width)
+  
+  return(ftab)
+}
+```
+
+# Introduction and Methods
+
+To investigate the impact of SoS on primary outcomes and protective factors we first have to 1) identify the items that measure each construct and 2) determine whether the items measure the construct consistently across each wave (i.e., show measurement invariance). All items were ordinal, so all models were estimated with WLSMV (i.e., DWLS estimator with mean and variance scaled test statistic).
+
+We accomplish the first goal by conducting an exploratory factor analysis (EFA) followed by a confirmatory factor analysis (CFA) with pairwise deletion to handle missing data:
+
+ 1. Randomly select half of the students within each school to be in the EFA sample and the other half in the CFA sample.
+ 2. Using the Wave 1 items proposed for each construct, determine the optimal number of factors by comparing multiple models (1-factor, 2-factor, etc...) in an EFA framework on the EFA sample.
+ 3. Based on the results from step 2, the plausible models are then fit in a CFA framework on the CFA sample. A separate model is fit to each of the four waves to evaluate the consistency of the best fitting structure over time.
+ 
+For some constructs with strong prior evidence, we skipped step 2 and only tested the established structure in directly in Step 3. For constructs with good model fit in Step 3, we proceeded to the second goal and examine longitudinal measurement invariance on the full sample. This consists of sequentially fitting four models with increasing constraints. The configural model is fit first to determine whether the same factor structure holds at each wave. The waves are fit simultaneously in the configural model, which distinguishes it from Step 3 above when each wave was fit separately. The configural model is followed by the metric model which constraints the factor loadings to be equal across waves. The scalar and strict models are fit next which constrain the item thresholds and the latent item response residual variances, respectively, to be equal across waves. If the strict model fits the data well and no worse than the scalar model, we can conclude that any change in the protective factor over time is due to true changes and not a by-product of measurement error. Listwise deletion was used to handle missing data for the measurement invariance models.
+
+**For measures used in the outcome paper:** When full invariance was not achieved, we investigated partial invariance. 
+
+For both the CFA and measurement invariance models, the quality of the model is evaluated using multiple indices. For each indicator there are guidelines for good model fit with the caveats that these are not definitive cutoffs and were derived using continuous variables whereas we have ordinal variables (Kline, 2016).
+
+ - Non-significant $\chi^2$ test ($\alpha$ > .05), with larger sample sizes, such as ours, the $\chi^2$ test is commonly significant
+ - CFI and TLI > .95
+ - RMSEA < .06
+ - SRMR < .08
+ 
+For comparing models to establish measurement invariance, a $\chi^2$ difference test is the common approach. Criteria for differences in the fit indices have also been suggested, but this is also much needed area of research regarding ordinal variables (Chen, 2007; Rutkowski & Svetina, 2014):
+ 
+ - Non-significant $\chi^2$ difference test ($\alpha$ > .05), again this test is overly-sensitive to large sample sizes
+ - $\Delta$CFI and $\Delta$TLI < - .01
+ - $\Delta$RMSEA < .01
+ - $\Delta$SRMR < .01
+ 
+# Exposure
+
+Unlike the other constructs, which were asked of all students at all waves, the exposure items were only given to Sources of Strength students in waves 2 - 4. Therefore, the EFA and CFA samples only included SoS students. With response options 1 = Yes or 0 = No, 15 items (questions 45-50 on the survey) asked students about their exposure to Sources of Strength related information and activities.
+
+ 1) Have you seen posters or videos at school about Sources of Strength?
+ 2) Have you seen messages or videos about Sources of Strength on social media or online?
+ 3) Have you seen a presentation about strengths that help teens get through hard times?
+ 4) Have you seen a presentation about helping suicidal teens by getting them the help they need?
+ 5) Has a friend or other student told you about Sources of Strength?
+ 6) Has a friend or other student talked to you about using your own strengths?
+ 7) Have you participated in a Sources of Strength activity to share your own sources of strength (such as adding to a poster or filling out a card)?
+ 8) Which activity have you participated in? Named and/or thanked a trusted adult
+ 9) Which activity have you participated in? Named strengths that help me when I'm anxious, angry, or depressed.
+ 10) Which activity have you participated in? Named strengths that I've grown stronger in.
+ 11) Which activity have you participated in? Shared what I am thankful for
+ 12) Which activity have you participated in? Shared a story of getting connected or connecting a friend who needed help
+ 13) Which activity have you participated in? Shared any other examples of strength, resilience, hope etc. as part of Sources of Strength campaign
+ 14) Which activity have you participated in? Other?
+ 15) In the past 6 months have you seen this logo?
+ 
+### Raw Score Descriptive Statistics
+ 
+```{r}
+VariableDescrips %>% skimr::yank("numeric") %>%
+  select(-skim_variable) %>%
+  filter(Wave != 1 & Variable %in% c("Active_Exposure", "Passive_Exposure")) %>%
+  mutate(across(where(is.numeric), ~round(., 2))) %>%
+  knit_print()
+```
+
+ 
+#### Factor Analysis
+ 
+In the EFA stage, we compared 1 and 2 factor models. A $\chi^2$ difference test demonstrated the the 2 factor model had significantly better fit ($\Delta\chi^2$ = 1889.7, *df* = 14, *p* < .001). One factor comprised the 7 activity-based items (items 8 - 14) while factor two comprised passive exposure items (items 1-7, 15). In the CFA stage, the two factors were modeled separately to determine whether each factor was well-defined without relying on information from the other factor.
+
+**Active Exposure**
+
+```{r actcfa}
+cat("*Model Fit*")
+cat("\n\n")
+exp.results$cfas$Active$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Reliability*")
+cat("\n\n")
+exp.results$cfas$Active$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+
+```
+
+**Passive Exposure**
+
+The initial set of passive items (items 1-6, 15) had high RMSEA and SRMR (> .15). Investigations revealed a high residual correlations between the two presentation items (#3 and #4) at each wave, suggesting the model does not capture something about these items. Additionally, he item correlations showed that items 3 and 4 where correlated > .90 at each wave, indicating the two items provided redundant information. Models were then compared when dropping one of the items. Dropping one of the items improved fit considerably regardless of which item was dropped. The final model retains item 3 which had slightly higher fit, reliability, and factor loading than the model retaining item 4.
+
+```{r passcfa }
+cat("*Model Fit*")
+cat("\n\n")
+exp.results$cfas$Passive_No4$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Reliability*")
+cat("\n\n")
+exp.results$cfas$Passive_No4$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Active Exposure had good model fit and high reliability across the three waves. Passive Exposure also had high reliability, and model fit improved to acceptable levels when item 4 was dropped from the model.
+
+#### Measurement Invariance
+
+Unlike the protective factors which used a polytomous response scale, the exposure items were dichotomous (Yes/No). Each item only has 1 threshold, which is constrained to be equal across time in order to identify the measurement invariance model. Constraining the thresholds to be equal across time is the distinguishing feature of scalar invariance. Since the lone threshold has already been constrained, however, metric and scalar invariance are equivalent and do not need to be tested separately.
+
+**Active Exposure**
+
+```{r actmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Active_Exposure %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Active_Exposure %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Passive Exposure**
+
+```{r passivemi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Passive_Exposure %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Passive_Exposure %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+For both the Active and Passive Exposure scales, even as more constraints are placed on the model, the fit indices show good model fit. For Active Exposure, the chi-square test for non-significant for metric invariance and, after freeing the residual variance for ACTIVITITY_PARTICIPATION_W2, for strict invariance. These results suggest longitudinal measurement invariance holds and we can examine how change in exposure impacts the outcome and protective factors over time. For Passive Exposure, the chi-square test only indicated metric invariance after freeing the loadings for SOCIAL_MEDIA in Wave 3 and STRENGTHS_RESILIENCE in Waves 3 and 4. Similarly, strict invariance was only achieved after the residuals variances in wave 4 were freed for STRENGTHS_RESILIENCE, OWN_STRENGTHS, and POSTERS_VIDEOS. The partial invariance is still sufficient to draw conclusions about change in Passive Exposure over time.
+
+# Primary Outcomes
+
+## Sexual Harassment (No Contact) Perpetration
+
+From question 12 on the survey, the 4 items ask students about types and frequency of sexual harassment behaviors they have perpetrated. Using a 5-point response scale (0 = Never, 4 = 7 or more times), students were asked, "How often, if at all, in the past SIX MONTHS have YOU done the following things to other students at school when they did not want you to?"
+
+ 1) Made sexual comments, jokes, gestures, or looks
+ 2) Showed, gave, or left them sexual pictures, photographs, illustrations, messages, or notes
+ 3) Wrote sexual messages/graffiti about them on bathroom walls, in locker rooms, etc.
+ 4) Spread sexual rumors about them
+
+### Factor Analysis
+
+All items were dichotomized (0 = Never, 1 = 1 or more times) due to low frequencies at the higher end of the scale.
+ 
+```{r nocontactperpcfa}
+cat("**Model Fit**")
+cat("\n\n")
+ncperp.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+ncperp.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+ncperp.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+With the exception of a possible heywood case (negative residual variance/standardized factor loading > 1) for item 3 in wave 3, the model fit indices, reliability, and factor loadings suggest the construct is measured well.
+
+### Measurement Invariance
+
+```{r nocontactperpmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$No_Contact_Perpetration %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$No_Contact_Perpetration %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Indices suggest good model fit for each model. Fit was maintained as constraints were added. To satisfy the chi-square test for strict invariance, the residual variance for item 1 in wave 1 was freed. Nonetheless, evidence is sufficient for longitudinal measurement invariance allowing for examining the change over time. 
+
+## Sexual Harassment (No Contact) Victimization
+
+From question 14 on the survey, the 4 items ask students about types and frequency of sexual harassment behaviors they have experienced. Using a 5-point response scale (0 = Never, 4 = 7 or more times), students were asked, "How often, if at all, in the past SIX MONTHS have others done the following things to YOU at school when they did not want you to?"
+
+ 1) Made sexual comments, jokes, gestures, or looks
+ 2) Showed, gave, or left them sexual pictures, photographs, illustrations, messages, or notes
+ 3) Wrote sexual messages/graffiti about them on bathroom walls, in locker rooms, etc.
+ 4) Spread sexual rumors about them
+
+### Factor Analysis
+
+All items were dichotomized (0 = Never, 1 = 1 or more times) due to low frequencies at the higher end of the scale.
+ 
+```{r nocontactvictcfa}
+cat("**Model Fit**")
+cat("\n\n")
+ncvict.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+ncvict.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+ncvict.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+The model fit indices, reliability, and factor loadings suggest the construct is measured well.
+
+### Measurement Invariance
+
+```{r nocontactvictmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$No_Contact_Victimization %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$No_Contact_Victimization %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Indices suggest good model fit for each model. As constraints are added the fit is maintained, suggesting longitudinal measurement invariance holds and we can examine the change over time.
+
+## Sexual Violence (Contact) Perpetration
+
+From question 12 on the survey, the 8 items ask students about types and frequency of sexual violence behaviors they have perpetrated. Using a 5-point response scale (0 = Never, 4 = 7 or more times), students were asked, "How often, if at all, in the past SIX MONTHS have YOU done the following things to other students at school when they did not want you to?"
+
+ 1) Touched, grabbed, or pinched them in a sexual way
+ 2) Pulled at their clothing in a sexual way
+ 3) Intentionally brushed against them in a sexual way
+ 4) Pulled their clothing off or down
+ 5) Blocked their way or cornered them in a sexual way
+ 6) Forced them to kiss you
+ 7) Forced them to do something sexual other than kissing
+ 8) Made them touch your private parts when they did not want to
+
+### Factor Analysis
+
+All items were dichotomized (0 = Never, 1 = 1 or more times) due to low frequencies at the higher end of the scale.
+ 
+```{r contactperpcfa}
+cat("**Model Fit**")
+cat("\n\n")
+conperp.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+conperp.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+conperp.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+At each wave there are high correlations between sets of items, though which sets are not consistent across waves. This is also evidenced by the high factor loadings. In conjunction this points to some items possibly being redundant. Model fit and reliability are good though.
+
+### Measurement Invariance
+
+```{r contactperpmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Contact_Perpetration %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Contact_Perpetration %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Indices suggest good model fit for each model. As constraints are added the fit is maintained, suggesting longitudinal measurement invariance holds and we can examine the change over time.
+
+## Sexual Violence (Contact) Victimization
+
+From question 14 on the survey, the 8 items ask students about types and frequency of sexual harassment behaviors they have experienced. Using a 5-point response scale (0 = Never, 4 = 7 or more times), students were asked, "How often, if at all, in the past SIX MONTHS have others done the following things to YOU at school when they did not want you to?"
+
+ 1) Touched, grabbed, or pinched them in a sexual way
+ 2) Pulled at their clothing in a sexual way
+ 3) Intentionally brushed against them in a sexual way
+ 4) Pulled their clothing off or down
+ 5) Blocked their way or cornered them in a sexual way
+ 6) Forced them to kiss you
+ 7) Forced them to do something sexual other than kissing
+ 8) Made them touch your private parts when they did not want to
+
+### Factor Analysis
+
+All items were dichotomized (0 = Never, 1 = 1 or more times) due to low frequencies at the higher end of the scale.
+ 
+```{r contactvictcfa}
+cat("**Model Fit**")
+cat("\n\n")
+convict.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+convict.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+convict.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+The model fit indices, reliability, and factor loadings suggest the construct is measured well.
+
+### Measurement Invariance
+
+```{r contactvictmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Contact_Victimization %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Contact_Victimization %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Indices suggest good model fit for each model. As constraints are added the fit is maintained, suggesting longitudinal measurement invariance holds and we can examine the change over time.
+
+## Homophobic Name Calling Perpetration
+
+From question 10 on the survey, the 5 items ask students about calling others homo, gay, lesbo, or fag. Using a 5-point response scale (0 = Never, 4 = 7 or more times), students were asked, " How many times in the last 30 days did YOU say these words to..."
+
+ 1) A friend?
+ 2) Someone you did not know well?
+ 3) Someone you did not like?
+ 4) Someone you thought was gay or lesbian?
+ 5) Someone you did not think was gay or lesbian?
+
+### Factor Analysis
+
+The highest two response categories (3 and 4) were collapsed to "5 or more times" due to low frequencies.
+ 
+```{r hncperpcfa}
+cat("**Model Fit**")
+cat("\n\n")
+hncperp.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+hncperp.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+hncperp.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+The model fit indices, reliability, and factor loadings suggest the construct is measured well.
+
+### Measurement Invariance
+
+```{r hncperpmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$HNC_Perpetration %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$HNC_Perpetration %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Fit indices suggest good model fit for each model and that fit was maintained as constraints were added. To satisfy the chi-square test for metric invariance, the factor loadings for item 3 in wave 1 and item 4 in wave 2 were freed. The chi-square test indicated invariance was not achieved.
+
+## Homophobic Name Calling Victimization
+
+From question 11 on the survey, the 5 items ask students about others calling them homo, gay, lesbo, or fag. Using a 5-point response scale (0 = Never, 4 = 7 or more times), students were asked, "How many times in the last 30 days did the following persons say these words TO YOU?"
+
+ 1) A friend
+ 2) Someone you did not know well
+ 3) Someone you did not like
+ 4) Someone you thought was gay or lesbian
+ 5) Someone you did not think was gay or lesbian
+
+### Factor Analysis
+
+The highest two response categories (3 and 4) were collapsed to "5 or more times" due to low frequencies.
+ 
+```{r hncvictcfa}
+cat("**Model Fit**")
+cat("\n\n")
+hncvict.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+hncvict.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+hncvict.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+The model fit indices, reliability, and factor loadings suggest the construct is measured well.
+
+### Measurement Invariance
+
+```{r hncvictmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$HNC_Victimization %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$HNC_Victimization %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+**Conclusion**
+
+The change in fit indices suggest longitudinal measurement was achieved; however, the chi-square statistic was significant, which indicates non-invariance. Attempts to satisfy the chi-square statistic via partial invariance was unsuccessful. This the longitudinal invariance for this construct is ambiguous at best. 
+
+## Cybersex Perpetration
+
+Question 19 on the survey asked students 3 items were asked about their behavior the past SIX MONTHS in online, texting or social media settings. Using a 5-point response scale (0 = Never, 4 = 7 or more times), students were asked, "During the past six months..."
+
+ 1) How often did you try to get someone to talk about sex when they did not want to using mobile apps, social network
+ 2) How often did you ask someone to do something sexual that they did not want to do using mobile apps, social network
+ 3) How often did you post or publicly share a nude or semi-nude picture of someone using mobile apps, social networks
+
+### Factor Analysis
+
+Model fit will be perfect because there are only 3 items defining the factor. Additionally, the highest two response categories (3 and 4) were collapsed to "5 or more times" due to low frequencies.
+ 
+```{r cybercfa}
+cat("**Model Fit**")
+cat("\n\n")
+cyber.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+cyber.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+cyber.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+All indicators point toward the items measuring the construct with good reliability.
+
+```{r cybermi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Cybersex_Perpetration %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Cybersex_Perpetration %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+**Conclusion**
+
+Indices suggest good model fit for each model. As constraints are added the fit is maintained, suggesting longitudinal measurement invariance holds and we can examine the change over time.
+
+## Sexual Violence Dismissiveness
+
+Question 13 on the survey asked students 6 items about their opinions toward sexual violence. Using a 4-point response scale (0 = Strongly Disagree, 3 =  Strongly Agree), students were asked, "In my opinion..."
+
+ 1) girls lie about being sexually harassed just to get back at someone
+ 2) girls are asking to be sexually harassed when they wear short skirts and tight clothes
+ 3) a boy who claims he has been sexually harassed is a nerd, wimp, sissy, or wuss
+ 4) sexual harassment is just having fun
+ 5) if I have flirted with a person in the past, then I am encouraging sexual harassment by them
+ 6) when boys make comments about girls' bodies, girls should take it as a compliment
+
+### Factor Analysis
+
+```{r dismisscfa}
+cat("**Model Fit**")
+cat("\n\n")
+dismiss.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+dismiss.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+dismiss.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+All indicators point toward the items measuring the construct with good reliability.
+
+```{r dismissmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$SV_Dismissiveness %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$SV_Dismissiveness %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+**Conclusion**
+
+The change in fit indices suggest longitudinal measurement was achieved; however, the chi-square statistic was significant, which indicates non-invariance. According to the chi-square statistic, partial metric invariance was achieved after freeing the loadings for items 2, 3, and 6 in wave 4 and item 6 in wave 3. Scalar and strict partial invariance was not achieved. Thus, the longitudinal invariance for this construct is ambiguous at best. 
+
+# Protective Factors
+
+## General Well-Being
+
+From question 42 on the survey, the 8 items address the core components of Sources of Strength. Using a 4-point response scale (0 = Strongly Disagree, 3 = Strongly Agree), each item asks students, "How much, if at all, in the last six months  would you agree or disagree with the following statements about yourself?"
+
+ 1) I feel supported and cared for by my family
+ 2) I have positive, caring friends
+ 3) I have friendships with adults that I trust
+ 4) I am active in healthy activities, hobbies, etc.
+ 5) I take time to be generous and helpful to others
+ 6) I feel very spiritual in my faith, beliefs, and culture
+ 7) If needed, I could get counseling or help
+ 8) I get any medical services I need
+ 
+ 
+### Factor Analysis
+ 
+For these 8 items we compared 1 and 2 factor models in the EFA stage. Only item 7 loaded strongly onto a second factor. Therefore, in the CFA stage, we compared a 1 factor model with and without item 7.
+
+
+**Model Fit**
+
+```{r gwbcfafit}
+cat("*One factor CFA on each wave including item 7*")
+cat("\n\n")
+gwb.results$cfas$One_Factor$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*One factor CFA on each wave excluding item 7*")
+cat("\n\n")
+gwb.results$cfas$Two_Factor$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Reliabilities**
+
+```{r gwbcfarel}
+cat("*One factor CFA on each wave including item 7*")
+cat("\n\n")
+gwb.results$cfas$One_Factor$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*One factor CFA on each wave excluding item 7*")
+cat("\n\n")
+gwb.results$cfas$Two_Factor$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+The model fit improves slightly when item 7 is removed, but reliability decreases. When included, item 7 has a high loading at each wave (.81 - .84). Therefore, we will keep General Wellbeing as an 8 item unidimensional scale.
+
+### Measurement Invariance
+
+```{r gwbmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$General_Well.being %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$General_Well.being %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Even as more constraints are placed on the model, the fit indices show good model fit. For the most part the chi-square tests are significant, which is unsurprising given our large sample size. As a whole, these results suggest longitudinal measurement invariance holds and we can examine the change in General Well Being over time in a latent growth model.
+
+
+## General Help Attitudes
+
+From question 6 and 7 on the survey, the 8 items ask students about their attitude and the attitude of others close to them toward getting help from a counselor if the student was a) "upset and needing help" or b) "being bullied at school". Responses options were on a 4-point scale (0 = Strongly Disagree to 3 = Strongly Agree)
+
+ 1) I believe a counselor or other adult at school would intervene to stop it IF THEY KNEW
+ 2) I would talk to a counselor or other adult at school about it
+ 3) My friends would want me to talk to a counselor or other adult at school
+ 4) My family would want me to talk to a counselor or other adult at school
+
+### Factor Analysis
+ 
+Initial investigation also included questions 8 and 9 on the survey (see Sexual Harassment Help Attitudes and Seeking below), but those items were shown to be separate constructs. Thus, we compare a 1-factor and 2-factor model here.
+
+**Model Fit**
+
+```{r ghacfafit}
+cat("*One factor CFA on each wave*")
+cat("\n\n")
+gha.results$cfas$One_Factor$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Two factor CFA on each wave*")
+cat("\n\n")
+gha.results$cfas$Two_Factor$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Reliabilities**
+
+```{r ghacfarel}
+cat("*One factor CFA on each wave*")
+cat("\n\n")
+gha.results$cfas$One_Factor$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Two factor CFA on each wave*")
+cat("\n\n")
+gha.results$cfas$Two_Factor$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+As a whole, the fit of both the 1-factor and 2-factor models show ambiguous fit nor is one model clearly superior to the other. Further investigation and refinement is needed before measurement invariance can proceed.
+
+
+## Sexual Harassment Help Attitudes
+
+From question 8 on the survey, the 4 items ask students about their attitude and the attitude of others close to them toward getting help from a counselor if sexually harassed. Using a 4-point response scale (0 = Strongly Disagree, 3 = Strongly Agree), students were asked, "I would seek out help from peers or adults in my school if..."
+
+ 1) I believe a counselor or other adult at school would intervene to stop it IF THEY KNEW
+ 2) I would talk to a counselor or other adult at school about it
+ 3) My friends would want me to talk to a counselor or other adult at school
+ 4) My family would want me to talk to a counselor or other adult at school
+
+### Factor Analysis
+ 
+These items were originally included with the General Help Seeking items (see above) because they followed the same question structure, but in the context of sexual harassment rather than bullying. However, the preliminary EFAs suggested these items might constitute a separate factor. Therefore, we primarily used the CFAs simply to confirm the fit of a one factor model to the data.
+
+
+```{r shhelpattcfa}
+cat("**Model Fit**")
+cat("\n\n")
+shhelpatt.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+shhelpatt.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+shhelpatt.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+As a whole, the indicators suggest the items measure a single construct. The RMSEA is a bit high, especially in Wave 3, so some further refinement might be needed.
+
+### Measurement Invariance
+
+```{r shhelpattmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$SH_Help_Attitudes %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$SH_Help_Attitudes %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Even as more constraints are placed on the model, the fit indices show good model fit. For the most part the chi-square tests are significant, which is unsurprising given our large sample size. As a whole, these results suggest longitudinal measurement invariance holds and we can examine the change in SH Help Attitude over time in a latent growth model.
+
+
+## Sexual Harassment Help Seeking
+
+From question 9 on the survey, the 4 items ask students about their intention to seek help if they were sexually harassed. Using a 4-point response scale (0 = Strongly Disagree, 3 = Strongly Agree), students were asked, "I would seek out help from peers or adults in my school if..."
+
+ 1) Other students were making sexual comments to me that I did not like
+ 2) Other students were spreading sexual rumors about me
+ 3) Other students were calling me homo, gay, or fag
+ 4) Other students were touching me in a sexual way when I did not want to be touched
+
+### Factor Analysis
+ 
+These items were originally included with the General Help Attitudes items (see above), but showed a clear one factor structure. Therefore, we primarily used the CFAs simply to confirm the fit of a one factor model to the data.
+
+```{r shhelpseekcfa}
+cat("**Model Fit**")
+cat("\n\n")
+shhelpseek.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+shhelpseek.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+shhelpseek.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+**Conclusion**
+
+As a whole, the indicators suggest the items measure a single construct. The RMSEA is a bit high in Wave 2 suggesting the model does not fit as well at this timepoint. More investigation is need to surmise the reason.
+
+### Measurement Invariance
+
+```{r shhelpseekmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$SH_Help_Seeking %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$SH_Help_Seeking %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Even as more constraints are placed on the model, the fit indices show good model fit. For the most part the chi-square tests are significant, which is unsurprising given our large sample size. As a whole, these results suggest longitudinal measurement invariance holds and we can examine the change in SH Help Seeking over time in a latent growth model.
+
+
+## Intent to Help Others
+
+From question 44 on the survey, the 6 items ask students the actions they would take if they knew others were being bullied or sexually harassed. Responses options were on a 4-point scale (0 = Strongly Disagree to 3 = Strongly Agree)
+
+ 1) I would tell an adult I trusted if I knew that a friend was being bullied
+ 2) I would tell an adult about a friend being bullied, even if that friend asked me to keep it a secret
+ 3) I would call or text a crisis/tip line for someone who was being bullied
+ 4) I would tell an adult I trusted if I knew that a friend was being sexually harassed
+ 5) I would tell an adult about a friend being sexually harassed, even if that friend asked me to keep it a secret
+ 6) I would call or text a crisis/tip line for someone who was being sexually harassed
+
+### Factor Analysis
+ 
+For these 6 items we compared a 1-factor and a 2-factor model in the EFA stage, then replicated the resulting factor structures in the CFA stage. The 2-factor model comprised items 1, 2, 4, and 5 loading onto one factor and only items 3 and 6 on the second factor. Therefore, a third model was also tested which consisted of the single factor with items 1, 2, 4, and 5.
+
+**Model Fit**
+
+```{r hotherscfafit}
+cat("*One factor CFA on each wave*")
+cat("\n\n")
+hothers.results$cfas$One_Factor$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Two factor CFA on each wave*")
+cat("\n\n")
+hothers.results$cfas$Two_Factor$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*One factor CFA with items 1, 2, 4, and 5 on each wave*")
+cat("\n\n")
+hothers.results$cfas$One_Factor_Adj$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+**Reliabilities**
+
+```{r hotherscfarel}
+cat("*One factor CFA on each wave*")
+cat("\n\n")
+hothers.results$cfas$One_Factor$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Two factor CFA on each wave*")
+cat("\n\n")
+hothers.results$cfas$Two_Factor$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*One factor CFA with items 1, 2, 4, and 5 on each wave*")
+cat("\n\n")
+hothers.results$cfas$One_Factor_Adj$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+All of the models have prohibitively high RMSEA. Further investigation and refinement is needed before measurement invariance can proceed.
+
+
+## Teacher and Staff Help Intentions
+
+From question 44 on the survey, the 8 items ask students if they thought teachers and staff would help students victimized by bullying or sexual harassment. Using a 4-point response scale (0 = Strongly Disagree, 3 = Strongly Agree), students were asked, "Teachers and Staff would help out if THEY KNEW..."
+
+ 1) a student is making fun of and teasing another student who is obviously weaker
+ 2) a student is spreading rumors or lies about another student behind their back
+ 3) a student is using the Internet or cell phone to tell lies or make fun of another student who gets picked on a lot
+ 4) a student or group of students is trying to pick a fight with a weaker student
+ 5) a student or group of students is pushing and shoving a weaker student
+ 6) a student is making sexual comments about another student
+ 7) a student is spreading sexual rumors about another student
+ 8) a student is touching another student in a sexually, inappropriate manner
+
+### Factor Analysis
+ 
+For these 8 items we compared 1 and 2 factor models in the EFA stage. Although the 2 factor model had better model fit, none of the items loaded strongly (> .30) on the second factor. This indicates that the items measure a single common factor, but the common factor does not explain the majority of the variation in the item responses. The CFA was used to determine whether this result held in the holdout sample. The initial run indicated items 5 and 6 as heywood cases (negative residual variance and standardized factor loading > 1.00) and high correlations between items 4 and 5 and between 6 and 7 in some waves. Items 5 and 6 were removed.
+
+```{r staffhelpcfa}
+cat("**Model Fit**")
+cat("\n\n")
+staffhelp.results$cfas$One_Factor_Adj$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+staffhelp.results$cfas$One_Factor_Adj$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+staffhelp.results$cfas$One_Factor_Adj$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Reliability and the factor loadings are quite high across all waves, suggesting the items successfully measure the construct. Likewise, CFI, TLI, and SRMR indicate good model fit. Despite removing the more problematic items (5 and 6), the RMSEA is problematically high across all waves. 
+
+### Measurement Invariance
+
+```{r staffhelpmi, eval = FALSE}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Staff_Help_Intent %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Staff_Help_Intent %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+# Other Scales
+
+## Alcohol and Drugs
+
+Question 27 on the survey asked students 4 items regarding their future drug use with response options of 0 = Not at all likely, 1 = Somewhat likely, ad 2 = Very likely. Students were specifically asked, "How likely are you in the next 6 months to ..."
+
+ 1) smoke cigarettes?
+ 2) get drunk or very high on alcohol?
+ 3) use marijuana?
+ 4) use perscription drugs to get high?
+
+
+### Factor Analysis
+ 
+```{r aodcfa}
+cat("**Model Fit**")
+cat("\n\n")
+alcoholdrugs.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+alcoholdrugs.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+alcoholdrugs.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+All indicators point toward the items measuring the construct with good reliability and fit. 
+
+### Measurement Invariance
+
+```{r aodmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Alcohol_and_Drug %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Alcohol_and_Drug %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+**Conclusion**
+
+Indices suggest good model fit for each model. As constraints are added the fit is maintained, suggesting longitudinal measurement invariance holds and we can examine the change over time.
+
+## Bullying Perpetration
+
+From question 44 on the survey, the 8 items ask students if they thought teachers and staff would help students victimized by bullying or sexual harassment. Using a 4-point response scale (0 = Strongly Disagree, 3 = Strongly Agree), students were asked, "Teachers and Staff would help out if THEY KNEW..."
+
+ 1) a student is making fun of and teasing another student who is obviously weaker
+ 2) a student is spreading rumors or lies about another student behind their back
+ 3) a student is using the Internet or cell phone to tell lies or make fun of another student who gets picked on a lot
+ 4) a student or group of students is trying to pick a fight with a weaker student
+ 5) a student or group of students is pushing and shoving a weaker student
+ 6) a student is making sexual comments about another student
+ 7) a student is spreading sexual rumors about another student
+ 8) a student is touching another student in a sexually, inappropriate manner
+
+### Factor Analysis
+ 
+For these 9 items we compared 1 and 2 factor models in the EFA stage. The 2-factor model had trouble running, so only the 1-factor model was tested in the CFA sample
+
+```{r bullycfa}
+cat("**Model Fit**")
+cat("\n\n")
+bullying.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+bullying.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+bullying.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+Reliability and the factor loadings are high across all waves, suggesting the items successfully measure the construct. Likewise, CFI, TLI, and SRMR indicate good model fit.
+
+### Measurement Invariance
+
+```{r bullymi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Bullying %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Bullying %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+**Conclusion**
+
+Indices suggest good model fit for each model. As constraints are added the fit is maintained, suggesting longitudinal measurement invariance holds and we can examine the change over time.
+
+## Cyberbullying Perpetration
+
+Question 19 on the survey asked students 3 items were asked about their behavior the past SIX MONTHS in online, texting or social media settings. Using a 5-point response scale (0 = Never, 4 = 7 or more times), students were asked, "During the past six months..."
+
+ 1) How often did you make mean or hurtful comments using mobile apps, social networks, texts, or other digital communication?
+ 2) How often did you spread rumors using mobile apps, social networks, texts, or other digital communication?
+ 3) How often did you make threatening or aggressive comments using mobile apps, social networks, texts, or other digital communication?
+
+### Factor Analysis
+
+Model fit will be perfect because there are only 3 items defining the factor.
+ 
+```{r cyberbullycfa}
+cat("**Model Fit**")
+cat("\n\n")
+cyberbully.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+cyberbully.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+cyberbully.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+All indicators point toward the items measuring the construct with good reliability. 
+
+### Measurement Invariance
+
+```{r cyberbullyingmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Cyberbullying %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Cyberbullying %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+**Conclusion**
+
+Indices suggest good model fit for each model. As constraints are added the fit is maintained, suggesting longitudinal measurement invariance holds and we can examine the change over time.
+
+## Depression & Anxiety
+
+Using a 3-point response scale (0 = Never, 1 = Sometimes, 2 = Most of the time), 13 items in survey question 34 asked students, "How much have you felt or acted this way in the past 2 weeks?"
+
+ 1) I felt miserable or unhappy
+ 2) I didn't enjoy anything at all
+ 3) I felt so tired I just sat around and did nothing
+ 4) I was very restless
+ 5)	I felt I was no good anymore
+ 6) I cried a lot
+ 7) I found it hard to think properly or concentrate
+ 8) I hated myself
+ 9) I felt I was a bad person
+ 10) I felt lonely
+ 11) I thought nobody really loved me
+ 12) I thought I could never be as good as other kids
+ 13)	I felt I did everything wrong
+ 
+ 
+### Factor Analysis
+ 
+**Model Fit**
+
+```{r depanxcfafit}
+cat("*One factor CFA on each wave*")
+cat("\n\n")
+depanx.results$cfas$One_Factor$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*One factor CFA on each wave excluding item 7*")
+cat("\n\n")
+depanx.results$cfas$Two_Factor$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Reliabilities**
+
+```{r depanxcfarel}
+cat("*One factor CFA on each wave including item 7*")
+cat("\n\n")
+depanx.results$cfas$One_Factor$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*One factor CFA on each wave excluding item 7*")
+cat("\n\n")
+depanx.results$cfas$Two_Factor$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+The 1-factor model fits well, but the 2-factor model fits better based on both the fit indices and a likelhood ratio test. In the 2-factor model, one factor consists of items 1-4 and 7 while the second factor is comprised of items 5, 6, and 8 - 13. Thus, the two factors appear to be split based on severity or possibly feelings vs. thoughts. 
+
+### Measurement Invariance
+
+A 1-factor model was attempted, but had difficulties running it. A 2-factor model is likely more appropriate.
+
+```{r depanxmi, eval = FALSE}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Depression.Anxiety %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Depression.Anxiety %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+## Peer Victimization
+
+Question 21 on the survey asked students 4 items about victimization experiences. Using a 5-point response scale (0 = Never, 4 = 7 or more times), students were asked if, "the following happened at school in the LAST 30 DAYS"
+
+ 1) Other students picked on me.
+ 2) Other students called me names.
+ 3) I got hit or pushed by others.
+ 4) Other students made fun of me.
+
+
+### Factor Analysis
+ 
+```{r peervictcfa}
+cat("**Model Fit**")
+cat("\n\n")
+peervict.results$cfas$fits %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Reliabilities**")
+cat("\n\n")
+peervict.results$cfas$reliabilities %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("**Standardized Factor Loadings**")
+cat("\n\n")
+peervict.results$cfas$loadings %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+
+**Conclusion**
+
+All indicators point toward the items measuring the construct with good reliability and fit. 
+
+### Measurement Invariance
+
+```{r peervictmi}
+cat("*Overall Fit*")
+cat("\n\n")
+all.mi.fits$Peer_Victimization %>% format_flex() %>% knit_print()
+cat("\n\n")
+cat("*Model Comparison*")
+cat("\n\n")
+all.mi.comp$Peer_Victimization %>% format_flex() %>% knit_print()
+cat("\n\n")
+```
+
+**Conclusion**
+
+Indices suggest good model fit for each model. As constraints are added the fit is maintained, suggesting longitudinal measurement invariance holds and we can examine the change over time.
