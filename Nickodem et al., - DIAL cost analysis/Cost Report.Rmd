@@ -1,0 +1,134 @@
+---
+title: "DIAL Cost Results"
+author: "KN"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  word_document:
+    toc: TRUE
+    toc_depth: 3
+    reference_docx: "Markdown Template.docx"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, results = "asis", warning = FALSE, message = FALSE)
+flextable::set_flextable_defaults(fonts_ignore = TRUE)
+
+library(knitr)
+library(flextable)
+library(dplyr)
+
+
+#' Default flextable format
+#'
+#' Internal function for formatting flextables
+#'
+#' @param df a \code{data.frame}
+#' @param bold.type character indicating table with a pre-specified bolding pattern. Not currently implemented.
+#' @param width numeric; maximum width of table in inches.
+#' @param digits integer; number of decimal places to display in the report.
+#'
+#' @return a \code{flextable} object
+#'
+#' @import flextable
+#'
+#' @noRd
+
+flextab_format <- function(df, width = NULL, autofit = TRUE, digits = 2){
+  
+  numericcols <- which(unlist(lapply(df, is.numeric)))
+  
+  flex <- flextable::flextable(df)
+  flex <- flextable::colformat_double(flex, j = numericcols, digits = digits)
+  flex <- flextable::align(flex, i = NULL, j = -1, align = "center", part = "all")
+  flex <- flextable::font(flex, fontname = "Times New Roman", part = "all")
+  flex <- flextable::padding(flex, padding = 0, part = "all")
+  
+  if(!is.null(width)){
+    flex <- flextable::fit_to_width(flex, max_width = width)
+  }
+  
+  if(autofit == TRUE){
+  flex <- flextable::autofit(flex)
+  }
+  
+  return(flex)
+}
+
+two_level_flex <- function(flex, mapping, vert.cols, border){
+  
+  flex <- flextable::set_header_df(flex, mapping = mapping)
+  flex <- flextable::merge_h(flex, part = "header")
+  flex <- flextable::merge_v(flex, j = vert.cols, part = "header")
+  flex <- flextable::fix_border_issues(flex)
+  flex <- flextable::border_inner_h(flex, border = border, part = "header")
+  flex <- flextable::hline_top(flex, border = border, part = "all")
+  # flex <- flextable::theme_vanilla(flex)
+  flex <- flextable::align(flex, i = NULL, j = -1, align = "center", part = "all")
+  flex <- flextable::font(flex, fontname = "Times New Roman", part = "all")
+  flex <- flextable::padding(flex, padding = 0, part = "all")
+  flex <- flextable::autofit(flex)
+  return(flex)
+}
+
+load("../Output/Cost_Results.RData")
+
+```
+
+# Incremental Costs
+
+**Table 1**
+
+*DIAL Implementation Costs*
+
+```{r}
+table1 <- base$`Ingredient Cost` %>%
+  mutate(`Cost per unit` = c("$15.00", "$15.00", "$42.84a", "$42.84a", "$40.00"),
+         Quantity = c("8.00", "1.88", "1.88", "6.00", "1.00"),
+         TC = c(8,8,33,33,33)) %>%
+  select(Category, Ingredient, `Cost per unit`, Quantity, TC, Total) %>%
+  bind_rows(base$`Total Cost` %>%
+              mutate(Category = c("Total cost", "Cost per teacher (33 teachers)", "Cost per student (19 per teacher)")))
+
+table1 %>% flextab_format() %>% knit_print()
+```
+
+*Note.* ^a^Based on median national salary of $61,690 for elementary school teachers as of May 2022 (USBLS, 2023) and 1,440 hours worked (Shand & Bowen, 2022). ^b^National average class size for public elementary schools in 2020-2021 (U.S. Department of Education, National Center for Education Statistics, 2021).
+
+
+Percent of total cost by category
+
+```{r}
+flextab_format(cat.pct, digits = 3) %>% knit_print()
+```
+
+# Cost effectiveness estimates
+
+```{r}
+flextab_format(ce) %>% knit_print()
+```
+
+# Sensitivity Analysis
+
+**Table 2**
+
+*Univariate Deterministic Sensitivity Analysis Results*
+
+```{r}
+flextab_format(table2) %>% knit_print()
+```
+
+*Note.* ^a^Values are the 10th, 25th, 75th, and 90th percentile of salaries in the US as of May 2022 (USBLS, 2023); ^b^Estimated range of values based on reports from project staff; ^c^Suggested hours based on feedback from coaches; ^d^Values are the 10th, 50th, and 90th percentile of hourly wages for instructional coaches in the US as of May 2022 (USBLS 2023); ^e^Values are the lower and upper bounds of the 90% confidence interval for the DIAL effect on instructional strategy self-efficacy (g = 0.48) from Espelage et al., (2023); ICER = Incremental cost effectiveness ratio.
+
+Cost per unit change
+
+```{r}
+flextab_format(perunit) %>% knit_print()
+```
+
+**Figure 1**
+
+*Per Teacher Cost of DIAL by Coach-to-Teacher Ratio*
+
+```{r, fig.width = 8, fig.height = 6}
+print(ctratio.plot)
+```
