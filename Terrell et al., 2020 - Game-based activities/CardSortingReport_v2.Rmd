@@ -1,0 +1,165 @@
+---
+title: "Card Sorting Results - Version 2"
+author: "Kyle Nickodem"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+   word_document:
+      toc: true
+      reference_docx: RMCC Word Template.docx
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, results='asis')
+```
+
+
+```{r pack and func, include=FALSE}
+## Packages
+pacman::p_load(rmarkdown,knitr,stringr,tidyr,dplyr,tibble,cowplot,forcats)
+
+## load data
+load("3_analyze/analyzed.Rdata")
+```
+
+
+# Methods
+
+The performance of intervention and control students was evaluated on a 8-item final exam administered at the end of the semester and on the free sort card task administered at the beginning and end of the semester. When evaluating final exam scores the intervention condition included students from Fall 2017 and 2018 (n = 88) while the control condition included students from Fall and Spring 2016 (n = 41). The Fall 2018 students, however, participated in the directed sort card task rather than the free sort card task. Thus, the intervention group on the free sort card task consisted only of Fall 2017 students.
+
+For the final exam, the percent of correct responses to each item and a total exam score were calculated and used to provide descriptive differences in exam performance between the intervention and control conditions. Additionally, differences in total exam score between the two conditions, gender, and the interaction between condition and gender was investigated using a linear regression model. With a total sample size of 129 students and setting $\alpha$ = .05, the regression model could detect an effect size  of *d* = .5 [*f*$^2$ = .061; $\eta^2$ = .06], a medium effect size (Cohen, 1988), with 80% power.$^1$ Although the exam scores could be considered count data rather than truly continuous, the linear model was chosen over a Poisson model because the scores have an approximately normal distribution rather than a Poisson distribution. Addtionally, the linear model produced a lower AIC and BIC than the Poisson model, indicating that it was a better fit.
+
+Performance on the free sort card task was evaluated in a variety of ways. Ideally, the cards would be sorted into four piles based on functionality rather than structure or some other grouping mechanism. Therefore, we examined the number of piles created and the percentage of pile names that were function-based at both time points (pre and post) and by condition (intervention or control). In addition to calculating descriptive differences by time and condition, seperate linear regressions for the number of piles$^2$ and percent of function-based names were fit to compare differences by condition at post while controlling for values at pre and the interaction between condition and pre value. With the small sample size of 27 groups and setting $\alpha$ = .05, the regression models had 80% power to detect an effect size of *d* = 1.13 [*f*$^2$ = .32; $\eta^2$ = .24], a very large effect. Despite the low power, the regression model was chosen over multiple t-tests to reduce the risk of a Type I error via multiple comparisions and because the interaction between time and condition was of interest, which could not be examined directly via a t-test.
+
+Free sort card task performance was also compared descriptively by condition and time using the median score on each of the 62 cards and the total score summed from all cards. Furthermore, condition, total score at pre, and the interaction were entered into a linear regression model to evaluate differences in total score at post on the free sort card task. The regression possessed the same power and purpose as it did with the pile-level outcomes.
+
+The directed sort card task was only administered to Fall 2018 students and did not have a comparison control group. Additionally, pile-level outcomes no longer applied; therefore, only pre-to-post changes for each card and total score were investigated.
+
+
+# Results
+
+## Final Exam
+
+### Item Level
+
+Items E and F were easy for all students with approximately 90% of both the intervention and control students responding correctly to each item (Figure 1). The 95% confidence intervals indicate the range of equally plausible values the true percent correct could take. Therefore, on items A, C, D, and H where the intervals for the intervention and control estimates do not overlap, we can reasonably conclude that the true percent correct for the intervention condition is higher than for the control condition. The largest difference was on item D where 48% of intervention students responded correctly, but only 32% of control students.
+
+```{r FEItemPlot,fig.height=6,fig.width=12}
+print(FEItemPlot)
+```
+
+*Figure 1.* Percent of correct responses to each of the eight items on the final exam by intervention and control condition. Error bar represents the 95% confidence interval.
+
+
+### Total Scores
+
+Despite some possible differences between the two conditions on individual items, the distribution of total scores suggests that intervention and control students performed similarly overall (Figure 2A). The median exam score for both groups was 5, although the intervention condition had a higher mean score than the control condition (5.3 to 4.8).
+
+```{r FE Distribution Plots,fig.height=7,fig.width=14}
+plot_grid(FEICDensityPlot,FESemesterDensityPlot,labels=c("A","B"),align="h")
+```
+
+*Figure 2.* Distribution of final exam scores by (A) intervention and control semesters and (B) disaggregated by each semester.
+
+The linear regression (Table 1) also demonstrated that intervention students had, on average, an exam score 0.70 of a point higher than control students, but the difference was statistically non-significant (*p* = .14). Gender (*B* = 0.01,*p* = .99) and the interaction between condition and gender (*B* = -0.26, *p* = .68) were not associated with differences in exam score. Overall, condition and gender only explained 2.7% of the variation in final exam scores, meaning that 97.3% of the variation in scores is due to other factors. In summary, while there is some evidence of exam performance differences between the intervention and control students at the item level, there is no evidence of differences between the conditions at the total score level.
+
+Table 1
+
+*Linear Regression Model for Final Exam Score*
+
+```{r FEcoefs}
+kable(FEcoefs,align=c("l",rep("c",length(FEcoefs)-1)))
+```
+
+**p* < .05
+ 
+
+
+## Free Sort Card Task
+
+### Piles
+
+As shown in Figure 3A, the mean number of piles created decreased from pre to post for both intervention (pre = 9.0, post = 6.8) and control (pre = 10.1, post = 8.6) conditions. Additionally, at both time points the groups in the intervention condition created, on average, fewer piles than control groups. However, lack of precision in the estimates, as evidenced by the wide and overlapping 95% confidence intervals, does not allow us to conclude that the true values are likely to be different. Likewise, when controlling for the number of piles at pre, the difference in the number of piles at post between conditions was not statistically significant (*B* = 1.3, *p* = .73; Table 2). It is also worth noting that the intervention condition at post, which had the lowest average number of piles, had on average 2.8 more piles than the correct number of piles (4).
+
+The intervention and control conditions had a similar percent of piles with function-based names at pre, 33.5% and 34.9% respectively (Figure 3B). At post, the percent rose to 76.0% and 97.0% for the control and intervention conditions, respectively. The regression results indicate that the difference between the two conditions at post was statistically significant (*B* = 27.37, *p* = .02).
+
+
+```{r PilePlots,fig.height=6,fig.width=12}
+plot_grid(TotalPilesPlot,FunctionPilesPlot,labels=c("A","B"),align="h")
+```
+
+*Figure 3.* (A) Mean number of piles created and (B) percent of piles with function-based names for intervention and control students at pre and post. Error bar represents the 95% confidence interval.
+
+
+Table 2
+
+*Linear Regression Model for Total Piles and Percent of Piles with Function-Based Names*
+
+```{r SLcoefs}
+kable(SLcoefs,align=c("l",rep("c",length(SLcoefs)-1)))
+```
+
+**p* < .05
+
+
+### Total Score
+
+The maximum total score was 310 (62 cards x 5, the highest score). As shown in Figure 4, the mean total score increases from pre to post for both intervention (pre = 209, post = 275) and control (pre = 189, post = 237) conditions. Additionally, at both time points the intervention groups had, on average, higher scores than control groups. However, when controlling for scores at pre, regression results indicate the score differences at post between the conditions were non-significant (*B* = 89.83, *p* = .13; Table 3).
+
+
+```{r TotalScorePlot,fig.height=6,fig.width=12}
+print(TotalScorePlot)
+```
+
+*Figure 4.* Mean score of intervention and control students at pre and post for cartoon (CAR), symbolic (SYM), and all cards. Error bar represents the 95% confidence interval.
+
+
+Table 3
+
+*Linear Regression Model for Free Sort Card Task Total Score*
+
+```{r TScoefs}
+kable(TScoefs,align=c("l",rep("c",length(TScoefs)-1)))
+```
+
+
+### Cards
+
+The median score on all cards was equal or higher at post than at pre for the intervention groups; whereas the median score at post as at least a full point lower than at pre for four cards (1043, 1559, 1170, 2452) for the control condition.
+
+```{r CardFreqPlot,fig.height=6,fig.width=10}
+print(CardFreqPlot)
+```
+
+*Figure 5.* Median score for each card at pre and post for by condition and card category. Median score higher at post when above the grey line and higher at pre when below the grey line.
+
+
+## Directed Sort Card Task
+
+### Total Score
+
+At pre, groups sorted a mean of 44.7 of the total 62 cards correctly with a minimum of 25 and a maximum of 61 (Figure 5). At post the minimum rose to 52 cards, the maximum to all 62 cards, and the mean to 60.3 of the 62 cards sorted correctly. An change with an effect size of *d* = 2.11, which is a large effect. Although the sample size was only 20 groups, the normality assumption $^3$ for a t-test was met and de Winter (2013) demonstrates that t-tests can be used even with small sample sizes. Generalizability is still a concern though. A paired sample t-test indicated that the pre to post mean difference of `r round(TotScore18ttest$mean[[1]],1)` was significant (*t*(`r TotScore18ttest$parameter[[1]]`) = `r round(TotScore18ttest$statistic[[1]],1)`, *p* < .001).
+
+
+```{r PrePost18DistPlot,fig.height=7,fig.width=10}
+print(PrePost18DistPlot)
+```
+
+*Figure 5.* Distribution of correctly sorted cards at pre and post for 20 groups.
+
+
+### Cards
+
+For all 62 cards, the percent of groups that correctly sorted the card was equal or higher at post than at pre.
+
+```{r Card18Plots,fig.height=6,fig.width=16}
+plot_grid(Card18scatterCategory,Card18scatterPile,labels=c("A","B"),align="h")
+```
+
+*Figure 6.* Of the 20 groups, the proportion each card was placed in the correct pile, disaggregated by (A) card category or (B) pile. The proportion correct was higher at post when above the grey line and higher at pre when below the grey line.
+
+# References
+
+Cohen, J. (1988). *Statistical power analvsis for the behavioral sciences* (2nd ed.). Hillsdale, NJ: Erlbaum.
+
+De Winter, J. C. (2013). Using the Student's t-test with extremely small sample sizes. *Practical Assessment, Research & Evaluation, 18*(10), 1-12.

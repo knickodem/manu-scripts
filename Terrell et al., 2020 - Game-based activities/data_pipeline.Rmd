@@ -1,0 +1,77 @@
+---
+title: "Data Pipeline"
+output:
+  html_document:
+    self_contained: no
+---
+
+This document allows running your full analysis, in concise code: the nitty-gritty details should be handled by your functions, not in this document.
+
+
+# Gather
+This step of the analysis is where you gather the data files used in your analysis.  
+```{r gather}
+source("0_general_functions.R")
+source("1_gather/gather_functions.R")
+
+## Replace {GATHER_OBJECTS} with the R objects you created in this phase
+save(TheColorCards,TheCorIncCards,NotAllDeckCards,NotCards,ThePiles,
+     Exam123,FinalExam,IDGroups,
+     file = "1_gather/gathered.Rdata")
+
+# save session info
+session_to_file("1_gather/gather_session_info.txt")
+
+```
+
+
+# Analyze
+This is where you actually calculate descriptives and fit models.  All model objects should be saved so that you can present them in different possible ways in the "present" step.
+```{r analyze}
+source("0_general_functions.R")
+load("1_gather/gathered.Rdata")
+
+source("3_analyze/analyze_functions.R")
+
+save(
+  # Final Exam Objects
+     FESemesterDensityPlot,FEICDensityPlot,FEItemPlot,  # Descriptive plots
+     FinalExam,FinalExamScores,FEItemData,              # Dataframes
+     FE.lm,FEModelCheck,FEcoefs,                        # Regression
+  # Pile-Level Objects
+     ThePiles,PileDescrips,FunctionPilesPlot,TotalPilesPlot, # Dataframes and Descriptive plots
+     TotPiles.pre,PerFunc.pre,SLcoefs,                      # Regression
+     TotPilesModelPlots, PerFuncModelPlots,TotalPilesDistPlot,FunctionPilesDistPlot,
+     # TotPiles.unc,TotPiles.lmer,TotPiles.lm,
+     # PerFunc.unc,PerFunc.lmer,PerFunc.lm,PileMultiRegdata,TPPFResults,
+  # Free Sort Total Score Objects
+     TheColorCards,GroupFreq,ICSummary,SummaryPropPlot,
+     # GroupFreqWide,GroupPropWide,SummaryFreqWide,SummaryPropWide, # I don't end up using the wide format data at all
+     TotalScoreDescriptives,TotalScorePlot,
+     # TotScoreRegdata,TotScore.unc,TotScore.lmer,TotScore.lm,TotScoreHLMResults,
+     # TotScorePreTtest,TotScorePostTtest,TotScoreChangeTtest,
+     TotScoreWide,TotScore.pre,TScoefs,TotScoreModelCheck,
+  # Free Sort Card-level objects
+     CardScoreDiff,SummaryScoreDiff,ScoreDiffPlot,CardFreqPlot,#CardCV,CardCVPlot,
+  # Directed Sort Total Score Objects
+     TheCorIncCards,TotScore18Summary,PrePost18DistPlot,TotScore18SummaryWide,TotScore18ttest,TotScore18wctest,
+  # Directed Sort Card-level objects
+     Card18Difficulty,Card18scatterCategory,Card18scatterPile,
+     file = "3_analyze/analyzed.Rdata")
+
+
+# save session info
+session_to_file("3_analyze/analyze_session_info.txt")
+
+```
+
+# Present
+This is where you generate reports.  This should be done by calling the "render" function on your Rmd or Rnw file, which is in the "04_present/" folder.
+```{r present}
+# source("0_general_functions.R")
+## Code for calling render() functions on any Rmd files (all stored in '04_present/'
+## folder)
+
+
+```
+

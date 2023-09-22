@@ -1,0 +1,139 @@
+---
+title: "Card Sorting Results"
+author: "Kyle Nickodem"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+   word_document:
+      toc: true
+      reference_docx: RMCC Word Template.docx
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, results='asis')
+```
+
+
+```{r pack and func, include=FALSE}
+## Packages
+pacman::p_load(rmarkdown,knitr,stringr,tidyr,dplyr,tibble,cowplot,forcats)
+
+## load data
+load("3_analyze/analyzed.Rdata")
+```
+
+
+# Introduction
+
+In groups, students performed a card sorting task at the beginning (pre) and end (post) of an organic chemistry undergraduate course. The groups of students were asked to sort 62 cards into piles and name the piles bases on their common feature. Groups in the intervention condition used 3D models throughout the course to enhance learning whereas students in the control condition did not. We investigated differences students' performance on the card sorting task at pre and post by intervention and control condition. Additionally, we examined whether performance differed by card category with some cards being symbolic and others cartoon.
+
+# Methods
+
+## Data preparation
+
+Student responses to the card sorting task were recorded and scored in excel using the following color coding scheme:
+
+ - **Purple** = Does NOT belong in ANY category
+ - **Orange** = Does NOT belong in said category, and belongs in MORE THAN ONE category
+ - **Pink** = Does NOT belong in said category, and belongs in ONLY ONE category
+ - **Cyan** = DOES belong in said category, and MORE THAN ONE other category
+ - **Green** = DOES belong in said category, and ONLY ONE other category
+ - **Yellow** = ONLY belongs in said category
+ 
+In order to preserve the information inherent in the colors when loading the data into R for analysis, a number of steps were first required, which produced the "All Pre and Post Color Record.xlsx" file used for the analysis:
+
+ 1. Created the macro enabled excel workbook titled "TestBook.xlsm"
+ 2. Copied each sheet found in "2016 Pre to post color improvement record.xlsx" and "2017 Pre to post color improvement record.xlsx", except for the Total sheets, to a separate sheet in "TestBook.xlsm"
+ 3. Created a macro to detect a cell's fill color {Function GetFillColor(Rng As Range) As Long\nGetFillColor = Rng.Interior.ColorIndex\nEnd Function}
+ 4. In each of the "TestBook.xlsm" sheets, kept the first column and any column with the name formatted as 'group # pre/post'
+ 5. Using the GetFillColor function, created columns with the format 'Group_#_pre/post_color' containing a numeric representation of the cell fill color for each corresponding 'group # pre/post' column
+ 6. The GetFillColor function returned the same value for the Purple and Pink hues used in the "2016 Pre to post color improvement record.xlsx" sheets, so each instance of the Purple hue was replaced manually with the Purple hue used in "2017 Pre to post color improvement record.xlsx"
+ 7. "TestBook.xlsm" was saved as a regular excel workbook titled "All Pre and Post Color Record.xlsx" for use in R.
+ 
+## Analysis
+
+Comparison of intervention and control conditions at pre and post was completed at both the card level and the pile level. At the pile level I compared the mean number of piles created and the proportion of piles with function-based names. In addition to creating descriptive plots I used hierarcical linear modeling (HLM; Raudenbush & Bryk, 2002) to ascertain if condition (intervention/control), time (pre/post), and the interaction of condition and time was significantly associated with the two outcomes. There are multiple measurements from same student group, meaning each observation is not independent, but rather, dependent on group. This violates the independence assumption of regression. Unlike single-level regression, HLM accounts for this dependency and provides less biased standard error estimates.
+
+At the card level, I first recoded the colors with a numeric score whereby 0 = *Purple*, 1 = *Orange*, 2 = *Pink*, 3 = *Cyan*, 4 = *Green*, and 5 = *Yellow*. Although numeric, the card score is still an ordinal measure and not continuous. However, unlike the color values, the numeric scores enables the creation of Total Score when the score on each card is summed across all 62 cards. The Total Score can be treated as continuous (Carifio & Perla, 2007; Likert, 1932). For the analysis I first compared intervention and control conditions by examining the frequency distribution of scores (i.e., colors) at pre and post. I then compared the mean Total Score of the two conditions at pre and post and ran an HLM regression to determine whether Total Score significantly differered by condition, time, and their interaction. Lastly, the difference in pre and post score for each card was calculated and summarized for intervention and control groups.
+
+
+# Results
+
+## Pile Level
+
+As shown in Figure 1A, the mean number of piles created decreases from pre to post for both intervention (pre = 9.0, post = 6.8) and control (pre = 10.1, post = 8.6) conditions. Additionally, at both time points the intervention groups created, on average, fewer piles than control groups. However, the HLM regression results indicate that none of these differences are statistically significant (Table 1). Furthermore, even the intervention condition at post, which had the lowest average number of piles, had on average 2.8 more piles than the correct number of piles (4).
+
+In Figure 1B we can see that the intervention and control conditions have a similar percent of piles with function-based names at pre, 33.5% and 34.9% respectively. At post, the percent for control rises to 76.0% and to 97.0% for the intervention condition. The HLM results indicate a main effect of time and the interaction of time and condition are significantly related to the outcome.
+
+
+```{r PilePlots,fig.height=6,fig.width=12}
+plot_grid(TotalPilesPlot,FunctionPilesPlot,labels=c("A","B"),align="h")
+```
+
+*Figure 1.* (A) Mean number of piles created and (B) percent of piles with function-based names for intervention and control students at pre and post. Error bar represents the 95% confidence interval.
+
+
+Table 1
+
+*Hierarchical Linear Model Results for Total Piles and Percent of Piles with Function-Based Names*
+
+```{r TPPFResults}
+kable(TPPFResults,align=c("l",rep("c",length(TPPFResults)-1)))
+```
+
+*Note:*
+
+## Card Level
+
+Both intervention and control conditions show an increase in the percentage of cards receiving a score of 5, the highest score, from pre to post (Figure 2). This result holds when looking at only cartoon or only symbolic cards as well.
+
+
+```{r SummaryPropPlot,fig.height=6,fig.width=12}
+print(SummaryPropPlot)
+```
+
+*Figure 2.* Percent of cards at each score (color) level for intervention and control students at pre and post.
+
+### Total Score
+
+The maximum Total Score is 310 (62 cards * 5, the highest score). As shown in Figure 3, the mean Total Scores increases from pre to post for both intervention (pre = 209, post = 275) and control (pre = 189, post = 237) conditions. Additionally, at both time points the intervention groups had, on average, higher scores than control groups. However, the HLM regression results indicate the differences between the conditions are non-significant and only the main effect of time was a signifcant predictor of score (Table 2).
+
+
+```{r TotalScorePlot,fig.height=6,fig.width=12}
+print(TotalScorePlot)
+```
+
+*Figure 3.* Mean score of intervention and control students at pre and post for cartoon (CAR), symbolic (SYM), and all cards. Error bar represents the 95% confidence interval.
+
+
+Table 2
+
+*Multilevel Linear Regression Model Results*
+
+```{r TotScoreHLMResults}
+kable(TotScoreHLMResults,align=c("l",rep("c",length(TotScoreHLMResults)-1)))
+```
+
+*Note:*
+ 
+
+### Pre/Post Difference for Each Card
+
+Both intervention and control groups improved their score on most cards from pre to post; however, on cards 1375, 1532, and 1095 both the intervention and control groups had a lower score at post, on average, than at pre. All three of these cards were symbolism cards.
+
+```{r ScoreDiffPlot,fig.height=10,fig.width=15}
+print(ScoreDiffPlot)
+```
+
+*Figure 4.* Mean difference in score (color) level from pre to post for intervention and control students for each card.
+
+
+
+# References
+
+Carifio, J., & Perla, R. J. (2007). Ten common misunderstandings, misconceptions, persistent myths and urban legends about Likert scales and Likert response formats and their antidotes. *Journal of Social Sciences*, *3*(3), 106-116.
+
+Likert, R. (1932). A technique for the measurement of attitudes. *Archives of Psychology*, 140, 55.
+
+Raudenbush, S. W., & Bryk, A. S. (2002). *Hierarchical linear models: Applications and data analysis methods (2nd ed.)*. Thousand Oaks, CA: Sage.
+

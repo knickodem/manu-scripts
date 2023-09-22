@@ -1,0 +1,140 @@
+---
+title: "ESICI Results"
+author: "Kyle Nickodem"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+   word_document:
+      toc: true
+      reference_docx: RMCC Word Template.docx
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, results='asis')
+```
+
+
+```{r pack and func, include=FALSE}
+
+## Load Packages and Run Analysis
+load("CI Results/CIOutput.RData")
+library(knitr)
+library(rmarkdown)
+
+## Common specifications for printing kable tables
+printkable <- function(table){
+  print(kable(table,align=c("l",rep("c",length(table)-1))))
+}
+```
+
+# Methods
+
+## Sample
+
+The final sample of 125 students consisted of 87 Intervention students and 38 Control students with ESICI response at Pre and Post (Table 1). The intervention condition had a higher proportion of female students with a higher average cumulative GPA, but fewer total credits taken.
+
+
+
+Table 1. *Background Characteristics by Condition*
+
+```{r Demos}
+printkable(CIDemoTable)
+```
+
+## Analysis
+
+We were interested in comparing students' responses to the ESICI across time (i.e., from Pre to Post) and by condition (i.e., Intervention and Control). First, for each ESICI item, we compared the proportion of students responding correctly by time and condition. This provided a summary of students' conceptual accuracy. Furthermore, we reviewed the item response frequencies by time and condition to discern any patterns in the types of misconceptions students held. 
+
+**Psychometric Evidence for Scale Score Interpretation.** We were also interested in making comparisons based on a total scale score derived from the sum of correct item responses. Appropriate interpretation of scores requires supporting validity evidence (Kane, 2013). Using the dichotomously scored (correct/incorrect) items to create the total score, initial evidence was provided by Bretz and Linenberger (2012) in their article documenting the development of the ESICI. Nonetheless, validation is an ongoing process to which we aimed to contribute. All analyses used the *psych* package (v. 1.8.12; Revelle, 2018) in *R* (v. 3.6.1; R Core Team, 2019).
+
+We conducted an item analysis grounded in classical test theory and also estimated score reliability with alpha and omega (Dunn, Baguley, & Brunsden, 2014; Viladrich, Angulo-Brunet, & Doval, 2017). One assumption of alpha and the interpretation of a total scale score is the approximate unidimensionality of the ESICI. In other words, all of the items on the ESICI should be measuring one common construct rather than multiple constructs. To investigate the dimensionality of the ESICI, we first calculated the Kaiser-Meyer-Olkin (KMO) Measure of Sampling Adequacy (Kaiser, 1970). KMO measures the proportion of variance in item responses that is common variance. Values > .80 indicate adequate common variance to model in a factor analytic model. We then created scree plots and ran a parallel analysis to aid in selecting the number of factors underlying the ESICI responses (Howard, 2016). Finally, we compared the fit of exploratory factor analysis (EFA) models with either 1 or 2 factors extracted. The EFA models were run using ordinary least squares and an oblimin rotation. The polychoric correlation matrix, as opposed to the Person correlation matrix, was used to estimate alpha, omega, KMO, and the EFA models given that the dichotomized item responses were used (Flora, LaBrish, & Chalmers, 2012). The item analysis and EFA models were run separately on the Pre and Post responses to determine if items functioned consistently across time. To evaluate the predictive validity of the ESICI, we produced scatterplots and calculated the Pearson correlation between the Pre and Post total scale scores with the percent correct on a midterm and final course exam.
+
+# Results
+
+## Item Performance
+
+Overall the Intervention and Control students performed similarly across the 15 ESICI at both Pre and Post (Figure 1). On average, students from both conditions improved from Pre to Post with the exception of items Q1 and Q3 where performance was flat. Conspicuously, performance on Q15 dropped 2 percentage points for the Intervention conditional while the Control condition increased 26 percentage points (Table 2). Items Q4, Q9, Q11, and Q13 are also notable in that the rate of improvement from Pre to Post differed somewhat between the Intervention and Control conditions.
+
+Besides examining overall rates of correct responses, examining the response frequency of incorrect responses provides information about which types of misconceptions persist (Table 2). [Kyle’s Note: I do not have enough content knowledge to make interpretations on this point].
+
+
+```{r Item Accuracy Plot,fig.height=12,fig.width=16}
+print(CIItemAccPlot)
+```
+
+**Figure 1.** Percent correct and 95% confidence interval for each ESICI item by time (Pre/Post) and condition (Intervention/Control)
+
+
+Table 2. *Item Response Frequencies on the 15 ESICI Items by Time and Condition*
+
+```{r Misconceptions}
+printkable(CIItemSummaryTable)
+```
+
+*Note.* Correct answer is in *italics*.
+
+## Psychometric Evidence for Scale Score Interpretation
+
+Item difficulty is the proportion of students who responded correctly to the item (Table 3). The item difficulties at Pre and Post were highly correlated with each other (rho = `r round(cor(CI_CTT$Difficulty_Pre,CI_CTT$Difficulty_Post),2)` and with the item difficulties found by Bretz and Linenberger (2012) - rho = `r round(cor(CI_CTT$Difficulty_Pre,BandL$Diff),2)` for both Pre and Post. This suggests that across administrations the rank order of items from most to least difficult was consistent. Conversely, the magnitude of the difficulties differed. At Pre, the items unsurprisingly tended to be more difficult than at Post or in Bretz and Linenberger (2012). Item discrimination is the correlation between item response and total scale score. Discrimination values < .30 indicate response to the item is a poor indicator of the student's total score. At Pre, 9 of the 15 items had low discrimination. Bretz and Linenberger (2012) and at Post only had 3 and 2, respectively. Item Q1 had low discrimination across all three administrations while Q3 and Q11 were low on two of the three.
+
+
+Table 3. *Item Statistics for the 15 ESICI Items at Pre and Post*
+
+```{r Item Stats}
+printkable(CI_CTT)
+```
+
+*Note. Italics* indicates adequate discrimination (> .30)
+
+Score reliability was good at Post (alpha = `r CIReliability$alpha_Post[[1]]`; omega = `r CIReliability$omega_Post[[1]]`) and higher than what Bretz and Linenberger (2012) found (alpha = .53). At Pre, however, the score reliability was extremely low (alpha = `r CIReliability$alpha_Pre[[1]]`; omega = `r CIReliability$omega_Pre[[1]]`), suggesting responses across items had little in common. A similar conclusion emerges from KMO with unacceptable sampling adequacy at Pre (`r round(CIKMOPre[[1]],2)`) and Post (`r round(CIKMOPost[[1]],2)`; Kaiser, 1970). The scree plots (Figure 2) also suggest that the unidimensionality of the ESICI is tenable at best. At Pre and Post, the parallel analysis recommends 7 factors. Although 7 is probably an overestimate (Howard, 2016), the location of the "elbow" suggests at least 2 factors at Post and is ambiguous at Pre.  
+
+```{r Scree Plots,fig.height=8,fig.width=12}
+print(CIScreePlot)
+```
+
+**Figure 2.** Scree plot and parallel analysis of ESICI at Pre and Post.
+
+The results of the one and two factor EFA models also favor a multidimensional interpretation of the ESICI. A chisquare difference test between the one and two factor models demonstrated that the two factor model fit the data better at both Pre (chisquare (14) = 69.01; *p* < .01) and at Post (chisquare (14) = 159.90; *p* < .01). In order for a total scale score to have a meaningful interpretation there needs to be evidence of a single strong common factor. Such evidence would include a one factor EFA model accounting for the preponderance of total variance with most items loading strongly onto the single factor. The factor loadings and variance accounted for by the factors, however, suggest that even the two factor model was insufficient for accounting for the preponderance of total variance. (Table 4). The one factor model only accounted for 10% of the total variance at Pre and 18% at Post. Although adding a second factor substantially increased the variance accounted for, the two factor model still only accounted for 20% and 28% of the variance at Pre and Post, respectively. Lastly, most items had weak factor loadings in both the one and two factor models, especially at Pre.
+
+In summary, the psychometric evidence suggests the items on the ESICI measure multiple constructs rather than a single common construct. This makes interpretation of total scale score rather difficult. The item discriminations suggest items Q1, Q3, and Q11 are good candidates for revision or dropping entirely to improve the unidimensionality of the ESICI. Therefore, in the present sample it is more appropriate to glean information from each item separately rather than through a total score across all ESICI items.
+
+
+Table 4. *Factor Loadings and Variance Accounted For from One and Two Factor EFA Models*
+
+```{r EFA Stats}
+printkable(CIefaLoadings)
+```
+
+*Note.*%VA = Proportion of total variance accounted for by the factor; **Bold** indicates large loadings (> .40).
+
+
+## Correlations with Exam Performance
+
+A total scale score can still provide utility as a predictor of exam course performance, even if it is unclear what the score is actually measuring. However, neither the ESICI scores at Pre and Post were strongly correlated with midterm nor final exam scores (Figure 3). The highest correlation was between the Post ESICI and the Final exam which is unsurprising given that those two measures were administered at similar time. The correlation of .30 means that 9% of the variation in Final Exam performance could be explained by the Post ESICI score with 91% of the variation left unexplained. The correlations did not differ substantially by Intervention or Control condition and are not reported here.
+
+```{r CIScatterPlot,fig.height=10,fig.width=14}
+print(CIScatterPlot)
+```
+
+*Figure 3.* Scatterplot and correlations between ESICI total score and percent correct on exams by condition
+
+
+# References
+
+Bretz, S. L., & Linenberger, K. J. (2012). Development of the enzyme–substrate interactions concept inventory. *Biochemistry and Molecular Biology Education, 40*(4), 229-233.
+
+Dunn, T. J., Baguley, T., & Brunsden, V. (2014). From alpha to omega: A practical solution to the pervasive problem of internal consistency estimation. *British Journal of Psychology, 105*(3), 399-412.
+
+Flora, D. B., LaBrish, C., & Chalmers, R. P. (2012). Old and new ideas for data screening and assumption testing for exploratory and confirmatory factor analysis. *Frontiers in Psychology, 3*(55), 1 - 21.
+
+Howard, M. C. (2016). A review of exploratory factor analysis decisions and overview of current practices: What we are doing and how can we improve?. *International Journal of Human-Computer Interaction, 32*(1), 51-62.
+
+Kaiser, H. F. (1970). A second generation little jiffy. *Psychometrika, 35*(4), 401–415.
+
+Kane, M. T. (2013). Validating the interpretations and uses of test scores. *Journal of Educational Measurement, 50*(1), 1-73.
+
+R Core Team (2019). *R: A language and environment for statistical computing* [software]. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from https://www.R-project.org/.
+
+Revelle, W. (2018). *psych: Procedures for Personality and Psychological Research* [software]. Evanston, IL: Northwestern University. Retrieved from https://CRAN.R-project.org/package=psych.
+  
+Viladrich, C., Angulo-Brunet, A., & Doval, E. (2017). A journey around alpha and omega to estimate internal consistency reliability. *Annals of Psychology, 33*(3), 755-782.
