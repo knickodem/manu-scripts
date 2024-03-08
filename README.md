@@ -14,3 +14,7 @@ Espelage, D. L., Rose, C., Nickodem, K., Robinson, L., El Sheikh, A., Hanebutt, 
 Fike, K., Mattis, J., Nickodem, K., & Guillaume, C. (2023). Black adolescent altruism: Exploring the role of racial discrimination and empathy. *Children and Youth Services Review*. doi:10.1016/j.childyouth.2023.106990
 
 Nickodem, K. K., Basile, K. C., Espelage, D. L., Leemis, R. W., Ingram, K. M., & Barbero, C. (2023). Sports participation, social networks, and sexual violence perpetration. *Journal of Interpersonal Violence, 38*(1–2), NP1690–NP1717. doi:10.1177/08862605221092067
+
+Terrell, C. R., Ekstrom, T. L., Nguyen, B., Nickodem, K. (2021). Aiming for the bullseye: Targeted activities decrease misconceptions related to enzyme function for undergraduate biochemistry students. *Biochemistry and Molecular Biology Education, 49*(6), 904-916. doi:10.1002/bmb.21575
+
+Terrell, C. R., Nickodem, K., Bates, A., Kersten, C., Mernitz, H. (2021). Game-based activities targeting visual literacy skills to increase understanding of biomolecule structure and function concepts in undergraduate biochemistry. *Biochemistry and Molecular Biology Education, 49*(1), 94-107. doi:10.1002/bmb.21398
