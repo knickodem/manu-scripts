@@ -26,7 +26,7 @@ library(flextable)
 
 #### Shortcut for converting data from wide to long format by wave ####
 # put between subject variables in ...
-LongWave <- function(data, wave, prefix = "_W", ...){
+LongWave <- function(data, wave, ..., prefix = "_W"){
   
   wave.chr <- paste0(prefix, wave)
   
