@@ -1,9 +1,9 @@
-###################################################
-#                                                 #
-#     Measuring altruism born of suffering        #
-#              Model Checks                       #
-#                                                 #
-###################################################
+###############################
+#                             #
+#    Measuring Altruism       #
+#       Model Checks          #
+#                             #
+###############################
 
 # ------   Setup   -----------------------
 
@@ -15,7 +15,6 @@ aa.orig <- haven::read_sav("../MOST RECENT DATASET AA.sav")
 
 ## Defining scale items
 alt.items <- paste0("CALT0", 1:9) # response options: never, once or twice, 3 to 5 times, 6 to 10 times, more than 10 times
-rd.items <- c(paste0('CDF0', 1:9), paste0('CDF', 10:18)) # response options: never, once, a few times, about once a month, a few times a month, once a week or more
 
 # table(aa.orig$CCONS02) # all participants have assented
 # aa.orig %>% count(CPERID6) %>% View() # each student in the dataset once
@@ -23,9 +22,7 @@ rd.items <- c(paste0('CDF0', 1:9), paste0('CDF', 10:18)) # response options: nev
 ## Items to numeric and creating raw scores
 aa.temp <- aa.orig %>%
   mutate(across(all_of(alt.items), ~as.numeric(.x) - 1)) %>% # shifting responses to 0 - 4 rather than 1 - 5
-  mutate(across(all_of(rd.items), as.numeric)) %>%
-  mutate(Altruism = scale_score(., alt.items, type = "mean", min.valid = length(alt.items) - 1),
-         Racial_Discrimination = scale_score(., rd.items, type = "mean", min.valid = length(rd.items) - 1))
+  mutate(Altruism = scale_score(., alt.items, type = "mean", min.valid = length(alt.items) - 1))
 
 
 ## Keeping variables for analysis and renaming for eventual output
@@ -44,8 +41,7 @@ aa.dat <- aa.temp %>%
   select(CPERID6, School = CSCH6, CDISTR, CYEAR,
          Grade, Age = CAGE6, Age_Group, Sex,     # demographics
          Hispanic, Race_All, Race, CBMUS:CBFRAS,                    
-         all_of(alt.items), all_of(rd.items),    # altruism and racial discrimination items
-         Altruism, Racial_Discrimination)
+         all_of(alt.items), Altruism)    # altruism items
 
 
 ###################################################################
@@ -70,30 +66,24 @@ demographics <- aa.dat %>%
 
 
 #### Frequency distribution for scale items ####
-item.freqs <- map(.x = list(`Altruism` = alt.items,
-                            `Racial Discrimination` = rd.items),
-                  ~aa.dat %>%
-                    select(all_of(.x)) %>%
-                    get_item_freqs())
+item.freqs <- aa.dat %>%
+  select(all_of(alt.items)) %>%
+  get_item_freqs()
 
-item.freqs.sex <- map(.x = list(`Altruism` = alt.items,
-                                `Racial Discrimination` = rd.items),
-                      ~aa.dat %>%
-                        select(Sex, all_of(.x)) %>%
-                        get_item_freqs(Sex))
+item.freqs.sex <- aa.dat %>%
+  select(Sex, all_of(alt.items)) %>%
+  get_item_freqs(Sex)
 
-item.freqs.age <- map(.x = list(`Altruism` = alt.items,
-                                `Racial Discrimination` = rd.items),
-                      ~aa.dat %>%
-                        select(Age_Group, all_of(.x)) %>%
-                        get_item_freqs(Age_Group))
+item.freqs.age <- aa.dat %>%
+  select(Age_Group, all_of(alt.items)) %>%
+  get_item_freqs(Age_Group)
 
 ####   Continuous Variable Descriptives ####
-descrips <- skimr::skim(aa.dat, Age, Altruism, Racial_Discrimination)
+descrips <- skimr::skim(aa.dat, Age, Altruism)
 
 ## Scales by Sex
 descrip.by.sex <- aa.dat %>%
-  tbl_summary(include = c("Altruism", "Racial_Discrimination"),
+  tbl_summary(include = c("Altruism"),
               by = "Sex",
               statistic = list(all_continuous() ~ "{mean} ({sd}) [{min} - {max}]")) %>%
   add_overall() %>%
@@ -102,7 +92,7 @@ descrip.by.sex <- aa.dat %>%
 
 ## Scales by Age
 descrip.by.age <- aa.dat %>%
-  tbl_summary(include = c("Altruism", "Racial_Discrimination"),
+  tbl_summary(include = c("Altruism"),
               by = "Age_Group",
               statistic = list(all_continuous() ~ "{mean} ({sd}) [{min} - {max}]")) %>%
   add_overall() %>%
@@ -124,30 +114,29 @@ missing.summary$miss_case_summary # some students missing > 40% of cells
 
 ## Indicator for missingness 
 aa.shadow <- bind_cols(aa.dat,
-                       naniar::as_shadow(select(aa.dat, Altruism, Racial_Discrimination)))
+                       naniar::as_shadow(select(aa.dat, Altruism))) %>%
+  mutate(CDISTR = as_factor(CDISTR))
 
 #### Predicting Missing ####
 miss.preds <- aa.shadow %>%
-  select(CYEAR, Age_Group, Sex) %>%
+  select(CDISTR, CYEAR, Age_Group, Sex) %>%
   names()
 
 # actually predicts if they have a score
-predict.miss <- map2(.x = c("Altruism_NA", "Racial_Discrimination_NA"), .y = list(c(miss.preds, "Racial_Discrimination"), c(miss.preds, "Altruism")),
-                     ~glm(formula(paste(.x, "~ 1 +", paste(.y, collapse = " + "))), data = aa.shadow,
+predict.miss <- map(.x = miss.preds,
+                     ~glm(formula(paste("Altruism_NA ~ 1 +", paste(.x, collapse = " + "))), data = aa.shadow,
                           family = binomial(link = "logit"))) %>%
-  set_names(c("Altruism", "Racial_Discrimination"))
+  set_names(miss.preds)
 # lapply(predict.miss, summary)
 
-ORs <- map(.x = predict.miss,
+ORs <- map_dfr(.x = predict.miss,
            ~parameters::model_parameters(.x, exponentiate = TRUE) %>%
              select(Parameter, Coefficient, CI_low, CI_high, p))
 
 #########################################################
 
-
 # -------- Dimensionality and Reliability  -------------
 
-#### Altruism ####
 ## check power
 kfa::find_k(variables = select(aa.dat, all_of(alt.items)), m = 2)
 
@@ -162,7 +151,7 @@ alt.kfa <- kfa::kfa(data = aa.dat,
 ## generate report
 kfa::kfa_report(alt.kfa,
                 index = c("chisq.scaled", "cfi.scaled", "rmsea.scaled", "srmr"),
-                file.name = "Altruism Psychometric Report_Test",
+                file.name = "Altruism Psychometric Report",
                 report.title = "Altruism Psychometric Report")
 
 ## run kfa - dropping items 7 and 8 - see mirt runs below
@@ -176,44 +165,11 @@ alt.kfa.no78 <- kfa::kfa(data = aa.dat,
 ## generate report
 kfa::kfa_report(alt.kfa.no78,
                 index = c("chisq.scaled", "cfi.scaled", "rmsea.scaled", "srmr"),
-                file.name = "Altruism Psychometric Report_Drop78_Test",
+                file.name = "Altruism Psychometric Report_Drop78",
                 report.title = "Altruism Psychometric Report - Dropped items 7 and 8")
 
 
-#### Racial Discrimination ####
-
-## Check power - keeping it at k = 3 for consistency with altruism
-kfa::find_k(n = 1071, p = length(rd.items), m = 3)
-
-# Bifactor model from Lee and colleagues (2021)
-rd.bifactor <- paste0("total =~ ", paste(rd.items, collapse = " + "),
-                      "\novert =~ ", paste(rd.items[c(9,8,17)], collapse = " + "),
-                      "\ninvalidate =~ ", paste(rd.items[c(6,7,10:12)], collapse = " + "),
-                      "\ntotal ~~ 0*overt\ntotal ~~ 0*invalidate\novert ~~ 0*invalidate")
-
-## run kfa
-rd.kfa <- kfa::kfa(data = aa.dat,
-                   variables = rd.items,
-                   k = 3, # number of folds
-                   m = 3, # maximum number of factors to test
-                   ordered = TRUE, # treat variables as ordered
-                   missing = "listwise",
-                   # simple = FALSE,    # TRUE led to single item factors for all m > 1 factors
-                   # min.loading = .40, 
-                   custom.cfas = list(bifactor = rd.bifactor))
-
-## generate report
-kfa::kfa_report(rd.kfa,
-                index = c("chisq.scaled", "cfi.scaled", "rmsea.scaled", "srmr"),
-                file.name = "Racial Discrimination Psychometric Report_Test",
-                report.title = "Racial Discrimination Psychometric Report")
-
-bifactor.check <- cfa(rd.bifactor, aa.dat, ordered = rd.items) # did not converge
-# summary(bifactor.check, fit.measures = TRUE, standardized = TRUE) 
-
-
-
-#########################################################
+#############################################################
 
 # -----   IRT Fit  ---------------
 
@@ -299,71 +255,12 @@ alt.irt.results.no78$`Item Parameters`$mirt.wide
 
 ############################################################
 
-
-########################################
-####      Racial Discrimination     ####
-
-#### Graded response  ####
-
-## Full Sample ####
-rd.f1 <- aa.dat %>%
-  select(all_of(rd.items)) %>%
-  mirt(model = 1, itemtype = "graded", SE = TRUE, method = "MHRM")
-
-rd.f2 <- aa.dat %>%
-  select(all_of(rd.items)) %>%
-  mirt(model = 2, itemtype = "graded", SE = TRUE, method = "MHRM")
-
-set.seed(3420)
-rd.irt.results <- scaling_results(rd.f1, rd.items, rd.f2)
-
-# global model fit
-rd.irt.results$`Model Summary`
-rd.irt.results$`Global Fit` <- bind_rows(rd.irt.results$`Global Fit`,
-                                         M2(rd.f2, na.rm = TRUE, type = "C2"),
-                                         .id = "Factor")
-
-# item fit
-rd.irt.results$`Item Fit` %>%
-  mutate(across(starts_with("p."), ~round(., 5)))
-itemfit(rd.f1, fit_stats = "S_X2",  na.rm = TRUE)
-
-# item parameters
-rd.irt.results$`Item Parameters`$mirt.wide
-
-#### Rasch ####
-
-rd.r.f1 <- aa.dat %>%
-  select(all_of(rd.items)) %>%
-  mirt(model = 1, itemtype = "gpcm", SE = TRUE, method = "MHRM") # partial credit model (slopes = 1)
-
-rd.r.f2 <- aa.dat %>%
-  select(all_of(rd.items)) %>%
-  mirt(model = 2, itemtype = "gpcm", SE = TRUE, method = "MHRM") # partial credit model (slopes = 1)
-
-set.seed(3420)
-rd.r.irt.results <- scaling_results(rd.r.f1, rd.items, rd.r.f2)
-
-# overall model fit
-rd.r.irt.results$`Global Fit` <- bind_rows(rd.r.irt.results$`Global Fit`,
-                                           M2(rd.r.f2, na.rm = TRUE, type = "C2"),
-                                           .id = "Factor") # 
-
-# item fit
-rd.r.irt.results$`Item Fit`
-itemfit(rd.r.f1, fit_stats = "S_X2", na.rm = TRUE)
-
-# item parameters
-rd.r.irt.results$`Item Parameters`$mirt.wide
-
 #########################################################################
 
-save(alt.items, rd.items, aa.dat,
+save(alt.items, aa.dat,
      descrips, demographics, descrip.by.age, descrip.by.sex,
      item.freqs, item.freqs.age, item.freqs.sex,
      missing.summary, miss.preds, predict.miss, ORs,
-     alt.kfa, alt.kfa.no78, rd.bifactor, rd.kfa,
+     alt.kfa, alt.kfa.no78,
      alt.irt.results, alt.irt.results.no7, alt.irt.results.no78,
-     rd.irt.results, rd.r.irt.results,
-     file = "FA_IRT_results_test.RData")
-
+     file = "Altruism/Altruism_Model_Results.RData")

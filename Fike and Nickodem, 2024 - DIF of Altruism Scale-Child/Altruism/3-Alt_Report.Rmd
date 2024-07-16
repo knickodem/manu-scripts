@@ -1,5 +1,5 @@
 ---
-title: "DIF in AS-C and DLE-F Measures"
+title: "DIF in AS-C"
 author: "KF & KN"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output:
@@ -62,13 +62,13 @@ two_level_flex <- function(flex, mapping, vert.cols, border){
 
 border <- officer::fp_border(width = 2) # manual horizontal flextable border width
 
-load("FA_IRT_Results_test.RData")
-load("DIF_Results_test.RData")
+load("Altruism_Model_Results.RData")
+load("Altruism_DIF_Results.RData")
 ```
 
 # Item Information
 
-**Supplemental Table 1. Altruism Scale - Child Items**
+**Supplemental Table 1.** *Altruism Scale - Child Items*
 
 ```{r}
 data.frame(Number = as.character(1:length(alt.items)),
@@ -77,14 +77,6 @@ data.frame(Number = as.character(1:length(alt.items)),
 
 *Note*. Each item was preceded by the stem, "During the past year, about how often...". Response options for each item were: 0 = Never; 1 = Once or twice; 2 = 3 to 5 times; 3 = 6 to 10 times; 4 = More than 10 times.
 
-**Supplemental Table 2. Daily Life Experiences - Frequency Items**
-
-```{r}
-data.frame(Number = as.character(1:length(rd.items)),
-           Name = rd.items, Stem = NA) %>% format_flex() %>% knit_print()
-```
-
-*Note*. Each item was preceded by the stem, "How often did the following events happen to you in the past year because of your race?". Response options for each item were: 0 = Never; 1 = Once; 2 = A few times; 3 = About once a month; 4 = A few times a month; 5 = Once a week or more.
 
 # Demographics and Descriptive Statistics
 
@@ -116,47 +108,39 @@ format_flex(descrip.by.sex) %>% knit_print()
 **Odds Ratios Predicting Having AS-C Score**
 
 ```{r}
-format_flex(ORs$Altruism) %>% knit_print()
+format_flex(ORs) %>% knit_print()
 ```
 
-**Odds Ratios Predicting Having DLE-F Score**
-
-```{r}
-format_flex(ORs$Racial_Discrimination) %>% knit_print()
-```
 
 \newpage
 
 # Model Checking
 
-## Altruism Scale - Child
+## All Items
 
-### All Items
-
-**Standardized Factor Loadings Transformed From Exploratory Bidimensional Graded Response Model of All Altruism Scale Items**
+**Supplemental Table 2.** *Standardized Factor Loadings From Exploratory Bidimensional Graded Response Model of All Altruism Scale Items*
 
 ```{r}
 alt.irt.results$`Model Summary`$`2-factor`$rotF %>%
   select(-h2) %>% format_flex() %>% knit_print()
 ```
 
-*Note.* Model estimation and parameter transformation performed with the mirt package (Chalmers, 2012) in R (R Core Team, 2023)
+*Note.* Only loadings > .20 are shown. Model estimation and parameter transformation performed with the mirt package (Chalmers, 2012) in R (R Core Team, 2023)
 
-**2-Factor Structure Identified From Exploratory Factor Analysis from K-Fold Cross-Validation of All Altruism Scale Items**
+**Supplemental Table 3.** *Two-Factor Structure Identified From Exploratory Factor Analysis from K-Fold Cross-Validation of All Altruism Scale Items*
 
 ```{r}
 data.frame(Fold = as.character(1:3),
            Structure = c("f1 =~ CALT01 + CALT02 + CALT03 + CALT07\nf2 =~ CALT04 + CALT05 + CALT06 + CALT08 + CALT09", "f1 =~ CALT01 + CALT02 + CALT03 + CALT04 + CALT05 + CALT06 + CALT07\nf2 =~ CALT08 + CALT09", "f1 =~ CALT01 + CALT02 + CALT03 + CALT05 + CALT06 + CALT07\nf2 =~ CALT04 + CALT08 + CALT09")) %>% format_flex() %>% knit_print()
 ```
 
-**Item Fit Statistics From Unidimensional Graded Response Model of All Altruism Scale Items**
+*Item Fit Statistics From Unidimensional Graded Response Model of All Altruism Scale Items*
 
 ```{r}
 format_flex(alt.irt.results$`Item Fit`) %>% knit_print()
 ```
 
-
-**Item Parameter Estimates From Unidimensional Graded Response Model of All Altruism Scale Items**
+*Item Parameter Estimates From Unidimensional Graded Response Model of All Altruism Scale Items*
 
 ```{r}
 format_flex(alt.irt.results$`Item Parameters`$mirt.wide) %>% knit_print()
@@ -164,7 +148,7 @@ format_flex(alt.irt.results$`Item Parameters`$mirt.wide) %>% knit_print()
 
 *Note.* a is the item discrimination parameter; b are the item threshold parameters
 
-**Item Probability Functions From Unidimensional Graded Response Model of All Altruism Scale Items**
+*Item Probability Functions From Unidimensional Graded Response Model of All Altruism Scale Items*
 
 ```{r fig.width=12, fig.height=12}
 print(alt.irt.results$`Scale Plots`[[4]])
@@ -174,7 +158,7 @@ print(alt.irt.results$`Scale Plots`[[4]])
 
 ## Without Item 7
 
-**Standardized Factor Loadings Transformed From Exploratory Bidimensional Graded Response Model Altruism Scale Items Except Item 7**
+*Standardized Factor Loadings Transformed From Exploratory Bidimensional Graded Response Model Altruism Scale Items Except Item 7*
 
 ```{r}
 alt.irt.results.no7$`Model Summary`$`2-factor`$rotF %>%
@@ -183,14 +167,14 @@ alt.irt.results.no7$`Model Summary`$`2-factor`$rotF %>%
 
 *Note.* Model estimation and parameter transformation performed with the mirt package (Chalmers, 2012) in R (R Core Team, 2023)
 
-**Item Fit Statistics From Unidimensional Graded Response Model of Altruism Scale Items Without Item 7**
+*Item Fit Statistics From Unidimensional Graded Response Model of Altruism Scale Items Without Item 7*
 
 ```{r}
 format_flex(alt.irt.results.no7$`Item Fit`) %>% knit_print()
 ```
 
 
-**Item Parameter Estimates From Unidimensional Graded Response Model of Altruism Scale Items Without Item 7**
+*Item Parameter Estimates From Unidimensional Graded Response Model of Altruism Scale Items Without Item 7*
 
 ```{r}
 format_flex(alt.irt.results.no7$`Item Parameters`$mirt.wide) %>% knit_print()
@@ -198,7 +182,7 @@ format_flex(alt.irt.results.no7$`Item Parameters`$mirt.wide) %>% knit_print()
 
 *Note.* a is the item discrimination parameter; b are the item threshold parameters
 
-**Item Probability Functions From Unidimensional Graded Response Model of Altruism Scale Items Without Item 7**
+*Item Probability Functions From Unidimensional Graded Response Model of Altruism Scale Items Without Item 7*
 
 ```{r fig.width=12, fig.height=12}
 print(alt.irt.results.no7$`Scale Plots`[[4]])
@@ -208,7 +192,7 @@ print(alt.irt.results.no7$`Scale Plots`[[4]])
 
 ## Without Items 7 and 8
 
-**Standardized Factor Loadings Transformed From Exploratory Bidimensional Graded Response Model Altruism Scale Items Except Items 7 and 8**
+*Standardized Factor Loadings Transformed From Exploratory Bidimensional Graded Response Model Altruism Scale Items Except Items 7 and 8*
 
 ```{r}
 alt.irt.results.no78$`Model Summary`$`2-factor`$rotF %>%
@@ -217,14 +201,14 @@ alt.irt.results.no78$`Model Summary`$`2-factor`$rotF %>%
 
 *Note.* Model estimation and parameter transformation performed with the mirt package (Chalmers, 2012) in R (R Core Team, 2023)
 
-**Item Fit Statistics From Unidimensional Graded Response Model of Altruism Scale Items Without Items 7 and 8**
+*Item Fit Statistics From Unidimensional Graded Response Model of Altruism Scale Items Without Items 7 and 8*
 
 ```{r}
 format_flex(alt.irt.results.no78$`Item Fit`) %>% knit_print()
 ```
 
 
-**Item Parameter Estimates From Unidimensional Graded Response Model of Altruism Scale Items Without Items 7 and 8**
+*Item Parameter Estimates From Unidimensional Graded Response Model of Altruism Scale Items Without Items 7 and 8*
 
 ```{r}
 format_flex(alt.irt.results.no78$`Item Parameters`$mirt.wide) %>% knit_print()
@@ -232,94 +216,26 @@ format_flex(alt.irt.results.no78$`Item Parameters`$mirt.wide) %>% knit_print()
 
 *Note.* a is the item discrimination parameter; b are the item threshold parameters
 
-**Item Probability Functions From Unidimensional Graded Response Model of Altruism Scale Items Without Items 7 and 8**
+*Item Probability Functions From Unidimensional Graded Response Model of Altruism Scale Items Without Items 7 and 8*
 
 ```{r fig.width=12, fig.height=12}
 print(alt.irt.results.no78$`Scale Plots`[[4]])
 ```
 
-## DLE-F
-
-### Graded Response Model - All Items
-
-**Standardized Factor Loadings Transformed From Exploratory Bidimensional Graded Response Model of DLE-F Items**
-
-```{r}
-rd.irt.results$`Model Summary`$`2-factor`$rotF %>%
-  select(-h2) %>% format_flex() %>% knit_print()
-```
-
-*Note.* Model estimation and parameter transformation performed with the mirt package (Chalmers, 2012) in R (R Core Team, 2023)
-
-**Item Fit Statistics From Unidimensional Graded Response Model of DLE-F Items**
-
-```{r}
-format_flex(rd.irt.results$`Item Fit`) %>% knit_print()
-```
-
-
-**Item Parameter Estimates From Unidimensional Graded Response Model of DLE-F Items**
-
-```{r}
-format_flex(rd.irt.results$`Item Parameters`$mirt.wide) %>% knit_print()
-```
-
-*Note.* a is the item discrimination parameter; b are the item threshold parameters
-
-**Item Probability Functions From Unidimensional Graded Response Model of DLE-F Items**
-
-```{r fig.width=12, fig.height=12}
-print(rd.irt.results$`Scale Plots`[[4]])
-```
 
 \newpage
 
-
-### Generalized Partial Credit Model - All Items
-
-**Standardized Factor Loadings Transformed From Exploratory Bidimensional Generalized Partial Credit Model of DLE-F Items**
-
-```{r}
-rd.r.irt.results$`Model Summary`$`2-factor`$rotF %>%
-  select(-h2) %>% format_flex() %>% knit_print()
-```
-
-*Note.* Model estimation and parameter transformation performed with the mirt package (Chalmers, 2012) in R (R Core Team, 2023)
-
-**Item Fit Statistics From Unidimensional Generalized Partial Credit Model of DLE-F Items**
-
-```{r}
-format_flex(rd.r.irt.results$`Item Fit`) %>% knit_print()
-```
-
-
-**Item Parameter Estimates From Unidimensional Generalized Partial Credit Model of DLE-F Items**
-
-```{r}
-format_flex(rd.r.irt.results$`Item Parameters`$mirt.wide) %>% knit_print()
-```
-
-*Note.* a is the item discrimiination parameter; b are the item threshold parameters
-
-**Item Probability Functions From Unidimensional Generalized Partial Credit Model of DLE-F Items**
-
-```{r fig.width=12, fig.height=12}
-print(rd.r.irt.results$`Scale Plots`[[4]])
-```
-
-\newpage
-
-# Differential Item Functioning - AS-C
+# Differential Item Functioning
 
 ## Gender
 
-**Figure X. Predicted Item Scores With Item Parameters Estimated Separately by Gender**
+**Supplemental Figure 1.** *Predicted Item Scores With Item Parameters Estimated Separately by Gender*
 
 ```{r, fig.width=10, fig.height=6}
 print(alt.sex.item.plot$plot)
 ```
 
-**Table X. Wald Tests to Identify Anchor Items by Gender**
+*Wald Tests to Identify Anchor Items by Gender*
 
 ```{r}
 alt.sex.irt$anchor.test$anchor.df %>%
@@ -329,27 +245,27 @@ format_flex() %>% knit_print()
 ```
 
 
-**Table X. Omnibus Wald Tests to Identify Differential Item Functioning by Gender**
+*Omnibus Wald Tests to Identify Differential Item Functioning by Gender*
 
 ```{r}
 format_flex(alt.sex.irt$item.test) %>% knit_print()
 ```
 
 
-**Table X. Wald Tests to Identify Type of Differential Item Functioning by Gender**
+*Wald Tests to Identify Type of Differential Item Functioning by Gender*
 
 ```{r}
 format_flex(alt.sex.irt$dif.type) %>% knit_print()
 ```
 
 
-**Table X. Item Parameters From Model Adjusting for Differential Item Functioning by Gender**
+*Item Parameters From Model Adjusting for Differential Item Functioning by Gender*
 
 ```{r}
 format_flex(alt.sex.irt$parameters) %>% knit_print()
 ```
 
-**Table X. Standardized Mean Difference (Hedges's g) by Gender (Girl - Boy)**
+*Standardized Mean Difference (Hedges's g) by Gender (Girl - Boy)*
 
 ```{r}
 format_flex(alt.sex.impact$effects) %>% knit_print()
@@ -365,7 +281,7 @@ format_flex(alt.sex.impact$effects) %>% knit_print()
 print(alt.em.item.plot$plot)
 ```
 
-**Table X. Wald Tests to Identify Anchor Items between Early and Middle Adolescents**
+*Wald Tests to Identify Anchor Items between Early and Middle Adolescents*
 
 ```{r}
 alt.em.irt$anchor.test$anchor.df %>%
@@ -374,7 +290,7 @@ alt.em.irt$anchor.test$anchor.df %>%
 format_flex() %>% knit_print()
 ```
 
-**Table X. Item Parameters From Model Estimated Separately for Early and Middle Adolescents**
+*Item Parameters From Model Estimated Separately for Early and Middle Adolescents*
 
 ```{r}
 format_flex(alt.sex.irt$parameters) %>% knit_print()
@@ -385,13 +301,13 @@ format_flex(alt.sex.irt$parameters) %>% knit_print()
 
 ## Early and Late Adolescents
 
-**Figure X. Predicted Item Scores With Item Parameters Estimated Separately for Early and Late Adolescents**
+**Figure 2.** *Predicted Item Scores on the 7-item Altruism Scale-Child Version with Item Parameters Estimated Separately for Early and Late Adolescents*
 
 ```{r, fig.width=10, fig.height=6}
 print(alt.el.item.plot$plot)
 ```
 
-**Table X. Wald Tests to Identify Anchor Items by Early and Late Adolescents**
+*Wald Tests to Identify Anchor Items by Early and Late Adolescents*
 
 ```{r}
 alt.el.irt$anchor.test$anchor.df %>%
@@ -401,27 +317,27 @@ format_flex() %>% knit_print()
 ```
 
 
-**Table X. Omnibus Wald Tests to Identify Differential Item Functioning by Early and Late Adolescents**
+*Omnibus Wald Tests to Identify Differential Item Functioning by Early and Late Adolescents*
 
 ```{r}
 format_flex(alt.el.irt$item.test) %>% knit_print()
 ```
 
 
-**Table X. Wald Tests to Identify Type of Differential Item Functioning by Early and Late Adolescents**
+**Supplemental Table 4.** *Wald Tests to Identify Type of Differential Item Functioning by Early and Late Adolescents*
 
 ```{r}
 format_flex(alt.el.irt$dif.type) %>% knit_print()
 ```
 
 
-**Table X. Item Parameters From Model Adjusting for Differential Item Functioning by Early and Late Adolescents**
+*Item Parameters From Model Adjusting for Differential Item Functioning by Early and Late Adolescents*
 
 ```{r}
 format_flex(alt.el.irt$parameters) %>% knit_print()
 ```
 
-**Table X. Standardized Mean Difference (Hedges's g) by Adolescence (Late - Early)**
+*Standardized Mean Difference (Hedges's g) by Adolescence (Late - Early)*
 
 ```{r}
 format_flex(alt.el.impact$effects) %>% knit_print()
@@ -432,13 +348,13 @@ format_flex(alt.el.impact$effects) %>% knit_print()
 
 ## Middle and Late Adolescents
 
-**Figure X. Predicted Item Scores With Item Parameters Estimated Separately for Middle and Late Adolescents**
+**Supplemental Figure 2.** *Predicted Item Scores With Item Parameters Estimated Separately for Middle and Late Adolescents*
 
 ```{r, fig.width=10, fig.height=6}
 print(alt.ml.item.plot$plot)
 ```
 
-**Table X. Wald Tests to Identify Anchor Items by Middle and Late Adolescents**
+*Wald Tests to Identify Anchor Items by Middle and Late Adolescents*
 
 ```{r}
 alt.ml.irt$anchor.test$anchor.df %>%
@@ -448,27 +364,27 @@ format_flex() %>% knit_print()
 ```
 
 
-**Table X. Omnibus Wald Tests to Identify Differential Item Functioning by Middle and Late Adolescents**
+*Omnibus Wald Tests to Identify Differential Item Functioning by Middle and Late Adolescents*
 
 ```{r}
 format_flex(alt.ml.irt$item.test) %>% knit_print()
 ```
 
 
-**Table X. Wald Tests to Identify Type of Differential Item Functioning by Middle and Late Adolescents**
+*Wald Tests to Identify Type of Differential Item Functioning by Middle and Late Adolescents*
 
 ```{r}
 format_flex(alt.ml.irt$dif.type) %>% knit_print()
 ```
 
 
-**Table X. Item Parameters From Model Adjusting for Differential Item Functioning by Middle and Late Adolescents**
+*Item Parameters From Model Adjusting for Differential Item Functioning by Middle and Late Adolescents*
 
 ```{r}
 format_flex(alt.ml.irt$parameters) %>% knit_print()
 ```
 
-**Table X. Standardized Mean Difference (Hedges's g) by Adolescence (Late - Middle)**
+*Standardized Mean Difference (Hedges's g) by Adolescence (Late - Middle)*
 
 ```{r}
 format_flex(alt.ml.impact$effects) %>% knit_print()
@@ -476,15 +392,15 @@ format_flex(alt.ml.impact$effects) %>% knit_print()
 
 \newpage
 
-**Figure X. Estimated Standardized Mean Difference by Scoring Method**
+**Figure 1.** *Estimated Standardized Mean Difference and 95% Confidence Interval by Scoring Method*
 
 ```{r, fig.width=12, fig.height=6}
 print(effects.plot)
 ```
 
-*Note.* DIF = Differential Item Functioning; Scores were estimated using the mean item response ("Total") or factor scores from a graded response model ("IRT"). The scores were estimated when including DIF items ("All Items"), omitting DIF items ("Omitted") or estimating the parameters for DIF items separately by group ("Adjusted").
+*Note.* DIF = Differential Item Functioning; Scores were estimated using the mean item response (“Total”) or factor scores from a graded response item response theory model (“IRT”). The scores were estimated when including DIF items (“All Items”), omitting DIF items (“Omitted”) or estimating the parameters for DIF items separately by group (“Adjusted”). No difference in altruism between the groups is implied when 95% confidence interval includes 0 (vertical dashed line).
 
-**Table X.**
+**Table 1.** *Wald X2 Tests to Identify Anchor Items*
 
 ```{r}
 anchor.map <- data.frame(col_keys = names(anchor.out),

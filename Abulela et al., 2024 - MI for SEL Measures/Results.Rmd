@@ -1,0 +1,277 @@
+---
+title: "Measurement Invariance Across Administrations"
+author: "KN and MA"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+   word_document:
+        toc: yes
+        toc_depth: 2
+        reference_docx: "Markdown Template.docx"
+   html_document:
+        toc: yes
+        toc_depth: 2
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, results = "asis", warning = FALSE, message = FALSE)
+flextable::set_flextable_defaults(fonts_ignore = TRUE)
+
+library(dplyr)
+library(flextable)
+library(ggplot2)
+
+#### Formatting Output Tables ####
+format_flex <- function(df, digits = 2){
+  
+  if(!("flextable" %in% class(df))){
+  
+  numericcols <- which(unlist(lapply(df, is.numeric)))
+  
+  ftab <- flextable::flextable(df)
+  ftab <- flextable::colformat_double(ftab, j = numericcols, digits = digits)
+  } else{
+    ftab <- df
+  }
+  ftab <- flextable::font(ftab, fontname = "Times New Roman", part = "all")
+  ftab <- flextable::padding(ftab, padding = 0, part = "all")
+  ftab <- flextable::align(ftab, align = "center", part = "all")
+  ftab <- flextable::align(ftab, j = 1, align = "left")
+  
+  
+  ftab <- flextable::autofit(ftab)
+  # ftab <- flextable::fit_to_width(ftab, width)
+  
+  return(ftab)
+}
+
+## loading data
+
+# load("MI_Results.RData")
+load("MI_Results_L12.RData")
+load("MI_Results_L3.RData")
+load("MI_Output.RData")
+
+g5.results.list <- list(`Commitment to Learning (CTL)` = g5.ctl.results,
+                        `Positive Identity and Outlook (PIO)` = g5.pio.results,
+                        `Social Competence (SC)` = g5.sc.results,
+                        # `Empowerment (EMP)` = g5.emp.results,
+                        `Family/Community Support (FCS)` = g5.fcs.results,
+                        `Teacher/School Support (TSS)` = g5.tss.results)
+
+g8.results.list <- list(`Commitment to Learning (CTL)` = g8.ctl.results,
+                        `Positive Identity and Outlook (PIO)` = g8.pio.results,
+                        `Social Competence (SC)` = g8.sc.results,
+                        # `Empowerment (EMP)` = g8.emp.results,
+                        `Family/Community Support (FCS)` = g8.fcs.results,
+                        `Teacher/School Support (TSS)` = g8.tss.results)
+
+g9.results.list <- list(`Commitment to Learning (CTL)` = g9.ctl.results,
+                        `Positive Identity and Outlook (PIO)` = g9.pio.results,
+                        `Social Competence (SC)` = g9.sc.results,
+                        # `Empowerment (EMP)` = g9.emp.results,
+                        `Family/Community Support (FCS)` = g9.fcs.results,
+                        `Teacher/School Support (TSS)` = g9.tss.results)
+
+g11.results.list <- list(`Commitment to Learning (CTL)` = g11.ctl.results,
+                        `Positive Identity and Outlook (PIO)` = g11.pio.results,
+                        `Social Competence (SC)` = g11.sc.results,
+                        # `Empowerment (EMP)` = g11.emp.results,
+                        `Family/Community Support (FCS)` = g11.fcs.results,
+                        `Teacher/School Support (TSS)` = g11.tss.results)
+```
+
+# Demographics
+
+**Supplemental Table 1.**
+
+*Student Characteristics by Year*
+
+```{r, eval = FALSE}
+format_flex(demos.year)
+```
+
+**Supplemental Table 2.**
+
+*Student Characteristics by Grade*
+
+```{r, eval = FALSE}
+format_flex(demos.grade)
+```
+
+# Grade 5
+
+```{r}
+
+for(i in 1:length(g5.results.list)){
+ cat("##", names(g5.results.list)[[i]])
+ cat("\n\n")
+ cat("*Model fit for each model and model comparison statistics*")
+ cat("\n\n")
+ format_flex(g5.results.list[[i]]$Fits) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ cat("*Unstandardized factor loadings for each group and constrained*")
+ cat("\n\n")
+ format_flex(g5.results.list[[i]]$Loadings) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ cat("*Standardized means and unstandardized variances after constraining thresholds and loadings*")
+ cat("\n\n")
+ format_flex(g5.results.list[[i]]$Means_Vars) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ if(!is.null(g5.results.list[[i]]$Partial)){
+    cat("*Investigating parameters to release for partial invariance*")
+    cat("\n\n")
+    r <- min(15, nrow(g5.results.list[[i]]$Partial))
+    format_flex(g5.results.list[[i]]$Partial[1:r,]) %>% knitr::knit_print() %>% cat()
+    cat("\n\n")    
+ }
+ cat("\\newpage")
+}
+
+```
+
+# Grade 8
+
+```{r}
+
+for(i in 1:length(g8.results.list)){
+ cat("##", names(g8.results.list)[[i]])
+ cat("\n\n")
+ cat("*Model fit for each model and model comparison statistics*")
+ cat("\n\n")
+ format_flex(g8.results.list[[i]]$Fits) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ cat("*Unstandardized factor loadings for each group and constrained*")
+ cat("\n\n")
+ format_flex(g8.results.list[[i]]$Loadings) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ cat("*Standardized means and unstandardized variances after constraining thresholds and loadings*")
+ cat("\n\n")
+ format_flex(g8.results.list[[i]]$Means_Vars) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ if(!is.null(g8.results.list[[i]]$Partial)){
+    cat("*Investigating parameters to release for partial invariance*")
+    cat("\n\n")
+    r <- min(15, nrow(g8.results.list[[i]]$Partial))
+    format_flex(g8.results.list[[i]]$Partial[1:r,]) %>% knitr::knit_print() %>% cat()
+    cat("\n\n")    
+ }
+ cat("\\newpage")
+}
+
+```
+
+# Grade 9
+
+```{r}
+
+for(i in 1:length(g9.results.list)){
+ cat("##", names(g9.results.list)[[i]])
+ cat("\n\n")
+ cat("*Model fit for each model and model comparison statistics*")
+ cat("\n\n")
+ format_flex(g9.results.list[[i]]$Fits) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ cat("*Unstandardized factor loadings for each group and constrained*")
+ cat("\n\n")
+ format_flex(g9.results.list[[i]]$Loadings) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ cat("*Standardized means and unstandardized variances after constraining thresholds and loadings*")
+ cat("\n\n")
+ format_flex(g9.results.list[[i]]$Means_Vars) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ if(!is.null(g9.results.list[[i]]$Partial)){
+    cat("*Investigating parameters to release for partial invariance*")
+    cat("\n\n")
+    r <- min(15, nrow(g9.results.list[[i]]$Partial))
+    format_flex(g9.results.list[[i]]$Partial[1:r,]) %>% knitr::knit_print() %>% cat()
+    cat("\n\n")    
+ }
+ cat("\\newpage")
+}
+
+```
+
+
+# Grade 11
+
+```{r}
+
+for(i in 1:length(g11.results.list)){
+ cat("##", names(g11.results.list)[[i]])
+ cat("\n\n")
+ cat("*Model fit for each model and model comparison statistics*")
+ cat("\n\n")
+ format_flex(g11.results.list[[i]]$Fits) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ cat("*Unstandardized factor loadings for each group and constrained*")
+ cat("\n\n")
+ format_flex(g11.results.list[[i]]$Loadings) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ cat("*Standardized means and unstandardized variances after constraining thresholds and loadings*")
+ cat("\n\n")
+ format_flex(g11.results.list[[i]]$Means_Vars) %>% knitr::knit_print() %>% cat()
+ cat("\n\n")
+ if(!is.null(g11.results.list[[i]]$Partial)){
+    cat("*Investigating parameters to release for partial invariance*")
+    cat("\n\n")
+    r <- min(15, nrow(g11.results.list[[i]]$Partial))
+    format_flex(g11.results.list[[i]]$Partial[1:r,]) %>% knitr::knit_print() %>% cat()
+    cat("\n\n")    
+ }
+ cat("\\newpage")
+}
+
+```
+
+# Manuscript Output
+
+*Table 1. Model Fit and Comparison Statistics for Grade 5*
+
+```{r}
+format_flex(g5.table) %>% knitr::knit_print()
+```
+
+\newpage
+
+*Table 2. Model Fit and Comparison Statistics for Grade 8*
+
+```{r}
+format_flex(g8.table) %>% knitr::knit_print()
+```
+
+\newpage
+
+*Table 3. Model Fit and Comparison Statistics for Grade 9*
+
+```{r}
+format_flex(g9.table) %>% knitr::knit_print()
+```
+
+\newpage
+
+*Table 4. Model Fit and Comparison Statistics for Grade 11*
+
+```{r}
+format_flex(g11.table) %>% knitr::knit_print()
+```
+
+\newpage
+
+*Figure 1. Standardized Mean Difference Across Administrations by Grade and Measure*
+
+```{r, eval = FALSE, fig.width = 12, fig.height = 8}
+print(smd.plot)
+```
+
+*Note.* The 2016 administration of Positive Identity and Outlook is the reference year for Grade 5 as the 2013 administration used different items and was excluded from the analysis.
+
+
+\newpage
+
+*Figure 1. Standardized Mean Difference Across Administrations by Grade and Measure*
+
+```{r, fig.width = 12, fig.height = 8}
+print(smd.line)
+```
+
+*Note.* The 2016 administration of Positive Identity and Outlook is the reference year for Grade 5 as the 2013 administration used different items and was excluded from the analysis.

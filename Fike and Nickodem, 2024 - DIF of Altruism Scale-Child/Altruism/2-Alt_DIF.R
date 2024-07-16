@@ -1,9 +1,9 @@
-###################################################
-#                                                 #
-#     Measuring altruism born of suffering        #
-#                DIF Analysis                     #
-#                                                 #
-###################################################
+###############################
+#                             #
+#    Measuring Altruism       #
+#             DIF             #
+#                             #
+###############################
 
 # ------   Setup   -----------------------
 # remotes::install_github("knickodem/DIFreport")
@@ -11,17 +11,13 @@ library(DIFreport)
 
 ## Load packages and custom functions
 source("PnF.R")
-load("FA_IRT_Results_test.RData")
-
-# -----  Differential Item Functioning  ---------------
+load("Altruism/Altruism_Model_Results.RData")
 
 aa.dat <- aa.dat %>%
   mutate(Sex = as_factor(Sex) %>%
            fct_recode(Girl = "Female", Boy = "Male"))
 
-
-##############################
-####       Altruism       ####
+# ----    Differential Item Functioning     -----------
 
 ####   DIF by Sex  ####
 ## prepare data
@@ -136,12 +132,10 @@ alt.ml.irt$parameters <- get_irt_params(alt.ml.irt$adj.mod)
 ## Predicted item scores ignoring DIF
 alt.ml.item.plot <- item_score_plot(alt.ml.irt$anchor.test$s2.mod)
 
-
 ## Estimate impact
 # alt.ml.impact <- dif_impact(alt.ml.irt, alt.ml.prep)
 # error with fscores using the drop.mod; can't figure out why,
 # so calculating using latent variable estimates from drop.mod
-
 
 # shortcuts
 item.data = alt.ml.prep$item.data
@@ -218,10 +212,9 @@ alt.ml.impact <- list(effects = effects,
 ## Plot impact
 alt.ml.impact$plot <- impact_plot(alt.ml.impact$effects)
 
-
 ###############################################################
 
-#### Combined Tables and Figures ####
+# ----    Combined Tables and Figures     -----------
 
 ## Anchor Table
 anchor.tabs <- map(.x = list(alt.sex.irt, alt.em.irt, alt.el.irt, alt.ml.irt),
@@ -265,7 +258,7 @@ effects.plot <- effects.data %>%
 # axis.line = element_line(colour = "black"),
 # text = element_text(size=14))
 
-
+###############################################################
 
 # -----    Saving DIF Output   -------
 
@@ -275,5 +268,4 @@ save(alt.sex.prep, alt.em.prep, alt.el.prep, alt.ml.prep,
      alt.sex.item.plot, alt.em.item.plot, alt.el.item.plot, alt.ml.item.plot,
      alt.sex.impact, alt.em.impact, alt.el.impact, alt.ml.impact,
      anchor.out, effects.data, effects.plot,
-     file = "DIF_Results_test.RData")
-
+     file = "Altruism/Altruism_DIF_Results.RData")
