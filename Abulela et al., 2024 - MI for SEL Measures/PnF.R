@@ -1,9 +1,10 @@
-#############################################
-#                                           #
-#   MI of SEL Measures Across Time Points   #
-#           Packages and Functions          #
-#                                           #
-#############################################
+#######################################
+#                                     #
+#    MI of SEL Measures   #
+#         2024 NCME Proposal          #
+#       Packages and Functions        #
+#                                     #
+#######################################
 
 # Packages
 library(dplyr)
