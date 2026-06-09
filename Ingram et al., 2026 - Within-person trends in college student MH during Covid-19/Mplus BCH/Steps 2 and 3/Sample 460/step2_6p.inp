@@ -1,0 +1,23 @@
+TITLE:
+COVID paper - 6 profiles - Step 2;
+DATA:
+FILE = "Mplus BCH/Steps 2 and 3/Sample 460/step2_6p_9bcaf028e64b1725ec923097b4931ea8.dat";
+ 
+VARIABLE:
+NAMES = ID GAD_int PHQ_int PSI_int GADc PHQc PSIc cope1_b cope2_b cope3_b cope4_b
+     cope5_b cope6_b cope7_b cope8_b cope9_b cope10_b cope11_b cope12_b cope13_b
+     cope14_b cope15_b nonwhite male sgm fg hs_ba; 
+ MISSING=.;
+ IDVARIABLE = ID;
+              CLASSES = c(6);
+              AUXILIARY = cope1_b-cope15_b
+  nonwhite male sgm fg hs_ba;
+ANALYSIS:
+TYPE = MIXTURE;
+              STARTS = 2000 500;
+              PROCESSORS = 4;
+OUTPUT:
+ENTROPY TECH1 TECH11 TECH14;
+SAVEDATA:
+FILE = step2_6_bchweights.dat;
+              SAVE = bchweights;

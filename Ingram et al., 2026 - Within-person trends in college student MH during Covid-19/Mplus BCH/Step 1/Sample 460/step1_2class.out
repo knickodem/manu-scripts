@@ -1,0 +1,1075 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+03/03/2025  12:40 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+  COVID paper - Mental Health LPA - 2 profiles;
+  DATA:
+  FILE = "Mplus BCH/Step 1/Sample 460/step1_2class_ceb92ce2d29a9eb90c55cabce9ab3151.dat";
+
+  VARIABLE:
+  NAMES = ID GAD_int PHQ_int PSI_int GADc PHQc PSIc;
+   MISSING=.;
+   IDVARIABLE = ID;
+  CLASSES = c(2);
+  ANALYSIS:
+  TYPE = MIXTURE;
+   STARTS = 2000 500;
+   PROCESSORS = 4;
+  OUTPUT:
+  ENTROPY TECH1 TECH11 TECH14;
+  SAVEDATA:
+  FILE = step1_2_probs.dat;
+  SAVE = CPROBABILITIES;
+  PLOT:
+  TYPE IS PLOT3;
+  SERIES IS GAD_int (1) GADc (2) PHQ_int (3) PHQc (4) PSI_int (5) PSIc (6);
+
+
+
+*** WARNING in MODEL command
+  All variables are uncorrelated with all other variables within class.
+  Check that this is what is intended.
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+COVID paper - Mental Health LPA - 2 profiles;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         460
+
+Number of dependent variables                                    6
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Continuous
+   GAD_INT     PHQ_INT     PSI_INT     GADC        PHQC        PSIC
+
+Categorical latent variables
+   C
+
+Variables with special functions
+
+  ID variable           ID
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-06
+    Relative loglikelihood change                        0.100D-06
+    Derivative                                           0.100D-05
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Random Starts Specifications
+  Number of initial stage random starts                       2000
+  Number of final stage optimizations                          500
+  Number of initial stage iterations                            10
+  Initial stage convergence criterion                    0.100D+01
+  Random starts scale                                    0.500D+01
+  Random seed for generating random starts                       0
+
+Input data file(s)
+  Mplus BCH/Step 1/Sample 460/step1_2class_ceb92ce2d29a9eb90c55cabce9ab3151.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             7
+     Number of y missing data patterns           7
+     Number of u missing data patterns           0
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR Y
+
+
+           Covariance Coverage
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+ GAD_INT        0.983
+ PHQ_INT        0.976         0.991
+ PSI_INT        0.941         0.950         0.959
+ GADC           0.983         0.976         0.941         0.983
+ PHQC           0.959         0.974         0.933         0.959         0.974
+ PSIC           0.939         0.948         0.957         0.939         0.930
+
+
+           Covariance Coverage
+              PSIC
+              ________
+ PSIC           0.957
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     GAD_INT               5.597       0.988       0.000   12.83%       1.000      3.000      5.000
+             452.000      22.833       0.588      21.000    0.66%       6.000      9.000
+     PHQ_INT               6.390       0.993       0.000    7.02%       2.000      4.000      5.000
+             456.000      24.764       0.700      24.000    0.22%       7.000     10.000
+     PSI_INT              11.483       0.213       4.000    2.49%       9.000     10.000     11.000
+             441.000      11.851      -0.114      20.000    2.04%      12.000     14.000
+     GADC                  1.135       0.141     -21.000    0.22%      -2.000      0.000      1.000
+             452.000      24.462       1.598      18.000    0.22%       2.000      5.000
+     PHQC                  1.259       0.142     -15.000    0.22%      -2.000      0.000      1.000
+             448.000      22.522       1.149      17.000    0.45%       2.000      4.000
+     PSIC                 -0.555      -0.247     -16.000    0.23%      -3.000     -1.000     -0.500
+             440.000      10.402       1.080       9.000    0.23%       0.000      2.000
+
+RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
+
+Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
+
+           -7478.679  988290           1938
+           -7478.679  373702           669
+           -7478.679  891510           1625
+           -7478.679  74518            927
+           -7478.679  60038            1064
+           -7478.679  860029           760
+           -7478.679  937068           982
+           -7478.679  373691           1624
+           -7478.679  627249           1518
+           -7478.679  499150           216
+           -7478.679  30098            209
+           -7478.679  337570           1319
+           -7478.679  502495           724
+           -7478.679  572342           1848
+           -7478.679  94573            983
+           -7478.679  739458           1963
+           -7478.679  826241           1779
+           -7478.679  985325           1890
+           -7478.679  281558           184
+           -7478.679  414828           322
+           -7478.679  695453           902
+           -7478.679  329944           1506
+           -7478.679  674171           195
+           -7478.679  943550           1981
+           -7478.679  582916           1747
+           -7478.679  235334           1613
+           -7478.679  241197           747
+           -7478.679  871438           561
+           -7478.679  985544           1051
+           -7478.679  420298           1222
+           -7478.679  853781           716
+           -7478.679  72662            729
+           -7478.679  562716           300
+           -7478.679  303429           1016
+           -7478.679  193042           316
+           -7478.679  563993           1973
+           -7478.679  538872           949
+           -7478.679  379729           512
+           -7478.679  468731           1451
+           -7478.679  92564            583
+           -7478.679  645052           910
+           -7478.679  159259           1665
+           -7478.679  196948           1465
+           -7478.679  461866           722
+           -7478.679  118421           139
+           -7478.679  275003           1674
+           -7478.679  299108           1420
+           -7478.679  495366           964
+           -7478.679  473942           574
+           -7478.679  406263           1618
+           -7478.679  234137           1965
+           -7478.679  791396           243
+           -7478.679  343926           624
+           -7478.679  266425           2000
+           -7478.679  546943           865
+           -7478.679  611687           1933
+           -7478.679  673336           1899
+           -7478.679  242970           1945
+           -7478.679  699810           571
+           -7478.679  491970           563
+           -7478.679  520865           763
+           -7478.679  752292           1750
+           -7478.679  860772           174
+           -7478.679  703313           1415
+           -7478.679  42278            1305
+           -7478.679  503540           1984
+           -7478.679  614009           317
+           -7478.679  344904           1814
+           -7478.679  769907           457
+           -7478.679  27352            1516
+           -7478.679  384199           882
+           -7478.679  758647           951
+           -7478.679  123962           1868
+           -7478.679  408713           450
+           -7478.679  925004           1583
+           -7478.679  49293            707
+           -7478.679  661919           1062
+           -7478.679  739486           1699
+           -7478.679  868112           1484
+           -7478.679  232015           1313
+           -7478.679  539423           1517
+           -7478.679  846194           93
+           -7478.679  424223           900
+           -7478.679  853439           1671
+           -7478.679  426557           1306
+           -7478.679  939021           8
+           -7478.679  465160           862
+           -7478.679  138695           783
+           -7478.679  842091           1373
+           -7478.679  772131           407
+           -7478.679  354208           196
+           -7478.679  617243           237
+           -7478.679  306768           978
+           -7478.679  930872           277
+           -7478.679  188490           1460
+           -7478.679  527050           948
+           -7478.679  803696           1340
+           -7478.679  228271           1422
+           -7478.679  797955           1161
+           -7478.679  823392           479
+           -7478.679  21260            1125
+           -7478.679  394609           1366
+           -7478.679  22874            588
+           -7478.679  784646           1687
+           -7478.679  971119           1358
+           -7478.679  924828           1389
+           -7478.679  673039           1173
+           -7478.679  818852           1650
+           -7478.679  643311           888
+           -7478.679  210870           383
+           -7478.679  227786           1964
+           -7478.679  780626           1982
+           -7478.679  185331           1162
+           -7478.679  118244           1950
+           -7478.679  369024           1905
+           -7478.679  217415           1240
+           -7478.679  86698            893
+           -7478.679  2066             1228
+           -7478.679  907342           1133
+           -7478.679  137305           379
+           -7478.679  536082           1539
+           -7478.679  626277           1510
+           -7478.679  36183            1349
+           -7478.679  46666            1425
+           -7478.679  727880           1547
+           -7478.679  801717           364
+           -7478.679  903369           134
+           -7478.679  197223           332
+           -7478.679  197904           1782
+           -7478.679  877429           1489
+           -7478.679  144139           1272
+           -7478.679  685657           69
+           -7478.679  502157           799
+           -7478.679  443741           1236
+           -7478.679  392260           1526
+           -7478.679  752847           1109
+           -7478.679  976103           1289
+           -7478.679  643910           1957
+           -7478.679  188498           258
+           -7478.679  131856           90
+           -7478.679  548360           1836
+           -7478.679  106244           1535
+           -7478.679  628997           1188
+           -7478.679  696266           1192
+           -7478.679  90218            1932
+           -7478.679  4091             548
+           -7478.679  927045           1994
+           -7478.679  852283           616
+           -7478.679  956446           1081
+           -7478.679  502974           1998
+           -7478.679  319144           176
+           -7478.679  217744           326
+           -7478.679  294978           1100
+           -7478.679  239088           1902
+           -7478.679  867231           1846
+           -7478.679  150818           1050
+           -7478.679  370481           742
+           -7478.679  857122           889
+           -7478.679  585607           1537
+           -7478.679  964389           1223
+           -7478.679  551340           766
+           -7478.679  25127            107
+           -7478.679  670595           1072
+           -7478.679  189515           1616
+           -7478.679  152496           123
+           -7478.679  124829           1292
+           -7478.679  708047           1519
+           -7478.679  955502           1119
+           -7478.679  61710            1327
+           -7478.679  373505           88
+           -7478.679  422004           1107
+           -7478.679  237742           1219
+           -7478.679  629320           222
+           -7478.679  637095           207
+           -7478.679  883688           1197
+           -7478.679  960582           1691
+           -7478.679  227563           63
+           -7478.679  540747           1394
+           -7478.679  485483           498
+           -7478.679  479273           156
+           -7478.679  596257           405
+           -7478.679  941975           816
+           -7478.679  30019            1476
+           -7478.679  980958           1896
+           -7478.679  124999           96
+           -7478.679  714997           399
+           -7478.679  385822           1288
+           -7478.679  449171           1260
+           -7478.679  396795           323
+           -7478.679  67009            564
+           -7478.679  836066           372
+           -7478.679  148079           1773
+           -7478.679  765392           382
+           -7478.679  521575           313
+           -7478.679  290837           1828
+           -7478.679  694303           282
+           -7478.679  445689           1248
+           -7478.679  155622           507
+           -7478.679  997836           1208
+           -7478.679  149777           1434
+           -7478.679  422856           1676
+           -7478.679  573976           1217
+           -7478.679  568405           233
+           -7478.679  314662           1036
+           -7478.679  435287           623
+           -7478.679  464810           1424
+           -7478.679  65562            1395
+           -7478.679  741888           138
+           -7478.679  329127           185
+           -7478.679  778787           1677
+           -7478.679  391179           78
+           -7478.679  672942           1098
+           -7478.679  793487           595
+           -7478.679  136842           58
+           -7478.679  883789           1967
+           -7478.679  42523            730
+           -7478.679  464179           106
+           -7478.679  688839           273
+           -7478.679  462167           1986
+           -7478.679  684993           1148
+           -7478.679  810594           845
+           -7478.679  230121           1391
+           -7478.679  121425           511
+           -7478.679  78862            529
+           -7478.679  351807           617
+           -7478.679  982520           737
+           -7478.679  953843           651
+           -7478.679  937588           293
+           -7478.679  323588           826
+           -7478.679  163110           584
+           -7478.679  232249           1629
+           -7478.679  300697           820
+           -7478.679  125763           1942
+           -7478.679  117391           710
+           -7478.679  340147           1891
+           -7478.679  358115           1724
+           -7478.679  294811           637
+           -7478.679  933977           1918
+           -7478.679  715255           523
+           -7478.679  364676           27
+           -7478.679  995249           525
+           -7478.679  50983            834
+           -7478.679  415931           10
+           -7478.679  259507           53
+           -7478.679  301301           1020
+           -7478.679  631413           439
+           -7478.679  934216           1369
+           -7478.679  642386           662
+           -7478.679  579995           183
+           -7478.679  181069           1810
+           -7478.679  168648           1788
+           -7478.679  564643           1955
+           -7478.679  100595           1766
+           -7478.679  321112           1103
+           -7478.679  436892           565
+           -7478.679  889774           954
+           -7478.679  933578           506
+           -7478.679  416463           467
+           -7478.679  829540           324
+           -7478.679  137888           901
+           -7478.679  856737           1241
+           -7478.679  242621           1642
+           -7478.679  662983           666
+           -7478.679  395754           388
+           -7478.679  604441           1026
+           -7478.679  302046           863
+           -7478.679  962482           1742
+           -7478.679  399671           13
+           -7478.679  743895           1198
+           -7478.679  953815           1347
+           -7478.679  256197           1923
+           -7478.679  242713           1911
+           -7478.679  668003           647
+           -7478.679  745972           521
+           -7478.679  132387           1203
+           -7478.679  410023           1864
+           -7478.679  347886           1463
+           -7478.679  966014           37
+           -7478.679  354483           1851
+           -7478.679  92091            649
+           -7478.679  325724           1043
+           -7478.679  95624            1605
+           -7478.679  197701           1770
+           -7478.679  845197           1456
+           -7478.679  291884           1621
+           -7478.679  383986           159
+           -7478.679  625191           350
+           -7478.679  777045           377
+           -7478.679  565819           65
+           -7478.679  881268           1299
+           -7478.679  226337           1582
+           -7478.679  476204           1318
+           -7478.679  460453           1708
+           -7478.679  919217           1501
+           -7478.679  107025           1009
+           -7478.679  778331           1280
+           -7478.679  392407           221
+           -7478.679  179229           1453
+           -7478.679  667170           1379
+           -7478.679  140864           1776
+           -7478.679  742688           594
+           -7478.679  602032           648
+           -7478.679  900631           774
+           -7478.679  790059           469
+           -7478.679  72450            1922
+           -7478.679  921023           782
+           -7478.679  732971           1447
+           -7478.679  264081           186
+           -7478.679  283146           1126
+           -7478.679  261759           1972
+           -7478.679  242406           1207
+           -7478.679  95219            1871
+           -7478.679  69413            472
+           -7478.679  350502           1345
+           -7478.679  654377           1684
+           -7478.679  231199           1641
+           -7478.679  939709           112
+           -7478.679  945083           1842
+           -7478.679  207917           976
+           -7478.679  640728           1187
+           -7478.679  900817           1060
+           -7478.679  387401           1482
+           -7478.679  981681           1017
+           -7478.679  93856            1127
+           -7478.679  967588           1495
+           -7478.679  990548           1276
+           -7478.679  160041           1384
+           -7478.679  313306           612
+           -7478.679  492814           1746
+           -7478.679  342019           301
+           -7478.679  425140           1378
+           -7478.679  978061           488
+           -7478.679  421731           886
+           -7478.679  640833           434
+           -7478.679  290980           1284
+           -7478.679  941497           1317
+           -7478.679  296924           1702
+           -7478.679  588699           828
+           -7478.679  856536           144
+           -7478.679  706042           1129
+           -7478.679  401701           1080
+           -7478.679  644297           340
+           -7478.679  897782           545
+           -7478.679  958803           1685
+           -7478.679  84927            1511
+           -7478.679  257136           1774
+           -7478.679  710154           831
+           -7478.679  760878           249
+           -7478.679  843555           952
+           -7478.679  622896           1385
+           -7478.679  458181           189
+           -7478.679  628143           854
+           -7478.679  518561           1856
+           -7478.679  383902           673
+           -7478.679  922596           456
+           -7478.679  425149           878
+           -7478.679  311214           64
+           -7478.679  28983            1574
+           -7478.679  314084           81
+           -7478.679  276696           676
+           -7478.679  153153           1763
+           -7478.679  638611           524
+           -7478.679  495190           1014
+           -7478.679  626087           314
+           -7478.679  452792           1726
+           -7478.679  648555           113
+           -7478.679  399848           220
+           -7478.679  848890           95
+           -7478.679  602305           1076
+           -7478.679  406935           958
+           -7478.679  185064           1449
+           -7478.679  489927           520
+           -7478.679  662524           1414
+           -7478.679  320884           1390
+           -7478.679  195407           1278
+           -7478.679  353580           1794
+           -7478.679  303634           169
+           -7478.679  548493           1201
+           -7478.679  12050            1540
+           -7478.679  175199           247
+           -7478.679  973369           202
+           -7478.679  925186           1332
+           -7478.679  285380           1
+           -7478.679  824126           287
+           -7478.679  332331           1913
+           -7478.679  783165           170
+           -7478.679  545756           1056
+           -7478.679  807534           850
+           -7478.679  288738           940
+           -7478.679  105656           909
+           -7478.679  889514           1505
+           -7478.679  22362            365
+           -7478.679  344422           296
+           -7478.679  125727           899
+           -7478.679  738142           1970
+           -7478.679  722748           346
+           -7478.679  399508           415
+           -7478.679  21345            199
+           -7478.679  848795           1757
+           -7478.679  440395           917
+           -7478.679  210139           991
+           -7478.679  469158           1145
+           -7478.679  344109           1044
+           -7478.679  208620           965
+           -7478.679  269874           1756
+           -7478.679  150531           154
+           -7478.679  995875           547
+           -7478.679  57922            1102
+           -7478.679  426169           1544
+           -7478.679  464174           1461
+           -7478.679  617658           660
+           -7478.679  599003           1474
+           -7478.679  289688           1330
+           -7478.679  501592           1738
+           -7478.679  207896           25
+           -7478.679  775881           778
+           -7478.679  753939           1785
+           -7478.679  737045           1638
+           -7478.679  460521           1032
+           -7478.679  910097           1031
+           -7478.679  580405           286
+           -7478.679  418686           338
+           -7478.679  286835           1969
+           -7478.679  471040           403
+           -7478.679  792389           746
+           -7478.679  452606           1675
+           -7478.679  291149           536
+           -7478.679  508482           446
+           -7478.679  326091           759
+           -7478.679  486572           1333
+           -7478.679  544077           809
+           -7478.679  838615           677
+           -7478.679  27071            15
+           -7478.679  742609           531
+           -7478.679  194143           510
+           -7478.679  746978           410
+           -7478.679  480926           1824
+           -7478.679  88437            761
+           -7478.679  35191            703
+           -7478.679  185071           370
+           -7478.679  652266           490
+           -7478.679  270428           1873
+           -7478.679  401601           1267
+           -7478.679  44340            1189
+           -7478.679  966603           919
+           -7478.679  573367           986
+           -7478.679  839844           1663
+           -7478.679  123985           248
+           -7478.679  508445           946
+           -7478.679  407108           366
+           -7478.679  492040           1503
+           -7478.679  635245           121
+           -7478.679  999211           628
+           -7478.679  366706           29
+           -7478.679  571757           1268
+           -7478.679  341960           685
+           -7478.679  929361           1971
+           -7478.679  76974            16
+           -7478.679  422421           1022
+           -7478.679  967902           52
+           -7478.679  820977           776
+           -7478.679  569131           26
+           -7478.679  354624           448
+           -7478.679  514936           1793
+           -7478.679  675953           1562
+           -7478.679  718876           1104
+           -7478.679  529455           268
+           -7478.679  968846           970
+           -7478.679  147440           514
+           -7478.679  115929           1991
+           -7478.679  739214           807
+           -7478.679  322790           636
+           -7478.679  579882           1021
+           -7478.679  232559           136
+           -7478.679  568859           49
+           -7478.679  937885           426
+           -7478.679  648035           836
+           -7478.679  509060           1548
+           -7478.679  61587            400
+           -7478.679  526230           1589
+           -7478.679  192071           142
+           -7478.679  512403           719
+           -7478.679  391949           295
+           -7478.679  358688           1573
+           -7478.679  981727           1781
+           -7478.679  264901           634
+           -7478.679  732319           1430
+           -7478.679  76847            1959
+           -7478.679  125089           1730
+           -7478.679  766903           505
+           -7478.679  779820           877
+           -7478.679  539683           1215
+           -7478.679  772315           1958
+           -7478.679  972873           157
+           -7478.679  490123           995
+           -7478.679  277373           1374
+           -7478.679  603765           1006
+           -7478.679  440841           118
+           -7478.679  462821           745
+           -7478.679  679448           937
+
+
+
+THE BEST LOGLIKELIHOOD VALUE HAS BEEN REPLICATED.  RERUN WITH AT LEAST TWICE THE
+RANDOM STARTS TO CHECK THAT THE BEST LOGLIKELIHOOD IS STILL OBTAINED AND REPLICATED.
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       19
+
+Loglikelihood
+
+          H0 Value                       -7478.679
+          H0 Scaling Correction Factor      1.3134
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   14995.358
+          Bayesian (BIC)                 15073.851
+          Sample-Size Adjusted BIC       15013.551
+            (n* = (n + 2) / 24)
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1        345.30898          0.75067
+       2        114.69102          0.24933
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1        345.30898          0.75067
+       2        114.69102          0.24933
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1              345          0.75000
+       2              115          0.25000
+
+
+CLASSIFICATION QUALITY
+
+     Entropy                         0.858
+
+
+           Univariate Entropy
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+                0.690         0.729         0.353         0.276         0.265
+
+
+           Univariate Entropy
+              PSIC
+              ________
+                0.194
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1        2
+
+    1   0.972    0.028
+    2   0.086    0.914
+
+
+Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+           1        2
+
+    1   0.971    0.029
+    2   0.083    0.917
+
+
+Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+              1        2
+
+    1      3.526    0.000
+    2     -2.397    0.000
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ Means
+    GAD_INT            3.564      0.260     13.701      0.000
+    PHQ_INT            4.240      0.253     16.772      0.000
+    PSI_INT           10.589      0.191     55.480      0.000
+    GADC               2.145      0.265      8.087      0.000
+    PHQC               2.145      0.251      8.559      0.000
+    PSIC              -0.415      0.184     -2.253      0.024
+
+ Variances
+    GAD_INT           10.580      0.930     11.373      0.000
+    PHQ_INT           10.825      0.885     12.230      0.000
+    PSI_INT            9.431      0.628     15.019      0.000
+    GADC              21.437      1.766     12.139      0.000
+    PHQC              20.135      1.604     12.555      0.000
+    PSIC              10.343      0.852     12.144      0.000
+
+Latent Class 2
+
+ Means
+    GAD_INT           11.622      0.691     16.812      0.000
+    PHQ_INT           12.873      0.768     16.773      0.000
+    PSI_INT           14.189      0.460     30.872      0.000
+    GADC              -1.859      0.618     -3.009      0.003
+    PHQC              -1.437      0.613     -2.345      0.019
+    PSIC              -0.975      0.390     -2.503      0.012
+
+ Variances
+    GAD_INT           10.580      0.930     11.373      0.000
+    PHQ_INT           10.825      0.885     12.230      0.000
+    PSI_INT            9.431      0.628     15.019      0.000
+    GADC              21.437      1.766     12.139      0.000
+    PHQC              20.135      1.604     12.555      0.000
+    PSIC              10.343      0.852     12.144      0.000
+
+Categorical Latent Variables
+
+ Means
+    C#1                1.102      0.187      5.897      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.186E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 1
+
+
+           NU
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+                    1             2             3             4             5
+
+
+           NU
+              PSIC
+              ________
+                    6
+
+
+           THETA
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+ GAD_INT            7
+ PHQ_INT            0             8
+ PSI_INT            0             0             9
+ GADC               0             0             0            10
+ PHQC               0             0             0             0            11
+ PSIC               0             0             0             0             0
+
+
+           THETA
+              PSIC
+              ________
+ PSIC              12
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 2
+
+
+           NU
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+                   13            14            15            16            17
+
+
+           NU
+              PSIC
+              ________
+                   18
+
+
+           THETA
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+ GAD_INT            7
+ PHQ_INT            0             8
+ PSI_INT            0             0             9
+ GADC               0             0             0            10
+ PHQC               0             0             0             0            11
+ PSIC               0             0             0             0             0
+
+
+           THETA
+              PSIC
+              ________
+ PSIC              12
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2
+              ________      ________
+                   19             0
+
+
+     STARTING VALUES FOR LATENT CLASS 1
+
+
+           NU
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+                0.819         1.414         8.041        -3.811        -3.487
+
+
+           NU
+              PSIC
+              ________
+               -3.780
+
+
+           THETA
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+ GAD_INT       11.417
+ PHQ_INT        0.000        12.382
+ PSI_INT        0.000         0.000         5.925
+ GADC           0.000         0.000         0.000        12.231
+ PHQC           0.000         0.000         0.000         0.000        11.261
+ PSIC           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              PSIC
+              ________
+ PSIC           5.201
+
+
+     STARTING VALUES FOR LATENT CLASS 2
+
+
+           NU
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+               10.376        11.367        14.925         6.081         6.005
+
+
+           NU
+              PSIC
+              ________
+                2.671
+
+
+           THETA
+              GAD_INT       PHQ_INT       PSI_INT       GADC          PHQC
+              ________      ________      ________      ________      ________
+ GAD_INT       11.417
+ PHQ_INT        0.000        12.382
+ PSI_INT        0.000         0.000         5.925
+ GADC           0.000         0.000         0.000        12.231
+ PHQC           0.000         0.000         0.000         0.000        11.261
+ PSIC           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              PSIC
+              ________
+ PSIC           5.201
+
+
+     STARTING VALUES FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2
+              ________      ________
+                0.000         0.000
+
+
+TECHNICAL 11 OUTPUT
+
+     Random Starts Specifications for the k-1 Class Analysis Model
+        Number of initial stage random starts                2000
+        Number of final stage optimizations                   500
+
+
+
+     VUONG-LO-MENDELL-RUBIN LIKELIHOOD RATIO TEST FOR 1 (H0) VERSUS 2 CLASSES
+
+          H0 Loglikelihood Value                        -7734.836
+          2 Times the Loglikelihood Difference            512.314
+          Difference in the Number of Parameters                7
+          Mean                                             33.288
+          Standard Deviation                               46.115
+          P-Value                                          0.0000
+
+     LO-MENDELL-RUBIN ADJUSTED LRT TEST
+
+          Value                                           500.649
+          P-Value                                          0.0001
+
+
+TECHNICAL 14 OUTPUT
+
+     Random Starts Specifications for the k-1 Class Analysis Model
+        Number of initial stage random starts                2000
+        Number of final stage optimizations                   500
+
+     Random Starts Specification for the k-1 Class Model for Generated Data
+        Number of initial stage random starts                   0
+        Number of final stage optimizations for the
+           initial stage random starts                          0
+     Random Starts Specification for the k Class Model for Generated Data
+        Number of initial stage random starts                  40
+        Number of final stage optimizations                     8
+     Number of bootstrap draws requested                   Varies
+
+
+     PARAMETRIC BOOTSTRAPPED LIKELIHOOD RATIO TEST FOR 1 (H0) VERSUS 2 CLASSES
+
+          H0 Loglikelihood Value                        -7734.836
+          2 Times the Loglikelihood Difference            512.314
+          Difference in the Number of Parameters                7
+          Approximate P-Value                              0.0000
+          Successful Bootstrap Draws                            5
+
+
+PLOT INFORMATION
+
+The following plots are available:
+
+  Histograms (sample values)
+  Scatterplots (sample values)
+  Sample means
+  Estimated means, medians, modes, and percentiles
+  Sample and estimated means
+  Observed individual values
+  Estimated means and observed individual values
+  Estimated overall and class-specific distributions
+
+SAVEDATA INFORMATION
+
+
+  Save file
+    step1_2_probs.dat
+
+  Order and format of variables
+
+    GAD_INT        F10.3
+    PHQ_INT        F10.3
+    PSI_INT        F10.3
+    GADC           F10.3
+    PHQC           F10.3
+    PSIC           F10.3
+    CPROB1         F10.3
+    CPROB2         F10.3
+    C              F10.3
+    ID             I5
+
+  Save file format
+    9F10.3 I5
+
+  Save file record length    10000
+
+  Save missing symbol        *
+
+
+     Beginning Time:  12:40:45
+        Ending Time:  12:41:10
+       Elapsed Time:  00:00:25
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

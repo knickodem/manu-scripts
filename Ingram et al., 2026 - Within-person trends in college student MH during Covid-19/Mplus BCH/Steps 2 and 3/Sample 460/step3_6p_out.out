@@ -1,0 +1,2779 @@
+Mplus VERSION 8.10
+MUTHEN & MUTHEN
+03/03/2025   3:36 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+  COVID paper - 6 profiles - Step 3;
+  DATA:
+  FILE = "Mplus BCH/Steps 2 and 3/step3_6p_out_4facba8253449b81a1af5d7f9cd6fac9.dat";
+
+  VARIABLE:
+  NAMES = ID COPE1_B COPE2_B COPE3_B COPE4_B COPE5_B COPE6_B COPE7_B COPE8_B COPE9_B
+       COPE10_B COPE11_B COPE12_B COPE13_B COPE14_B COPE15_B NONWHITE MALE SGM FG
+       HS_BA BCHW1 BCHW2 BCHW3 BCHW4 BCHW5 BCHW6;
+   MISSING=.;
+   IDVARIABLE = ID;
+    CATEGORICAL = COPE1_B-COPE15_B;
+    CLASSES = c(6);
+    TRAINING = BCHW1-BCHW6 (bch);
+  ANALYSIS:
+  TYPE = MIXTURE;
+    STARTS = 0;
+  MODEL:
+  %OVERALL%
+    C ON NONWHITE MALE SGM FG HS_BA;
+
+    %C#1%
+    [COPE1_B$1-COPE15_B$1];
+
+    %C#2%
+  [COPE1_B$1-COPE15_B$1];
+
+    %C#3%
+  [COPE1_B$1-COPE15_B$1];
+
+    %C#4%
+  [COPE1_B$1-COPE15_B$1];
+
+    %C#5%
+  [COPE1_B$1-COPE15_B$1];
+
+    %C#6%
+  [COPE1_B$1-COPE15_B$1];
+  OUTPUT:
+  TECH1 sampstat;
+
+
+
+*** WARNING
+  Data set contains cases with missing on x-variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on x-variables:  18
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+COVID paper - 6 profiles - Step 3;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         442
+
+Number of dependent variables                                   15
+Number of independent variables                                  5
+Number of continuous latent variables                            0
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Binary and ordered categorical (ordinal)
+   COPE1_B     COPE2_B     COPE3_B     COPE4_B     COPE5_B     COPE6_B
+   COPE7_B     COPE8_B     COPE9_B     COPE10_B    COPE11_B    COPE12_B
+   COPE13_B    COPE14_B    COPE15_B
+
+Observed independent variables
+   NONWHITE    MALE        SGM         FG          HS_BA
+
+Categorical latent variables
+   C
+
+Variables with special functions
+
+  ID variable           ID
+
+  Training variables (BCH)
+   BCHW1       BCHW2       BCHW3       BCHW4       BCHW5       BCHW6
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-06
+    Relative loglikelihood change                        0.100D-06
+    Derivative                                           0.100D-05
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Link                                                         LOGIT
+
+Input data file(s)
+  Mplus BCH/Steps 2 and 3/step3_6p_out_4facba8253449b81a1af5d7f9cd6fac9.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             9
+     Number of y missing data patterns           0
+     Number of u missing data patterns           9
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR U
+
+
+           Covariance Coverage
+              COPE1_B       COPE2_B       COPE3_B       COPE4_B       COPE5_B
+              ________      ________      ________      ________      ________
+ COPE1_B        1.000
+ COPE2_B        0.993         0.993
+ COPE3_B        1.000         0.993         1.000
+ COPE4_B        1.000         0.993         1.000         1.000
+ COPE5_B        0.998         0.991         0.998         0.998         0.998
+ COPE6_B        0.995         0.989         0.995         0.995         0.993
+ COPE7_B        0.998         0.991         0.998         0.998         0.995
+ COPE8_B        0.995         0.989         0.995         0.995         0.993
+ COPE9_B        1.000         0.993         1.000         1.000         0.998
+ COPE10_B       1.000         0.993         1.000         1.000         0.998
+ COPE11_B       0.998         0.991         0.998         0.998         0.995
+ COPE12_B       0.998         0.991         0.998         0.998         0.995
+ COPE13_B       0.995         0.989         0.995         0.995         0.993
+ COPE14_B       0.998         0.991         0.998         0.998         0.995
+ COPE15_B       0.998         0.991         0.998         0.998         0.995
+
+
+           Covariance Coverage
+              COPE6_B       COPE7_B       COPE8_B       COPE9_B       COPE10_B
+              ________      ________      ________      ________      ________
+ COPE6_B        0.995
+ COPE7_B        0.993         0.998
+ COPE8_B        0.993         0.993         0.995
+ COPE9_B        0.995         0.998         0.995         1.000
+ COPE10_B       0.995         0.998         0.995         1.000         1.000
+ COPE11_B       0.993         0.995         0.993         0.998         0.998
+ COPE12_B       0.993         0.995         0.993         0.998         0.998
+ COPE13_B       0.991         0.993         0.991         0.995         0.995
+ COPE14_B       0.993         0.995         0.993         0.998         0.998
+ COPE15_B       0.993         0.995         0.993         0.998         0.998
+
+
+           Covariance Coverage
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+ COPE11_B       0.998
+ COPE12_B       0.998         0.998
+ COPE13_B       0.995         0.995         0.995
+ COPE14_B       0.998         0.998         0.995         0.998
+ COPE15_B       0.998         0.998         0.995         0.998         0.998
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+    COPE1_B
+      Category 1    0.253          112.000
+      Category 2    0.747          330.000
+    COPE2_B
+      Category 1    0.109           48.000
+      Category 2    0.891          391.000
+    COPE3_B
+      Category 1    0.335          148.000
+      Category 2    0.665          294.000
+    COPE4_B
+      Category 1    0.172           76.000
+      Category 2    0.828          366.000
+    COPE5_B
+      Category 1    0.231          102.000
+      Category 2    0.769          339.000
+    COPE6_B
+      Category 1    0.118           52.000
+      Category 2    0.882          388.000
+    COPE7_B
+      Category 1    0.787          347.000
+      Category 2    0.213           94.000
+    COPE8_B
+      Category 1    0.180           79.000
+      Category 2    0.820          361.000
+    COPE9_B
+      Category 1    0.052           23.000
+      Category 2    0.948          419.000
+    COPE10_B
+      Category 1    0.434          192.000
+      Category 2    0.566          250.000
+    COPE11_B
+      Category 1    0.204           90.000
+      Category 2    0.796          351.000
+    COPE12_B
+      Category 1    0.288          127.000
+      Category 2    0.712          314.000
+    COPE13_B
+      Category 1    0.557          245.000
+      Category 2    0.443          195.000
+    COPE14_B
+      Category 1    0.465          205.000
+      Category 2    0.535          236.000
+    COPE15_B
+      Category 1    0.175           77.000
+      Category 2    0.825          364.000
+
+
+SAMPLE STATISTICS
+
+
+     SAMPLE STATISTICS
+
+
+           Means
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.394         0.294         0.176         0.186         0.489
+
+
+           Covariances
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.239
+ MALE          -0.007         0.208
+ SGM            0.001         0.014         0.145
+ FG             0.029        -0.003         0.008         0.151
+ HS_BA          0.018         0.006        -0.009         0.095         0.250
+
+
+           Correlations
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       1.000
+ MALE          -0.032         1.000
+ SGM            0.004         0.079         1.000
+ FG             0.152        -0.014         0.054         1.000
+ HS_BA          0.074         0.025        -0.049         0.488         1.000
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     NONWHITE              0.394       0.435       0.000   60.63%       0.000      0.000      0.000
+             442.000       0.239      -1.811       1.000   39.37%       0.000      1.000
+     MALE                  0.294       0.904       0.000   70.59%       0.000      0.000      0.000
+             442.000       0.208      -1.183       1.000   29.41%       0.000      1.000
+     SGM                   0.176       1.697       0.000   82.35%       0.000      0.000      0.000
+             442.000       0.145       0.881       1.000   17.65%       0.000      0.000
+     FG                    0.186       1.618       0.000   81.45%       0.000      0.000      0.000
+             442.000       0.151       0.618       1.000   18.55%       0.000      0.000
+     HS_BA                 0.489       0.045       0.000   51.13%       0.000      0.000      0.000
+             442.000       0.250      -1.998       1.000   48.87%       1.000      1.000
+
+     IN THE OPTIMIZATION, ONE OR MORE LOGIT THRESHOLDS APPROACHED EXTREME VALUES
+     OF -15.000 AND 15.000 AND WERE FIXED TO STABILIZE MODEL ESTIMATION.  THESE
+     VALUES IMPLY PROBABILITIES OF 0 AND 1.  IN THE MODEL RESULTS SECTION, THESE
+     PARAMETERS HAVE 0 STANDARD ERRORS AND 999 IN THE Z-SCORE AND P-VALUE COLUMNS.
+
+
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                      120
+
+Loglikelihood
+
+          H0 Value                       -3947.461
+          H0 Scaling Correction Factor      1.4242
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                    8134.922
+          Bayesian (BIC)                  8625.880
+          Sample-Size Adjusted BIC        8245.055
+            (n* = (n + 2) / 24)
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1         16.56194          0.03747
+       2        208.49869          0.47172
+       3         68.46052          0.15489
+       4         69.78294          0.15788
+       5         55.01190          0.12446
+       6         23.68400          0.05358
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1         16.56194          0.03747
+       2        208.49869          0.47172
+       3         68.46052          0.15489
+       4         69.78294          0.15788
+       5         55.01190          0.12446
+       6         23.68400          0.05358
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1               16          0.03620
+       2              214          0.48416
+       3               64          0.14480
+       4               73          0.16516
+       5               51          0.11538
+       6               24          0.05430
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1        2        3        4        5        6
+
+    1   1.075    -.001    -.016    0.007    0.000    -.065
+    2   0.000    1.074    -.021    -.031    -.023    0.001
+    3   -.007    -.113    1.277    -.150    0.006    -.013
+    4   0.001    -.081    -.118    1.253    -.029    -.026
+    5   0.000    -.165    0.009    -.053    1.208    0.001
+    6   -.011    0.009    -.016    -.118    0.003    1.133
+
+
+Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+           1        2        3        4        5        6
+
+    1   1.039    0.000    -.027    0.004    0.000    -.016
+    2   0.000    1.102    -.035    -.028    -.040    0.001
+    3   -.004    -.066    1.194    -.126    0.007    -.006
+    4   0.002    -.095    -.138    1.311    -.039    -.041
+    5   0.000    -.090    0.007    -.038    1.120    0.001
+    6   -.044    0.009    -.035    -.080    0.002    1.148
+
+
+Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+              1        2        3        4        5        6
+
+    1     13.853    0.000    0.000    8.390    0.000    0.000
+    2     -6.942    6.971   -6.942   -6.942   -6.942    0.000
+    3      0.000    0.000   13.993    0.000    8.810    0.000
+    4      7.382    0.000    0.000   14.086    0.000    0.000
+    5     -7.176   -7.176    1.676   -7.176    6.753    0.000
+    6    -13.954   -4.844  -13.954  -13.954   -6.280    0.000
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ Thresholds
+    COPE1_B$1         -0.788      0.560     -1.406      0.160
+    COPE2_B$1         -1.071      0.591     -1.811      0.070
+    COPE3_B$1         -0.508      0.536     -0.947      0.343
+    COPE4_B$1         -1.082      0.595     -1.819      0.069
+    COPE5_B$1         -1.488      0.675     -2.206      0.027
+    COPE6_B$1         -2.717      1.082     -2.512      0.012
+    COPE7_B$1          1.461      0.663      2.203      0.028
+    COPE8_B$1         -1.479      0.670     -2.206      0.027
+    COPE9_B$1        -15.000      0.000    999.000    999.000
+    COPE10_B$1         0.544      0.541      1.005      0.315
+    COPE11_B$1        -0.772      0.557     -1.387      0.166
+    COPE12_B$1         0.304      0.527      0.576      0.565
+    COPE13_B$1         0.517      0.537      0.962      0.336
+    COPE14_B$1        -0.007      0.519     -0.014      0.989
+    COPE15_B$1        -2.826      1.192     -2.372      0.018
+
+Latent Class 2
+
+ Thresholds
+    COPE1_B$1         -1.405      0.194     -7.245      0.000
+    COPE2_B$1         -2.229      0.257     -8.686      0.000
+    COPE3_B$1         -0.700      0.161     -4.351      0.000
+    COPE4_B$1         -1.848      0.224     -8.250      0.000
+    COPE5_B$1         -1.265      0.184     -6.891      0.000
+    COPE6_B$1         -2.086      0.246     -8.478      0.000
+    COPE7_B$1          1.811      0.229      7.915      0.000
+    COPE8_B$1         -1.876      0.230     -8.157      0.000
+    COPE9_B$1         -2.531      0.282     -8.958      0.000
+    COPE10_B$1        -0.415      0.155     -2.674      0.007
+    COPE11_B$1        -1.826      0.228     -8.003      0.000
+    COPE12_B$1        -0.718      0.161     -4.471      0.000
+    COPE13_B$1         0.278      0.153      1.810      0.070
+    COPE14_B$1        -0.252      0.153     -1.646      0.100
+    COPE15_B$1        -1.266      0.181     -7.013      0.000
+
+Latent Class 3
+
+ Thresholds
+    COPE1_B$1         -1.013      0.339     -2.987      0.003
+    COPE2_B$1         -2.511      0.590     -4.255      0.000
+    COPE3_B$1         -0.790      0.324     -2.438      0.015
+    COPE4_B$1         -2.324      0.581     -3.998      0.000
+    COPE5_B$1         -1.201      0.357     -3.359      0.001
+    COPE6_B$1         -2.145      0.500     -4.292      0.000
+    COPE7_B$1          1.322      0.374      3.536      0.000
+    COPE8_B$1         -1.199      0.354     -3.386      0.001
+    COPE9_B$1         -3.030      0.721     -4.202      0.000
+    COPE10_B$1        -0.507      0.312     -1.623      0.105
+    COPE11_B$1        -1.160      0.350     -3.317      0.001
+    COPE12_B$1        -1.330      0.375     -3.545      0.000
+    COPE13_B$1         0.391      0.308      1.270      0.204
+    COPE14_B$1        -0.159      0.301     -0.529      0.597
+    COPE15_B$1        -1.302      0.359     -3.631      0.000
+
+Latent Class 4
+
+ Thresholds
+    COPE1_B$1         -0.876      0.338     -2.595      0.009
+    COPE2_B$1         -2.250      0.536     -4.196      0.000
+    COPE3_B$1         -0.897      0.346     -2.596      0.009
+    COPE4_B$1         -0.966      0.334     -2.890      0.004
+    COPE5_B$1         -1.010      0.347     -2.912      0.004
+    COPE6_B$1         -1.629      0.403     -4.043      0.000
+    COPE7_B$1          0.540      0.313      1.724      0.085
+    COPE8_B$1         -1.460      0.398     -3.670      0.000
+    COPE9_B$1         -3.224      0.836     -3.858      0.000
+    COPE10_B$1         0.070      0.310      0.226      0.821
+    COPE11_B$1        -1.061      0.349     -3.039      0.002
+    COPE12_B$1        -1.233      0.374     -3.294      0.001
+    COPE13_B$1        -0.426      0.322     -1.323      0.186
+    COPE14_B$1        -0.541      0.326     -1.656      0.098
+    COPE15_B$1        -2.408      0.645     -3.732      0.000
+
+Latent Class 5
+
+ Thresholds
+    COPE1_B$1         -0.735      0.333     -2.210      0.027
+    COPE2_B$1         -1.774      0.444     -3.992      0.000
+    COPE3_B$1         -0.496      0.323     -1.536      0.124
+    COPE4_B$1         -1.395      0.391     -3.563      0.000
+    COPE5_B$1         -1.438      0.402     -3.578      0.000
+    COPE6_B$1         -1.655      0.423     -3.909      0.000
+    COPE7_B$1          0.626      0.326      1.922      0.055
+    COPE8_B$1         -1.124      0.360     -3.125      0.002
+    COPE9_B$1         -4.220      1.530     -2.759      0.006
+    COPE10_B$1        -0.187      0.315     -0.593      0.553
+    COPE11_B$1        -0.808      0.335     -2.410      0.016
+    COPE12_B$1        -1.100      0.365     -3.013      0.003
+    COPE13_B$1         0.574      0.329      1.742      0.082
+    COPE14_B$1         0.347      0.321      1.082      0.279
+    COPE15_B$1        -2.642      0.681     -3.878      0.000
+
+Latent Class 6
+
+ Thresholds
+    COPE1_B$1         -0.460      0.479     -0.960      0.337
+    COPE2_B$1         -1.580      0.617     -2.561      0.010
+    COPE3_B$1         -0.280      0.472     -0.592      0.554
+    COPE4_B$1         -0.838      0.506     -1.655      0.098
+    COPE5_B$1         -0.629      0.488     -1.288      0.198
+    COPE6_B$1         -3.458      1.592     -2.172      0.030
+    COPE7_B$1          2.160      0.841      2.568      0.010
+    COPE8_B$1         -1.060      0.532     -1.993      0.046
+    COPE9_B$1         -3.089      1.125     -2.746      0.006
+    COPE10_B$1        -0.008      0.470     -0.018      0.986
+    COPE11_B$1        -1.390      0.598     -2.325      0.020
+    COPE12_B$1        -1.156      0.559     -2.068      0.039
+    COPE13_B$1         0.293      0.489      0.600      0.549
+    COPE14_B$1         0.851      0.530      1.607      0.108
+    COPE15_B$1        -0.993      0.516     -1.925      0.054
+
+Categorical Latent Variables
+
+ C#1        ON
+    NONWHITE          -0.440      0.769     -0.573      0.567
+    MALE               0.563      1.007      0.559      0.576
+    SGM               -0.240      0.865     -0.277      0.782
+    FG                 0.776      1.119      0.693      0.488
+    HS_BA             -0.223      0.810     -0.276      0.783
+
+ C#2        ON
+    NONWHITE          -0.154      0.502     -0.306      0.760
+    MALE               1.249      0.759      1.645      0.100
+    SGM               -2.236      0.625     -3.576      0.000
+    FG                 0.725      0.769      0.943      0.346
+    HS_BA             -0.473      0.542     -0.872      0.383
+
+ C#3        ON
+    NONWHITE          -0.797      0.594     -1.342      0.180
+    MALE               1.292      0.817      1.582      0.114
+    SGM               -1.691      0.777     -2.175      0.030
+    FG                 1.258      0.855      1.470      0.142
+    HS_BA             -0.530      0.644     -0.824      0.410
+
+ C#4        ON
+    NONWHITE          -0.329      0.597     -0.551      0.581
+    MALE              -0.169      0.916     -0.184      0.854
+    SGM                0.073      0.650      0.112      0.910
+    FG                 0.187      0.925      0.202      0.840
+    HS_BA             -0.542      0.642     -0.845      0.398
+
+ C#5        ON
+    NONWHITE          -0.301      0.574     -0.525      0.600
+    MALE               1.191      0.798      1.493      0.135
+    SGM               -0.335      0.644     -0.521      0.602
+    FG                 0.084      0.930      0.090      0.928
+    HS_BA             -0.761      0.621     -1.225      0.221
+
+ Intercepts
+    C#1               -0.240      0.689     -0.349      0.727
+    C#2                2.466      0.436      5.650      0.000
+    C#3                1.427      0.506      2.823      0.005
+    C#4                1.455      0.497      2.928      0.003
+    C#5                1.121      0.504      2.226      0.026
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.557E-05
+       (ratio of smallest to largest eigenvalue)
+
+
+RESULTS IN PROBABILITY SCALE
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ COPE1_B
+    Category 1         0.313      0.120      2.598      0.009
+    Category 2         0.687      0.120      5.710      0.000
+ COPE2_B
+    Category 1         0.255      0.112      2.270      0.023
+    Category 2         0.745      0.112      6.626      0.000
+ COPE3_B
+    Category 1         0.376      0.126      2.988      0.003
+    Category 2         0.624      0.126      4.966      0.000
+ COPE4_B
+    Category 1         0.253      0.112      2.251      0.024
+    Category 2         0.747      0.112      6.642      0.000
+ COPE5_B
+    Category 1         0.184      0.101      1.817      0.069
+    Category 2         0.816      0.101      8.047      0.000
+ COPE6_B
+    Category 1         0.062      0.063      0.985      0.324
+    Category 2         0.938      0.063     14.922      0.000
+ COPE7_B
+    Category 1         0.812      0.101      8.008      0.000
+    Category 2         0.188      0.101      1.857      0.063
+ COPE8_B
+    Category 1         0.186      0.101      1.832      0.067
+    Category 2         0.814      0.101      8.038      0.000
+ COPE9_B
+    Category 1         0.000      0.000      0.000      1.000
+    Category 2         1.000      0.000      0.000      1.000
+ COPE10_B
+    Category 1         0.633      0.126      5.032      0.000
+    Category 2         0.367      0.126      2.921      0.003
+ COPE11_B
+    Category 1         0.316      0.120      2.625      0.009
+    Category 2         0.684      0.120      5.683      0.000
+ COPE12_B
+    Category 1         0.575      0.129      4.464      0.000
+    Category 2         0.425      0.129      3.295      0.001
+ COPE13_B
+    Category 1         0.626      0.126      4.985      0.000
+    Category 2         0.374      0.126      2.974      0.003
+ COPE14_B
+    Category 1         0.498      0.130      3.837      0.000
+    Category 2         0.502      0.130      3.865      0.000
+ COPE15_B
+    Category 1         0.056      0.063      0.889      0.374
+    Category 2         0.944      0.063     15.007      0.000
+
+Latent Class 2
+
+ COPE1_B
+    Category 1         0.197      0.031      6.421      0.000
+    Category 2         0.803      0.031     26.171      0.000
+ COPE2_B
+    Category 1         0.097      0.023      4.317      0.000
+    Category 2         0.903      0.023     40.095      0.000
+ COPE3_B
+    Category 1         0.332      0.036      9.298      0.000
+    Category 2         0.668      0.036     18.730      0.000
+ COPE4_B
+    Category 1         0.136      0.026      5.168      0.000
+    Category 2         0.864      0.026     32.797      0.000
+ COPE5_B
+    Category 1         0.220      0.032      6.987      0.000
+    Category 2         0.780      0.032     24.749      0.000
+ COPE6_B
+    Category 1         0.110      0.024      4.568      0.000
+    Category 2         0.890      0.024     36.799      0.000
+ COPE7_B
+    Category 1         0.860      0.028     31.106      0.000
+    Category 2         0.140      0.028      5.084      0.000
+ COPE8_B
+    Category 1         0.133      0.026      5.015      0.000
+    Category 2         0.867      0.026     32.727      0.000
+ COPE9_B
+    Category 1         0.074      0.019      3.822      0.000
+    Category 2         0.926      0.019     48.009      0.000
+ COPE10_B
+    Category 1         0.398      0.037     10.706      0.000
+    Category 2         0.602      0.037     16.208      0.000
+ COPE11_B
+    Category 1         0.139      0.027      5.091      0.000
+    Category 2         0.861      0.027     31.593      0.000
+ COPE12_B
+    Category 1         0.328      0.035      9.257      0.000
+    Category 2         0.672      0.035     18.988      0.000
+ COPE13_B
+    Category 1         0.569      0.038     15.118      0.000
+    Category 2         0.431      0.038     11.451      0.000
+ COPE14_B
+    Category 1         0.437      0.038     11.586      0.000
+    Category 2         0.563      0.038     14.913      0.000
+ COPE15_B
+    Category 1         0.220      0.031      7.099      0.000
+    Category 2         0.780      0.031     25.186      0.000
+
+Latent Class 3
+
+ COPE1_B
+    Category 1         0.266      0.066      4.018      0.000
+    Category 2         0.734      0.066     11.068      0.000
+ COPE2_B
+    Category 1         0.075      0.041      1.832      0.067
+    Category 2         0.925      0.041     22.560      0.000
+ COPE3_B
+    Category 1         0.312      0.070      4.489      0.000
+    Category 2         0.688      0.070      9.889      0.000
+ COPE4_B
+    Category 1         0.089      0.047      1.888      0.059
+    Category 2         0.911      0.047     19.297      0.000
+ COPE5_B
+    Category 1         0.231      0.064      3.640      0.000
+    Category 2         0.769      0.064     12.091      0.000
+ COPE6_B
+    Category 1         0.105      0.047      2.235      0.025
+    Category 2         0.895      0.047     19.093      0.000
+ COPE7_B
+    Category 1         0.789      0.062     12.707      0.000
+    Category 2         0.211      0.062      3.388      0.001
+ COPE8_B
+    Category 1         0.232      0.063      3.674      0.000
+    Category 2         0.768      0.063     12.189      0.000
+ COPE9_B
+    Category 1         0.046      0.032      1.454      0.146
+    Category 2         0.954      0.032     30.086      0.000
+ COPE10_B
+    Category 1         0.376      0.073      5.130      0.000
+    Category 2         0.624      0.073      8.516      0.000
+ COPE11_B
+    Category 1         0.239      0.064      3.754      0.000
+    Category 2         0.761      0.064     11.981      0.000
+ COPE12_B
+    Category 1         0.209      0.062      3.371      0.001
+    Category 2         0.791      0.062     12.743      0.000
+ COPE13_B
+    Category 1         0.597      0.074      8.044      0.000
+    Category 2         0.403      0.074      5.440      0.000
+ COPE14_B
+    Category 1         0.460      0.075      6.164      0.000
+    Category 2         0.540      0.075      7.227      0.000
+ COPE15_B
+    Category 1         0.214      0.060      3.546      0.000
+    Category 2         0.786      0.060     13.043      0.000
+
+Latent Class 4
+
+ COPE1_B
+    Category 1         0.294      0.070      4.196      0.000
+    Category 2         0.706      0.070     10.075      0.000
+ COPE2_B
+    Category 1         0.095      0.046      2.061      0.039
+    Category 2         0.905      0.046     19.560      0.000
+ COPE3_B
+    Category 1         0.290      0.071      4.074      0.000
+    Category 2         0.710      0.071      9.992      0.000
+ COPE4_B
+    Category 1         0.276      0.067      4.132      0.000
+    Category 2         0.724      0.067     10.854      0.000
+ COPE5_B
+    Category 1         0.267      0.068      3.933      0.000
+    Category 2         0.733      0.068     10.799      0.000
+ COPE6_B
+    Category 1         0.164      0.055      2.968      0.003
+    Category 2         0.836      0.055     15.136      0.000
+ COPE7_B
+    Category 1         0.632      0.073      8.673      0.000
+    Category 2         0.368      0.073      5.055      0.000
+ COPE8_B
+    Category 1         0.188      0.061      3.097      0.002
+    Category 2         0.812      0.061     13.338      0.000
+ COPE9_B
+    Category 1         0.038      0.031      1.244      0.213
+    Category 2         0.962      0.031     31.257      0.000
+ COPE10_B
+    Category 1         0.518      0.077      6.678      0.000
+    Category 2         0.482      0.077      6.226      0.000
+ COPE11_B
+    Category 1         0.257      0.067      3.857      0.000
+    Category 2         0.743      0.067     11.140      0.000
+ COPE12_B
+    Category 1         0.226      0.065      3.449      0.001
+    Category 2         0.774      0.065     11.838      0.000
+ COPE13_B
+    Category 1         0.395      0.077      5.128      0.000
+    Category 2         0.605      0.077      7.856      0.000
+ COPE14_B
+    Category 1         0.368      0.076      4.847      0.000
+    Category 2         0.632      0.076      8.324      0.000
+ COPE15_B
+    Category 1         0.083      0.049      1.689      0.091
+    Category 2         0.917      0.049     18.776      0.000
+
+Latent Class 5
+
+ COPE1_B
+    Category 1         0.324      0.073      4.450      0.000
+    Category 2         0.676      0.073      9.278      0.000
+ COPE2_B
+    Category 1         0.145      0.055      2.633      0.008
+    Category 2         0.855      0.055     15.513      0.000
+ COPE3_B
+    Category 1         0.379      0.076      4.988      0.000
+    Category 2         0.621      0.076      8.188      0.000
+ COPE4_B
+    Category 1         0.199      0.062      3.188      0.001
+    Category 2         0.801      0.062     12.858      0.000
+ COPE5_B
+    Category 1         0.192      0.062      3.079      0.002
+    Category 2         0.808      0.062     12.969      0.000
+ COPE6_B
+    Category 1         0.160      0.057      2.814      0.005
+    Category 2         0.840      0.057     14.720      0.000
+ COPE7_B
+    Category 1         0.652      0.074      8.807      0.000
+    Category 2         0.348      0.074      4.708      0.000
+ COPE8_B
+    Category 1         0.245      0.067      3.685      0.000
+    Category 2         0.755      0.067     11.337      0.000
+ COPE9_B
+    Category 1         0.014      0.022      0.663      0.507
+    Category 2         0.986      0.022     45.141      0.000
+ COPE10_B
+    Category 1         0.453      0.078      5.805      0.000
+    Category 2         0.547      0.078      6.998      0.000
+ COPE11_B
+    Category 1         0.308      0.072      4.310      0.000
+    Category 2         0.692      0.072      9.673      0.000
+ COPE12_B
+    Category 1         0.250      0.068      3.652      0.000
+    Category 2         0.750      0.068     10.969      0.000
+ COPE13_B
+    Category 1         0.640      0.076      8.426      0.000
+    Category 2         0.360      0.076      4.748      0.000
+ COPE14_B
+    Category 1         0.586      0.078      7.534      0.000
+    Category 2         0.414      0.078      5.325      0.000
+ COPE15_B
+    Category 1         0.066      0.042      1.572      0.116
+    Category 2         0.934      0.042     22.076      0.000
+
+Latent Class 6
+
+ COPE1_B
+    Category 1         0.387      0.114      3.403      0.001
+    Category 2         0.613      0.114      5.392      0.000
+ COPE2_B
+    Category 1         0.171      0.087      1.955      0.051
+    Category 2         0.829      0.087      9.489      0.000
+ COPE3_B
+    Category 1         0.431      0.116      3.718      0.000
+    Category 2         0.569      0.116      4.918      0.000
+ COPE4_B
+    Category 1         0.302      0.107      2.829      0.005
+    Category 2         0.698      0.107      6.540      0.000
+ COPE5_B
+    Category 1         0.348      0.111      3.141      0.002
+    Category 2         0.652      0.111      5.891      0.000
+ COPE6_B
+    Category 1         0.031      0.047      0.648      0.517
+    Category 2         0.969      0.047     20.569      0.000
+ COPE7_B
+    Category 1         0.897      0.078     11.500      0.000
+    Category 2         0.103      0.078      1.326      0.185
+ COPE8_B
+    Category 1         0.257      0.102      2.533      0.011
+    Category 2         0.743      0.102      7.309      0.000
+ COPE9_B
+    Category 1         0.044      0.047      0.929      0.353
+    Category 2         0.956      0.047     20.403      0.000
+ COPE10_B
+    Category 1         0.498      0.117      4.241      0.000
+    Category 2         0.502      0.117      4.276      0.000
+ COPE11_B
+    Category 1         0.199      0.095      2.090      0.037
+    Category 2         0.801      0.095      8.388      0.000
+ COPE12_B
+    Category 1         0.239      0.102      2.351      0.019
+    Category 2         0.761      0.102      7.471      0.000
+ COPE13_B
+    Category 1         0.573      0.120      4.785      0.000
+    Category 2         0.427      0.120      3.568      0.000
+ COPE14_B
+    Category 1         0.701      0.111      6.309      0.000
+    Category 2         0.299      0.111      2.693      0.007
+ COPE15_B
+    Category 1         0.270      0.102      2.659      0.008
+    Category 2         0.730      0.102      7.173      0.000
+
+
+LATENT CLASS INDICATOR ODDS RATIOS FOR THE LATENT CLASSES
+
+                                                95% C.I.
+                    Estimate       S.E.  Lower 2.5% Upper 2.5%
+
+Latent Class 1 Compared to Latent Class 2
+
+ COPE1_B
+    Category > 1       0.539      0.320      0.169      1.723
+ COPE2_B
+    Category > 1       0.314      0.203      0.089      1.112
+ COPE3_B
+    Category > 1       0.825      0.462      0.275      2.470
+ COPE4_B
+    Category > 1       0.465      0.296      0.134      1.616
+ COPE5_B
+    Category > 1       1.250      0.874      0.318      4.919
+ COPE6_B
+    Category > 1       1.879      2.085      0.214     16.529
+ COPE7_B
+    Category > 1       1.419      0.995      0.359      5.612
+ COPE8_B
+    Category > 1       0.672      0.476      0.168      2.697
+ COPE9_B
+    Category > 1   *********      0.000  *********  *********
+ COPE10_B
+    Category > 1       0.383      0.216      0.127      1.155
+ COPE11_B
+    Category > 1       0.349      0.210      0.107      1.134
+ COPE12_B
+    Category > 1       0.360      0.198      0.122      1.060
+ COPE13_B
+    Category > 1       0.788      0.440      0.264      2.352
+ COPE14_B
+    Category > 1       0.783      0.424      0.271      2.262
+ COPE15_B
+    Category > 1       4.759      5.736      0.448     50.514
+
+Latent Class 1 Compared to Latent Class 3
+
+ COPE1_B
+    Category > 1       0.798      0.527      0.219      2.911
+ COPE2_B
+    Category > 1       0.237      0.200      0.045      1.237
+ COPE3_B
+    Category > 1       0.754      0.476      0.219      2.601
+ COPE4_B
+    Category > 1       0.289      0.242      0.056      1.495
+ COPE5_B
+    Category > 1       1.333      1.026      0.295      6.025
+ COPE6_B
+    Category > 1       1.773      2.130      0.168     18.680
+ COPE7_B
+    Category > 1       0.870      0.668      0.193      3.917
+ COPE8_B
+    Category > 1       1.323      1.011      0.296      5.916
+ COPE9_B
+    Category > 1   *********      0.000  *********  *********
+ COPE10_B
+    Category > 1       0.350      0.220      0.102      1.202
+ COPE11_B
+    Category > 1       0.678      0.450      0.185      2.489
+ COPE12_B
+    Category > 1       0.195      0.127      0.054      0.702
+ COPE13_B
+    Category > 1       0.882      0.551      0.260      2.998
+ COPE14_B
+    Category > 1       0.859      0.520      0.262      2.813
+ COPE15_B
+    Category > 1       4.591      5.753      0.394     53.528
+
+Latent Class 1 Compared to Latent Class 4
+
+ COPE1_B
+    Category > 1       0.915      0.597      0.255      3.286
+ COPE2_B
+    Category > 1       0.308      0.245      0.065      1.463
+ COPE3_B
+    Category > 1       0.678      0.431      0.195      2.356
+ COPE4_B
+    Category > 1       1.123      0.764      0.296      4.262
+ COPE5_B
+    Category > 1       1.613      1.220      0.366      7.102
+ COPE6_B
+    Category > 1       2.969      3.420      0.311     28.388
+ COPE7_B
+    Category > 1       0.398      0.291      0.095      1.670
+ COPE8_B
+    Category > 1       1.019      0.792      0.222      4.673
+ COPE9_B
+    Category > 1   *********      0.000  *********  *********
+ COPE10_B
+    Category > 1       0.623      0.387      0.184      2.107
+ COPE11_B
+    Category > 1       0.750      0.491      0.207      2.708
+ COPE12_B
+    Category > 1       0.215      0.139      0.061      0.761
+ COPE13_B
+    Category > 1       0.389      0.243      0.115      1.324
+ COPE14_B
+    Category > 1       0.587      0.359      0.177      1.945
+ COPE15_B
+    Category > 1       1.519      2.050      0.108     21.397
+
+Latent Class 1 Compared to Latent Class 5
+
+ COPE1_B
+    Category > 1       1.054      0.687      0.294      3.780
+ COPE2_B
+    Category > 1       0.495      0.366      0.116      2.111
+ COPE3_B
+    Category > 1       1.012      0.633      0.297      3.450
+ COPE4_B
+    Category > 1       0.731      0.521      0.181      2.954
+ COPE5_B
+    Category > 1       1.051      0.826      0.226      4.899
+ COPE6_B
+    Category > 1       2.895      3.363      0.297     28.213
+ COPE7_B
+    Category > 1       0.434      0.321      0.102      1.847
+ COPE8_B
+    Category > 1       1.426      1.085      0.321      6.335
+ COPE9_B
+    Category > 1   48029.402      0.000  48029.406  48029.406
+ COPE10_B
+    Category > 1       0.481      0.301      0.141      1.643
+ COPE11_B
+    Category > 1       0.965      0.627      0.270      3.449
+ COPE12_B
+    Category > 1       0.246      0.158      0.070      0.864
+ COPE13_B
+    Category > 1       1.059      0.667      0.308      3.638
+ COPE14_B
+    Category > 1       1.425      0.870      0.431      4.715
+ COPE15_B
+    Category > 1       1.203      1.651      0.082     17.735
+
+Latent Class 1 Compared to Latent Class 6
+
+ COPE1_B
+    Category > 1       1.387      1.051      0.314      6.128
+ COPE2_B
+    Category > 1       0.601      0.530      0.107      3.386
+ COPE3_B
+    Category > 1       1.256      0.923      0.298      5.304
+ COPE4_B
+    Category > 1       1.276      1.025      0.264      6.159
+ COPE5_B
+    Category > 1       2.361      2.015      0.443     12.576
+ COPE6_B
+    Category > 1       0.477      0.946      0.010     23.274
+ COPE7_B
+    Category > 1       2.012      2.223      0.231     17.539
+ COPE8_B
+    Category > 1       1.521      1.336      0.272      8.508
+ COPE9_B
+    Category > 1   *********      0.000  *********  *********
+ COPE10_B
+    Category > 1       0.576      0.424      0.136      2.439
+ COPE11_B
+    Category > 1       0.539      0.454      0.103      2.813
+ COPE12_B
+    Category > 1       0.232      0.184      0.049      1.098
+ COPE13_B
+    Category > 1       0.800      0.598      0.185      3.461
+ COPE14_B
+    Category > 1       2.360      1.803      0.528     10.551
+ COPE15_B
+    Category > 1       6.258      8.264      0.470     83.283
+
+Latent Class 2 Compared to Latent Class 3
+
+ COPE1_B
+    Category > 1       1.480      0.599      0.669      3.271
+ COPE2_B
+    Category > 1       0.754      0.499      0.206      2.761
+ COPE3_B
+    Category > 1       0.914      0.341      0.440      1.901
+ COPE4_B
+    Category > 1       0.621      0.397      0.178      2.171
+ COPE5_B
+    Category > 1       1.066      0.443      0.473      2.406
+ COPE6_B
+    Category > 1       0.943      0.542      0.306      2.909
+ COPE7_B
+    Category > 1       0.613      0.279      0.252      1.494
+ COPE8_B
+    Category > 1       1.967      0.863      0.832      4.650
+ COPE9_B
+    Category > 1       0.607      0.483      0.128      2.885
+ COPE10_B
+    Category > 1       0.912      0.328      0.450      1.847
+ COPE11_B
+    Category > 1       1.945      0.844      0.831      4.553
+ COPE12_B
+    Category > 1       0.543      0.228      0.238      1.235
+ COPE13_B
+    Category > 1       1.120      0.398      0.558      2.248
+ COPE14_B
+    Category > 1       1.098      0.383      0.554      2.174
+ COPE15_B
+    Category > 1       0.965      0.400      0.428      2.175
+
+Latent Class 2 Compared to Latent Class 4
+
+ COPE1_B
+    Category > 1       1.697      0.682      0.772      3.731
+ COPE2_B
+    Category > 1       0.979      0.599      0.295      3.248
+ COPE3_B
+    Category > 1       0.821      0.322      0.381      1.771
+ COPE4_B
+    Category > 1       2.416      1.007      1.067      5.468
+ COPE5_B
+    Category > 1       1.290      0.522      0.584      2.852
+ COPE6_B
+    Category > 1       1.580      0.771      0.607      4.113
+ COPE7_B
+    Category > 1       0.280      0.113      0.128      0.616
+ COPE8_B
+    Category > 1       1.515      0.718      0.598      3.837
+ COPE9_B
+    Category > 1       0.500      0.452      0.085      2.939
+ COPE10_B
+    Category > 1       1.624      0.580      0.806      3.271
+ COPE11_B
+    Category > 1       2.149      0.926      0.923      5.002
+ COPE12_B
+    Category > 1       0.598      0.250      0.263      1.358
+ COPE13_B
+    Category > 1       0.494      0.182      0.241      1.016
+ COPE14_B
+    Category > 1       0.750      0.278      0.362      1.551
+ COPE15_B
+    Category > 1       0.319      0.218      0.084      1.218
+
+Latent Class 2 Compared to Latent Class 5
+
+ COPE1_B
+    Category > 1       1.955      0.790      0.885      4.316
+ COPE2_B
+    Category > 1       1.576      0.849      0.548      4.531
+ COPE3_B
+    Category > 1       1.227      0.462      0.587      2.567
+ COPE4_B
+    Category > 1       1.573      0.744      0.622      3.977
+ COPE5_B
+    Category > 1       0.841      0.387      0.341      2.071
+ COPE6_B
+    Category > 1       1.540      0.792      0.562      4.219
+ COPE7_B
+    Category > 1       0.306      0.129      0.134      0.697
+ COPE8_B
+    Category > 1       2.121      0.954      0.879      5.120
+ COPE9_B
+    Category > 1       0.185      0.293      0.008      4.133
+ COPE10_B
+    Category > 1       1.256      0.460      0.612      2.576
+ COPE11_B
+    Category > 1       2.765      1.184      1.195      6.399
+ COPE12_B
+    Category > 1       0.683      0.283      0.303      1.539
+ COPE13_B
+    Category > 1       1.344      0.509      0.640      2.822
+ COPE14_B
+    Category > 1       1.821      0.675      0.881      3.764
+ COPE15_B
+    Category > 1       0.253      0.183      0.061      1.042
+
+Latent Class 2 Compared to Latent Class 6
+
+ COPE1_B
+    Category > 1       2.572      1.326      0.936      7.067
+ COPE2_B
+    Category > 1       1.913      1.275      0.518      7.064
+ COPE3_B
+    Category > 1       1.523      0.758      0.574      4.040
+ COPE4_B
+    Category > 1       2.745      1.515      0.930      8.098
+ COPE5_B
+    Category > 1       1.889      0.982      0.681      5.234
+ COPE6_B
+    Category > 1       0.254      0.408      0.011      5.939
+ COPE7_B
+    Category > 1       1.418      1.233      0.258      7.795
+ COPE8_B
+    Category > 1       2.261      1.306      0.729      7.013
+ COPE9_B
+    Category > 1       0.572      0.663      0.059      5.534
+ COPE10_B
+    Category > 1       1.501      0.741      0.571      3.949
+ COPE11_B
+    Category > 1       1.546      0.986      0.443      5.398
+ COPE12_B
+    Category > 1       0.646      0.375      0.207      2.014
+ COPE13_B
+    Category > 1       1.016      0.520      0.373      2.768
+ COPE14_B
+    Category > 1       3.015      1.659      1.025      8.867
+ COPE15_B
+    Category > 1       1.315      0.717      0.452      3.827
+
+Latent Class 3 Compared to Latent Class 4
+
+ COPE1_B
+    Category > 1       1.147      0.603      0.409      3.214
+ COPE2_B
+    Category > 1       1.298      1.135      0.233      7.211
+ COPE3_B
+    Category > 1       0.898      0.467      0.324      2.489
+ COPE4_B
+    Category > 1       3.890      2.830      0.935     16.190
+ COPE5_B
+    Category > 1       1.210      0.662      0.414      3.534
+ COPE6_B
+    Category > 1       1.675      1.178      0.422      6.651
+ COPE7_B
+    Category > 1       0.457      0.244      0.161      1.303
+ COPE8_B
+    Category > 1       0.770      0.451      0.245      2.424
+ COPE9_B
+    Category > 1       0.824      0.998      0.077      8.848
+ COPE10_B
+    Category > 1       1.781      0.860      0.691      4.590
+ COPE11_B
+    Category > 1       1.105      0.600      0.381      3.202
+ COPE12_B
+    Category > 1       1.102      0.641      0.352      3.446
+ COPE13_B
+    Category > 1       0.441      0.216      0.169      1.150
+ COPE14_B
+    Category > 1       0.683      0.332      0.263      1.773
+ COPE15_B
+    Category > 1       0.331      0.265      0.069      1.592
+
+Latent Class 3 Compared to Latent Class 5
+
+ COPE1_B
+    Category > 1       1.321      0.623      0.525      3.328
+ COPE2_B
+    Category > 1       2.090      1.532      0.497      8.791
+ COPE3_B
+    Category > 1       1.342      0.609      0.552      3.265
+ COPE4_B
+    Category > 1       2.533      1.761      0.649      9.895
+ COPE5_B
+    Category > 1       0.789      0.421      0.277      2.244
+ COPE6_B
+    Category > 1       1.633      1.061      0.457      5.834
+ COPE7_B
+    Category > 1       0.499      0.245      0.190      1.309
+ COPE8_B
+    Category > 1       1.078      0.540      0.404      2.878
+ COPE9_B
+    Category > 1       0.304      0.510      0.011      8.167
+ COPE10_B
+    Category > 1       1.377      0.606      0.581      3.264
+ COPE11_B
+    Category > 1       1.422      0.684      0.554      3.649
+ COPE12_B
+    Category > 1       1.259      0.653      0.455      3.482
+ COPE13_B
+    Category > 1       1.200      0.537      0.499      2.884
+ COPE14_B
+    Category > 1       1.659      0.723      0.706      3.898
+ COPE15_B
+    Category > 1       0.262      0.200      0.059      1.173
+
+Latent Class 3 Compared to Latent Class 6
+
+ COPE1_B
+    Category > 1       1.739      1.031      0.544      5.560
+ COPE2_B
+    Category > 1       2.537      2.187      0.468     13.746
+ COPE3_B
+    Category > 1       1.665      0.963      0.536      5.175
+ COPE4_B
+    Category > 1       4.420      3.438      0.962     20.300
+ COPE5_B
+    Category > 1       1.771      1.082      0.535      5.867
+ COPE6_B
+    Category > 1       0.269      0.452      0.010      7.255
+ COPE7_B
+    Category > 1       2.313      2.147      0.375     14.262
+ COPE8_B
+    Category > 1       1.150      0.742      0.325      4.073
+ COPE9_B
+    Category > 1       0.943      1.273      0.067     13.296
+ COPE10_B
+    Category > 1       1.646      0.938      0.539      5.028
+ COPE11_B
+    Category > 1       0.795      0.556      0.202      3.130
+ COPE12_B
+    Category > 1       1.190      0.809      0.314      4.510
+ COPE13_B
+    Category > 1       0.907      0.529      0.289      2.848
+ COPE14_B
+    Category > 1       2.746      1.689      0.823      9.166
+ COPE15_B
+    Category > 1       1.363      0.865      0.393      4.730
+
+Latent Class 4 Compared to Latent Class 5
+
+ COPE1_B
+    Category > 1       1.152      0.563      0.442      3.000
+ COPE2_B
+    Category > 1       1.611      1.156      0.394      6.579
+ COPE3_B
+    Category > 1       1.494      0.728      0.575      3.883
+ COPE4_B
+    Category > 1       0.651      0.345      0.230      1.841
+ COPE5_B
+    Category > 1       0.652      0.356      0.223      1.904
+ COPE6_B
+    Category > 1       0.975      0.587      0.299      3.176
+ COPE7_B
+    Category > 1       1.090      0.508      0.437      2.718
+ COPE8_B
+    Category > 1       1.400      0.774      0.474      4.138
+ COPE9_B
+    Category > 1       0.369      0.660      0.011     12.280
+ COPE10_B
+    Category > 1       0.773      0.353      0.316      1.890
+ COPE11_B
+    Category > 1       1.287      0.642      0.484      3.423
+ COPE12_B
+    Category > 1       1.143      0.616      0.397      3.285
+ COPE13_B
+    Category > 1       2.718      1.290      1.073      6.890
+ COPE14_B
+    Category > 1       2.429      1.145      0.965      6.119
+ COPE15_B
+    Category > 1       0.792      0.765      0.119      5.263
+
+Latent Class 4 Compared to Latent Class 6
+
+ COPE1_B
+    Category > 1       1.515      0.926      0.457      5.021
+ COPE2_B
+    Category > 1       1.955      1.673      0.365     10.466
+ COPE3_B
+    Category > 1       1.854      1.132      0.561      6.132
+ COPE4_B
+    Category > 1       1.136      0.718      0.329      3.922
+ COPE5_B
+    Category > 1       1.464      0.914      0.431      4.977
+ COPE6_B
+    Category > 1       0.161      0.270      0.006      4.321
+ COPE7_B
+    Category > 1       5.056      4.666      0.828     30.863
+ COPE8_B
+    Category > 1       1.492      1.034      0.384      5.804
+ COPE9_B
+    Category > 1       1.144      1.672      0.065     20.054
+ COPE10_B
+    Category > 1       0.925      0.542      0.293      2.916
+ COPE11_B
+    Category > 1       0.720      0.517      0.176      2.944
+ COPE12_B
+    Category > 1       1.080      0.757      0.273      4.266
+ COPE13_B
+    Category > 1       2.054      1.252      0.622      6.781
+ COPE14_B
+    Category > 1       4.023      2.598      1.135     14.264
+ COPE15_B
+    Category > 1       4.120      3.560      0.758     22.410
+
+Latent Class 5 Compared to Latent Class 6
+
+ COPE1_B
+    Category > 1       1.316      0.766      0.420      4.120
+ COPE2_B
+    Category > 1       1.214      0.921      0.274      5.372
+ COPE3_B
+    Category > 1       1.241      0.709      0.405      3.800
+ COPE4_B
+    Category > 1       1.745      1.115      0.499      6.102
+ COPE5_B
+    Category > 1       2.246      1.417      0.652      7.735
+ COPE6_B
+    Category > 1       0.165      0.271      0.007      4.146
+ COPE7_B
+    Category > 1       4.637      4.178      0.793     27.108
+ COPE8_B
+    Category > 1       1.066      0.683      0.304      3.742
+ COPE9_B
+    Category > 1       3.101      5.875      0.076    127.169
+ COPE10_B
+    Category > 1       1.196      0.675      0.395      3.615
+ COPE11_B
+    Category > 1       0.559      0.383      0.146      2.138
+ COPE12_B
+    Category > 1       0.945      0.630      0.256      3.491
+ COPE13_B
+    Category > 1       0.756      0.445      0.238      2.395
+ COPE14_B
+    Category > 1       1.656      1.023      0.493      5.561
+ COPE15_B
+    Category > 1       5.204      4.437      0.978     27.676
+
+
+LOGISTIC REGRESSION ODDS RATIO RESULTS
+
+                                                95% C.I.
+                    Estimate       S.E.  Lower 2.5% Upper 2.5%
+
+Categorical Latent Variables
+
+ C#1      ON
+    NONWHITE           0.644      0.495      0.143      2.906
+    MALE               1.755      1.767      0.244     12.626
+    SGM                0.787      0.681      0.144      4.289
+    FG                 2.173      2.431      0.242     19.478
+    HS_BA              0.800      0.648      0.164      3.912
+
+ C#2      ON
+    NONWHITE           0.858      0.431      0.321      2.294
+    MALE               3.485      2.646      0.787     15.435
+    SGM                0.107      0.067      0.031      0.364
+    FG                 2.065      1.587      0.458      9.315
+    HS_BA              0.623      0.338      0.216      1.803
+
+ C#3      ON
+    NONWHITE           0.451      0.268      0.141      1.444
+    MALE               3.641      2.975      0.734     18.064
+    SGM                0.184      0.143      0.040      0.846
+    FG                 3.517      3.008      0.658     18.802
+    HS_BA              0.589      0.379      0.167      2.078
+
+ C#4      ON
+    NONWHITE           0.719      0.430      0.223      2.320
+    MALE               0.845      0.773      0.140      5.081
+    SGM                1.076      0.699      0.301      3.846
+    FG                 1.205      1.115      0.197      7.390
+    HS_BA              0.582      0.373      0.165      2.046
+
+ C#5      ON
+    NONWHITE           0.740      0.425      0.240      2.280
+    MALE               3.292      2.627      0.689     15.729
+    SGM                0.715      0.460      0.203      2.525
+    FG                 1.087      1.011      0.176      6.727
+    HS_BA              0.467      0.290      0.138      1.579
+
+
+ALTERNATIVE PARAMETERIZATIONS FOR THE CATEGORICAL LATENT VARIABLE REGRESSION
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Parameterization using Reference Class 1
+
+ C#2      ON
+    NONWHITE           0.287      0.611      0.469      0.639
+    MALE               0.686      0.700      0.981      0.327
+    SGM               -1.996      0.723     -2.761      0.006
+    FG                -0.051      0.859     -0.059      0.953
+    HS_BA             -0.249      0.627     -0.398      0.691
+
+ C#3      ON
+    NONWHITE          -0.356      0.685     -0.520      0.603
+    MALE               0.730      0.756      0.966      0.334
+    SGM               -1.451      0.842     -1.722      0.085
+    FG                 0.482      0.932      0.517      0.605
+    HS_BA             -0.307      0.712     -0.431      0.666
+
+ C#4      ON
+    NONWHITE           0.111      0.671      0.165      0.869
+    MALE              -0.732      0.843     -0.868      0.385
+    SGM                0.313      0.730      0.429      0.668
+    FG                -0.589      0.979     -0.602      0.547
+    HS_BA             -0.319      0.709     -0.450      0.653
+
+ C#5      ON
+    NONWHITE           0.139      0.672      0.207      0.836
+    MALE               0.629      0.750      0.838      0.402
+    SGM               -0.095      0.738     -0.129      0.897
+    FG                -0.692      1.006     -0.688      0.491
+    HS_BA             -0.538      0.702     -0.765      0.444
+
+ C#6      ON
+    NONWHITE           0.440      0.769      0.573      0.567
+    MALE              -0.563      1.007     -0.559      0.576
+    SGM                0.240      0.865      0.277      0.782
+    FG                -0.776      1.119     -0.693      0.488
+    HS_BA              0.223      0.810      0.276      0.783
+
+ Intercepts
+    C#2                2.706      0.545      4.967      0.000
+    C#3                1.668      0.599      2.786      0.005
+    C#4                1.696      0.584      2.903      0.004
+    C#5                1.362      0.599      2.273      0.023
+    C#6                0.240      0.689      0.349      0.727
+
+Parameterization using Reference Class 2
+
+ C#1      ON
+    NONWHITE          -0.287      0.611     -0.469      0.639
+    MALE              -0.686      0.700     -0.981      0.327
+    SGM                1.996      0.723      2.761      0.006
+    FG                 0.051      0.859      0.059      0.953
+    HS_BA              0.249      0.627      0.398      0.691
+
+ C#3      ON
+    NONWHITE          -0.643      0.380     -1.691      0.091
+    MALE               0.044      0.375      0.117      0.907
+    SGM                0.546      0.651      0.839      0.402
+    FG                 0.532      0.491      1.084      0.278
+    HS_BA             -0.057      0.418     -0.137      0.891
+
+ C#4      ON
+    NONWHITE          -0.176      0.403     -0.436      0.663
+    MALE              -1.417      0.591     -2.399      0.016
+    SGM                2.309      0.501      4.606      0.000
+    FG                -0.538      0.626     -0.861      0.389
+    HS_BA             -0.069      0.441     -0.158      0.875
+
+ C#5      ON
+    NONWHITE          -0.148      0.396     -0.373      0.709
+    MALE              -0.057      0.410     -0.140      0.889
+    SGM                1.901      0.520      3.658      0.000
+    FG                -0.641      0.678     -0.946      0.344
+    HS_BA             -0.288      0.430     -0.671      0.503
+
+ C#6      ON
+    NONWHITE           0.154      0.502      0.306      0.760
+    MALE              -1.249      0.759     -1.645      0.100
+    SGM                2.236      0.625      3.576      0.000
+    FG                -0.725      0.769     -0.943      0.346
+    HS_BA              0.473      0.542      0.872      0.383
+
+ Intercepts
+    C#1               -2.706      0.545     -4.967      0.000
+    C#3               -1.038      0.318     -3.261      0.001
+    C#4               -1.011      0.307     -3.292      0.001
+    C#5               -1.344      0.335     -4.018      0.000
+    C#6               -2.466      0.436     -5.650      0.000
+
+Parameterization using Reference Class 3
+
+ C#1      ON
+    NONWHITE           0.356      0.685      0.520      0.603
+    MALE              -0.730      0.756     -0.966      0.334
+    SGM                1.451      0.842      1.722      0.085
+    FG                -0.482      0.932     -0.517      0.605
+    HS_BA              0.307      0.712      0.431      0.666
+
+ C#2      ON
+    NONWHITE           0.643      0.380      1.691      0.091
+    MALE              -0.044      0.375     -0.117      0.907
+    SGM               -0.546      0.651     -0.839      0.402
+    FG                -0.532      0.491     -1.084      0.278
+    HS_BA              0.057      0.418      0.137      0.891
+
+ C#4      ON
+    NONWHITE           0.467      0.541      0.863      0.388
+    MALE              -1.461      0.692     -2.112      0.035
+    SGM                1.764      0.705      2.504      0.012
+    FG                -1.071      0.770     -1.391      0.164
+    HS_BA             -0.012      0.591     -0.020      0.984
+
+ C#5      ON
+    NONWHITE           0.495      0.482      1.027      0.304
+    MALE              -0.101      0.479     -0.211      0.833
+    SGM                1.355      0.640      2.117      0.034
+    FG                -1.174      0.733     -1.602      0.109
+    HS_BA             -0.231      0.518     -0.445      0.656
+
+ C#6      ON
+    NONWHITE           0.797      0.594      1.342      0.180
+    MALE              -1.292      0.817     -1.582      0.114
+    SGM                1.691      0.777      2.175      0.030
+    FG                -1.258      0.855     -1.470      0.142
+    HS_BA              0.530      0.644      0.824      0.410
+
+ Intercepts
+    C#1               -1.668      0.599     -2.786      0.005
+    C#2                1.038      0.318      3.261      0.001
+    C#4                0.028      0.418      0.067      0.947
+    C#5               -0.306      0.396     -0.772      0.440
+    C#6               -1.427      0.506     -2.823      0.005
+
+Parameterization using Reference Class 4
+
+ C#1      ON
+    NONWHITE          -0.111      0.671     -0.165      0.869
+    MALE               0.732      0.843      0.868      0.385
+    SGM               -0.313      0.730     -0.429      0.668
+    FG                 0.589      0.979      0.602      0.547
+    HS_BA              0.319      0.709      0.450      0.653
+
+ C#2      ON
+    NONWHITE           0.176      0.403      0.436      0.663
+    MALE               1.417      0.591      2.399      0.016
+    SGM               -2.309      0.501     -4.606      0.000
+    FG                 0.538      0.626      0.861      0.389
+    HS_BA              0.069      0.441      0.158      0.875
+
+ C#3      ON
+    NONWHITE          -0.467      0.541     -0.863      0.388
+    MALE               1.461      0.692      2.112      0.035
+    SGM               -1.764      0.705     -2.504      0.012
+    FG                 1.071      0.770      1.391      0.164
+    HS_BA              0.012      0.591      0.020      0.984
+
+ C#5      ON
+    NONWHITE           0.028      0.488      0.057      0.955
+    MALE               1.360      0.641      2.121      0.034
+    SGM               -0.408      0.510     -0.800      0.424
+    FG                -0.103      0.839     -0.123      0.902
+    HS_BA             -0.219      0.541     -0.404      0.686
+
+ C#6      ON
+    NONWHITE           0.329      0.597      0.551      0.581
+    MALE               0.169      0.916      0.184      0.854
+    SGM               -0.073      0.650     -0.112      0.910
+    FG                -0.187      0.925     -0.202      0.840
+    HS_BA              0.542      0.642      0.845      0.398
+
+ Intercepts
+    C#1               -1.696      0.584     -2.903      0.004
+    C#2                1.011      0.307      3.292      0.001
+    C#3               -0.028      0.418     -0.067      0.947
+    C#5               -0.334      0.399     -0.836      0.403
+    C#6               -1.455      0.497     -2.928      0.003
+
+Parameterization using Reference Class 5
+
+ C#1      ON
+    NONWHITE          -0.139      0.672     -0.207      0.836
+    MALE              -0.629      0.750     -0.838      0.402
+    SGM                0.095      0.738      0.129      0.897
+    FG                 0.692      1.006      0.688      0.491
+    HS_BA              0.538      0.702      0.765      0.444
+
+ C#2      ON
+    NONWHITE           0.148      0.396      0.373      0.709
+    MALE               0.057      0.410      0.140      0.889
+    SGM               -1.901      0.520     -3.658      0.000
+    FG                 0.641      0.678      0.946      0.344
+    HS_BA              0.288      0.430      0.671      0.503
+
+ C#3      ON
+    NONWHITE          -0.495      0.482     -1.027      0.304
+    MALE               0.101      0.479      0.211      0.833
+    SGM               -1.355      0.640     -2.117      0.034
+    FG                 1.174      0.733      1.602      0.109
+    HS_BA              0.231      0.518      0.445      0.656
+
+ C#4      ON
+    NONWHITE          -0.028      0.488     -0.057      0.955
+    MALE              -1.360      0.641     -2.121      0.034
+    SGM                0.408      0.510      0.800      0.424
+    FG                 0.103      0.839      0.123      0.902
+    HS_BA              0.219      0.541      0.404      0.686
+
+ C#6      ON
+    NONWHITE           0.301      0.574      0.525      0.600
+    MALE              -1.191      0.798     -1.493      0.135
+    SGM                0.335      0.644      0.521      0.602
+    FG                -0.084      0.930     -0.090      0.928
+    HS_BA              0.761      0.621      1.225      0.221
+
+ Intercepts
+    C#1               -1.362      0.599     -2.273      0.023
+    C#2                1.344      0.335      4.018      0.000
+    C#3                0.306      0.396      0.772      0.440
+    C#4                0.334      0.399      0.836      0.403
+    C#6               -1.121      0.504     -2.226      0.026
+
+
+ODDS RATIO FOR THE ALTERNATIVE PARAMETERIZATIONS FOR THE CATEGORICAL LATENT VARIABLE REGRESSION
+
+                                                95% C.I.
+                    Estimate       S.E.  Lower 2.5% Upper 2.5%
+
+Parameterization using Reference Class 1
+
+ C#2      ON
+    NONWHITE           1.332      0.814      0.402      4.416
+    MALE               1.986      1.389      0.504      7.823
+    SGM                0.136      0.098      0.033      0.560
+    FG                 0.950      0.817      0.176      5.123
+    HS_BA              0.779      0.489      0.228      2.665
+
+ C#3      ON
+    NONWHITE           0.700      0.480      0.183      2.683
+    MALE               2.074      1.568      0.472      9.124
+    SGM                0.234      0.197      0.045      1.222
+    FG                 1.619      1.509      0.260     10.058
+    HS_BA              0.736      0.524      0.182      2.968
+
+ C#4      ON
+    NONWHITE           1.117      0.750      0.300      4.162
+    MALE               0.481      0.406      0.092      2.510
+    SGM                1.368      0.999      0.327      5.722
+    FG                 0.555      0.543      0.081      3.778
+    HS_BA              0.727      0.515      0.181      2.917
+
+ C#5      ON
+    NONWHITE           1.149      0.772      0.308      4.287
+    MALE               1.875      1.407      0.431      8.158
+    SGM                0.909      0.671      0.214      3.864
+    FG                 0.500      0.503      0.070      3.594
+    HS_BA              0.584      0.410      0.147      2.315
+
+ C#6      ON
+    NONWHITE           1.553      1.194      0.344      7.010
+    MALE               0.570      0.573      0.079      4.098
+    SGM                1.271      1.100      0.233      6.931
+    FG                 0.460      0.515      0.051      4.126
+    HS_BA              1.250      1.012      0.256      6.113
+
+Parameterization using Reference Class 2
+
+ C#1      ON
+    NONWHITE           0.751      0.459      0.226      2.489
+    MALE               0.504      0.352      0.128      1.984
+    SGM                7.362      5.324      1.784     30.377
+    FG                 1.052      0.904      0.195      5.672
+    HS_BA              1.283      0.805      0.375      4.389
+
+ C#3      ON
+    NONWHITE           0.526      0.200      0.250      1.108
+    MALE               1.045      0.392      0.501      2.178
+    SGM                1.726      1.123      0.482      6.177
+    FG                 1.703      0.836      0.651      4.459
+    HS_BA              0.944      0.394      0.416      2.141
+
+ C#4      ON
+    NONWHITE           0.839      0.338      0.381      1.848
+    MALE               0.242      0.143      0.076      0.772
+    SGM               10.068      5.048      3.769     26.900
+    FG                 0.584      0.365      0.171      1.989
+    HS_BA              0.933      0.411      0.393      2.212
+
+ C#5      ON
+    NONWHITE           0.863      0.342      0.397      1.876
+    MALE               0.944      0.387      0.423      2.108
+    SGM                6.692      3.478      2.416     18.533
+    FG                 0.527      0.357      0.139      1.989
+    HS_BA              0.750      0.322      0.323      1.740
+
+ C#6      ON
+    NONWHITE           1.166      0.585      0.436      3.119
+    MALE               0.287      0.218      0.065      1.271
+    SGM                9.359      5.853      2.747     31.881
+    FG                 0.484      0.372      0.107      2.185
+    HS_BA              1.604      0.869      0.555      4.639
+
+Parameterization using Reference Class 3
+
+ C#1      ON
+    NONWHITE           1.428      0.978      0.373      5.470
+    MALE               0.482      0.364      0.110      2.120
+    SGM                4.266      3.593      0.819     22.232
+    FG                 0.618      0.576      0.099      3.839
+    HS_BA              1.359      0.967      0.337      5.483
+
+ C#2      ON
+    NONWHITE           1.902      0.723      0.903      4.007
+    MALE               0.957      0.359      0.459      1.995
+    SGM                0.579      0.377      0.162      2.074
+    FG                 0.587      0.288      0.224      1.537
+    HS_BA              1.059      0.442      0.467      2.402
+
+ C#4      ON
+    NONWHITE           1.596      0.863      0.552      4.608
+    MALE               0.232      0.160      0.060      0.900
+    SGM                5.835      4.110      1.467     23.211
+    FG                 0.343      0.264      0.076      1.550
+    HS_BA              0.988      0.584      0.310      3.150
+
+ C#5      ON
+    NONWHITE           1.641      0.791      0.638      4.220
+    MALE               0.904      0.433      0.353      2.313
+    SGM                3.878      2.483      1.105     13.603
+    FG                 0.309      0.226      0.074      1.299
+    HS_BA              0.794      0.411      0.288      2.191
+
+ C#6      ON
+    NONWHITE           2.218      1.317      0.693      7.101
+    MALE               0.275      0.224      0.055      1.362
+    SGM                5.423      4.216      1.182     24.885
+    FG                 0.284      0.243      0.053      1.520
+    HS_BA              1.699      1.093      0.481      5.997
+
+Parameterization using Reference Class 4
+
+ C#1      ON
+    NONWHITE           0.895      0.600      0.240      3.334
+    MALE               2.078      1.752      0.398     10.843
+    SGM                0.731      0.534      0.175      3.060
+    FG                 1.803      1.765      0.265     12.278
+    HS_BA              1.376      0.975      0.343      5.518
+
+ C#2      ON
+    NONWHITE           1.192      0.480      0.541      2.626
+    MALE               4.127      2.439      1.296     13.141
+    SGM                0.099      0.050      0.037      0.265
+    FG                 1.713      1.072      0.503      5.840
+    HS_BA              1.072      0.472      0.452      2.542
+
+ C#3      ON
+    NONWHITE           0.627      0.339      0.217      1.810
+    MALE               4.311      2.983      1.111     16.734
+    SGM                0.171      0.121      0.043      0.682
+    FG                 2.918      2.246      0.645     13.194
+    HS_BA              1.012      0.599      0.318      3.226
+
+ C#5      ON
+    NONWHITE           1.028      0.502      0.395      2.676
+    MALE               3.897      2.499      1.109     13.698
+    SGM                0.665      0.339      0.244      1.808
+    FG                 0.902      0.757      0.174      4.675
+    HS_BA              0.804      0.435      0.278      2.321
+
+ C#6      ON
+    NONWHITE           1.390      0.830      0.431      4.482
+    MALE               1.184      1.084      0.197      7.123
+    SGM                0.930      0.604      0.260      3.323
+    FG                 0.830      0.768      0.135      5.088
+    HS_BA              1.719      1.103      0.489      6.048
+
+Parameterization using Reference Class 5
+
+ C#1      ON
+    NONWHITE           0.870      0.585      0.233      3.247
+    MALE               0.533      0.400      0.123      2.320
+    SGM                1.100      0.812      0.259      4.676
+    FG                 1.998      2.010      0.278     14.352
+    HS_BA              1.712      1.202      0.432      6.782
+
+ C#2      ON
+    NONWHITE           1.159      0.459      0.533      2.521
+    MALE               1.059      0.434      0.474      2.364
+    SGM                0.149      0.078      0.054      0.414
+    FG                 1.899      1.287      0.503      7.172
+    HS_BA              1.334      0.573      0.575      3.096
+
+ C#3      ON
+    NONWHITE           0.610      0.294      0.237      1.568
+    MALE               1.106      0.530      0.432      2.831
+    SGM                0.258      0.165      0.074      0.905
+    FG                 3.234      2.369      0.770     13.594
+    HS_BA              1.259      0.652      0.456      3.475
+
+ C#4      ON
+    NONWHITE           0.973      0.475      0.374      2.531
+    MALE               0.257      0.165      0.073      0.902
+    SGM                1.505      0.768      0.553      4.092
+    FG                 1.108      0.930      0.214      5.744
+    HS_BA              1.244      0.673      0.431      3.594
+
+ C#6      ON
+    NONWHITE           1.352      0.776      0.439      4.166
+    MALE               0.304      0.242      0.064      1.452
+    SGM                1.398      0.900      0.396      4.938
+    FG                 0.920      0.855      0.149      5.691
+    HS_BA              2.140      1.329      0.633      7.229
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 1
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 2
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 3
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 4
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 5
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 6
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0             0             0             0             0
+ MALE               0             0             0             0             0
+ SGM                0             0             0             0             0
+ FG                 0             0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE           0
+ MALE               0             0
+ SGM                0             0             0
+ FG                 0             0             0             0
+ HS_BA              0             0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS INDICATOR MODEL PART
+
+
+           TAU(U) FOR LATENT CLASS 1
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+                    1             2             3             4             5
+
+
+           TAU(U) FOR LATENT CLASS 1
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+                    6             7             8             9            10
+
+
+           TAU(U) FOR LATENT CLASS 1
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+                   11            12            13            14            15
+
+
+           TAU(U) FOR LATENT CLASS 2
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+                   16            17            18            19            20
+
+
+           TAU(U) FOR LATENT CLASS 2
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+                   21            22            23            24            25
+
+
+           TAU(U) FOR LATENT CLASS 2
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+                   26            27            28            29            30
+
+
+           TAU(U) FOR LATENT CLASS 3
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+                   31            32            33            34            35
+
+
+           TAU(U) FOR LATENT CLASS 3
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+                   36            37            38            39            40
+
+
+           TAU(U) FOR LATENT CLASS 3
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+                   41            42            43            44            45
+
+
+           TAU(U) FOR LATENT CLASS 4
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+                   46            47            48            49            50
+
+
+           TAU(U) FOR LATENT CLASS 4
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+                   51            52            53            54            55
+
+
+           TAU(U) FOR LATENT CLASS 4
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+                   56            57            58            59            60
+
+
+           TAU(U) FOR LATENT CLASS 5
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+                   61            62            63            64            65
+
+
+           TAU(U) FOR LATENT CLASS 5
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+                   66            67            68            69            70
+
+
+           TAU(U) FOR LATENT CLASS 5
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+                   71            72            73            74            75
+
+
+           TAU(U) FOR LATENT CLASS 6
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+                   76            77            78            79            80
+
+
+           TAU(U) FOR LATENT CLASS 6
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+                   81            82            83            84            85
+
+
+           TAU(U) FOR LATENT CLASS 6
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+                   86            87            88            89            90
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2           C#3           C#4           C#5
+              ________      ________      ________      ________      ________
+                   91            92            93            94            95
+
+
+           ALPHA(C)
+              C#6
+              ________
+                    0
+
+
+           GAMMA(C)
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ C#1               96            97            98            99           100
+ C#2              101           102           103           104           105
+ C#3              106           107           108           109           110
+ C#4              111           112           113           114           115
+ C#5              116           117           118           119           120
+ C#6                0             0             0             0             0
+
+
+     STARTING VALUES FOR LATENT CLASS 1
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       1.000         0.000         0.000         0.000         0.000
+ MALE           0.000         1.000         0.000         0.000         0.000
+ SGM            0.000         0.000         1.000         0.000         0.000
+ FG             0.000         0.000         0.000         1.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000
+ MALE           0.000         0.000
+ SGM            0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ SGM            0.000         0.000         0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.119
+ MALE           0.000         0.104
+ SGM            0.000         0.000         0.073
+ FG             0.000         0.000         0.000         0.076
+ HS_BA          0.000         0.000         0.000         0.000         0.125
+
+
+     STARTING VALUES FOR LATENT CLASS 2
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       1.000         0.000         0.000         0.000         0.000
+ MALE           0.000         1.000         0.000         0.000         0.000
+ SGM            0.000         0.000         1.000         0.000         0.000
+ FG             0.000         0.000         0.000         1.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000
+ MALE           0.000         0.000
+ SGM            0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ SGM            0.000         0.000         0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.119
+ MALE           0.000         0.104
+ SGM            0.000         0.000         0.073
+ FG             0.000         0.000         0.000         0.076
+ HS_BA          0.000         0.000         0.000         0.000         0.125
+
+
+     STARTING VALUES FOR LATENT CLASS 3
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       1.000         0.000         0.000         0.000         0.000
+ MALE           0.000         1.000         0.000         0.000         0.000
+ SGM            0.000         0.000         1.000         0.000         0.000
+ FG             0.000         0.000         0.000         1.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000
+ MALE           0.000         0.000
+ SGM            0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ SGM            0.000         0.000         0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.119
+ MALE           0.000         0.104
+ SGM            0.000         0.000         0.073
+ FG             0.000         0.000         0.000         0.076
+ HS_BA          0.000         0.000         0.000         0.000         0.125
+
+
+     STARTING VALUES FOR LATENT CLASS 4
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       1.000         0.000         0.000         0.000         0.000
+ MALE           0.000         1.000         0.000         0.000         0.000
+ SGM            0.000         0.000         1.000         0.000         0.000
+ FG             0.000         0.000         0.000         1.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000
+ MALE           0.000         0.000
+ SGM            0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ SGM            0.000         0.000         0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.119
+ MALE           0.000         0.104
+ SGM            0.000         0.000         0.073
+ FG             0.000         0.000         0.000         0.076
+ HS_BA          0.000         0.000         0.000         0.000         0.125
+
+
+     STARTING VALUES FOR LATENT CLASS 5
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       1.000         0.000         0.000         0.000         0.000
+ MALE           0.000         1.000         0.000         0.000         0.000
+ SGM            0.000         0.000         1.000         0.000         0.000
+ FG             0.000         0.000         0.000         1.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000
+ MALE           0.000         0.000
+ SGM            0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ SGM            0.000         0.000         0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.119
+ MALE           0.000         0.104
+ SGM            0.000         0.000         0.073
+ FG             0.000         0.000         0.000         0.076
+ HS_BA          0.000         0.000         0.000         0.000         0.125
+
+
+     STARTING VALUES FOR LATENT CLASS 6
+
+
+           NU
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       1.000         0.000         0.000         0.000         0.000
+ MALE           0.000         1.000         0.000         0.000         0.000
+ SGM            0.000         0.000         1.000         0.000         0.000
+ FG             0.000         0.000         0.000         1.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000
+ MALE           0.000         0.000
+ SGM            0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.000         0.000         0.000         0.000         0.000
+ MALE           0.000         0.000         0.000         0.000         0.000
+ SGM            0.000         0.000         0.000         0.000         0.000
+ FG             0.000         0.000         0.000         0.000         0.000
+ HS_BA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ NONWHITE       0.119
+ MALE           0.000         0.104
+ SGM            0.000         0.000         0.073
+ FG             0.000         0.000         0.000         0.076
+ HS_BA          0.000         0.000         0.000         0.000         0.125
+
+
+     STARTING VALUES FOR LATENT CLASS INDICATOR MODEL PART
+
+
+           TAU(U) FOR LATENT CLASS 1
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+               -3.081        -4.098        -2.686        -3.572        -3.201
+
+
+           TAU(U) FOR LATENT CLASS 1
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+               -4.010        -0.694        -3.519        -4.902        -2.264
+
+
+           TAU(U) FOR LATENT CLASS 1
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+               -3.361        -2.905        -1.772        -2.141        -3.553
+
+
+           TAU(U) FOR LATENT CLASS 2
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+               -2.081        -3.098        -1.686        -2.572        -2.201
+
+
+           TAU(U) FOR LATENT CLASS 2
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+               -3.010         0.306        -2.519        -3.902        -1.264
+
+
+           TAU(U) FOR LATENT CLASS 2
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+               -2.361        -1.905        -0.772        -1.141        -2.553
+
+
+           TAU(U) FOR LATENT CLASS 3
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+               -1.081        -2.098        -0.686        -1.572        -1.201
+
+
+           TAU(U) FOR LATENT CLASS 3
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+               -2.010         1.306        -1.519        -2.902        -0.264
+
+
+           TAU(U) FOR LATENT CLASS 3
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+               -1.361        -0.905         0.228        -0.141        -1.553
+
+
+           TAU(U) FOR LATENT CLASS 4
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+               -1.081        -2.098        -0.686        -1.572        -1.201
+
+
+           TAU(U) FOR LATENT CLASS 4
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+               -2.010         1.306        -1.519        -2.902        -0.264
+
+
+           TAU(U) FOR LATENT CLASS 4
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+               -1.361        -0.905         0.228        -0.141        -1.553
+
+
+           TAU(U) FOR LATENT CLASS 5
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+               -0.081        -1.098         0.314        -0.572        -0.201
+
+
+           TAU(U) FOR LATENT CLASS 5
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+               -1.010         2.306        -0.519        -1.902         0.736
+
+
+           TAU(U) FOR LATENT CLASS 5
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+               -0.361         0.095         1.228         0.859        -0.553
+
+
+           TAU(U) FOR LATENT CLASS 6
+              COPE1_B$      COPE2_B$      COPE3_B$      COPE4_B$      COPE5_B$
+              ________      ________      ________      ________      ________
+                0.919        -0.098         1.314         0.428         0.799
+
+
+           TAU(U) FOR LATENT CLASS 6
+              COPE6_B$      COPE7_B$      COPE8_B$      COPE9_B$      COPE10_B
+              ________      ________      ________      ________      ________
+               -0.010         3.306         0.481        -0.902         1.736
+
+
+           TAU(U) FOR LATENT CLASS 6
+              COPE11_B      COPE12_B      COPE13_B      COPE14_B      COPE15_B
+              ________      ________      ________      ________      ________
+                0.639         1.095         2.228         1.859         0.447
+
+
+     STARTING VALUES FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2           C#3           C#4           C#5
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA(C)
+              C#6
+              ________
+                0.000
+
+
+           GAMMA(C)
+              NONWHITE      MALE          SGM           FG            HS_BA
+              ________      ________      ________      ________      ________
+ C#1            0.000         0.000         0.000         0.000         0.000
+ C#2            0.000         0.000         0.000         0.000         0.000
+ C#3            0.000         0.000         0.000         0.000         0.000
+ C#4            0.000         0.000         0.000         0.000         0.000
+ C#5            0.000         0.000         0.000         0.000         0.000
+ C#6            0.000         0.000         0.000         0.000         0.000
+
+
+     Beginning Time:  15:36:03
+        Ending Time:  15:36:03
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2023 Muthen & Muthen

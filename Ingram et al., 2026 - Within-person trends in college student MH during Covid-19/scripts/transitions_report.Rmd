@@ -1,0 +1,239 @@
+---
+title: "COVID Paper Results"
+author: "Kyle Nickodem"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  word_document:
+    toc: TRUE
+    toc_depth: 2
+    reference_docx: "Markdown Template.docx"
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, results = "asis", warning = FALSE, message = FALSE)
+flextable::set_flextable_defaults(fonts_ignore = TRUE)
+
+library(knitr)
+library(flextable)
+library(dplyr)
+library(forcats)
+
+
+#' Default flextable format
+#'
+#' Internal function for formatting flextables
+#'
+#' @param df a \code{data.frame}
+#' @param bold.type character indicating table with a pre-specified bolding pattern. Not currently implemented.
+#' @param width numeric; maximum width of table in inches.
+#' @param digits integer; number of decimal places to display in the report.
+#'
+#' @return a \code{flextable} object
+#'
+#' @import flextable
+
+
+#### Formatting Output Tables ####
+format_flex <- function(df, digits = 2){
+  
+  if(!("flextable" %in% class(df))){
+  
+  numericcols <- which(unlist(lapply(df, is.numeric)))
+    df[numericcols] <- apply(df[numericcols], 2,
+                         FUN = function(x) format(round(x, digits), nsmall = digits))
+  
+  ftab <- flextable::flextable(df)
+  # ftab <- flextable::colformat_double(ftab, j = numericcols, digits = digits)
+  ftab <- set_formatter(ftab, values = function(x) sub("^(-?)0.", "\\1.", x)) # remove leading 0s
+  } else{
+    ftab <- df
+  }
+  ftab <- flextable::font(ftab, fontname = "Times New Roman", part = "all")
+  ftab <- flextable::padding(ftab, padding = 0, part = "all")
+  ftab <- flextable::align(ftab, align = "center", part = "all")
+  ftab <- flextable::align(ftab, j = 1, align = "left")
+  
+  
+  ftab <- flextable::autofit(ftab)
+  # ftab <- flextable::fit_to_width(ftab, width)
+  
+  return(ftab)
+}
+
+
+two_level_flex <- function(flex, mapping, vert.cols, border){
+  
+  flex <- flextable::set_header_df(flex, mapping = mapping)
+  flex <- flextable::merge_h(flex, part = "header")
+  flex <- flextable::merge_v(flex, j = vert.cols, part = "header")
+  flex <- flextable::fix_border_issues(flex)
+  flex <- flextable::border_inner_h(flex, border = border, part = "header")
+  flex <- flextable::hline_top(flex, border = border, part = "all")
+  # flex <- flextable::theme_vanilla(flex)
+  flex <- flextable::align(flex, i = NULL, j = -1, align = "center", part = "all")
+  flex <- flextable::font(flex, fontname = "Times New Roman", part = "all")
+  flex <- flextable::padding(flex, padding = 0, part = "all")
+  flex <- flextable::autofit(flex)
+  return(flex)
+}
+border <- officer::fp_border(width = 2)
+
+# load("../data/Covid_results_2025827.RData")
+load("../data/Covid_results_20260106.RData")
+
+```
+
+```{r, fig.width = 14, fig.height = 10, eval=F}
+# Full Sample
+print(enum.plot)
+enum.fit %>% format_flex() %>% knit_print()
+#\newpage
+```
+
+
+This is the sample of 460 students who responded to at least 1 coping strategy item.
+
+##  Preliminary Descriptives
+
+*Supplemental Figure 1. Score Correlations*
+
+```{r, fig.height=6, fig.width=6}
+corrplot::corrplot.mixed(score.corr$r, tl.pos = "lt")
+```
+
+\newpage
+
+*Supplemental Table 1. Descriptive Statistics for Included and Excluded Participants*
+
+```{r}
+desc.comp %>% format_flex() %>% knit_print()
+```
+
+\newpage
+
+*Categorical Predictors of Non-attrition*
+
+```{r}
+miss.glm %>% format_flex() %>% knit_print()
+```
+
+*Continuous Predictors of Non-attrition*
+
+```{r}
+miss.means %>% format_flex() %>% knit_print()
+```
+
+\newpage
+
+## Step 1
+
+*Table 1. Latent Profile Analysis Fit Statistics* 
+
+```{r}
+enum460.tab1 %>% format_flex() %>% knit_print()
+```
+*Note.* K = number of profiles, LL = log-likelihood, BIC = Bayesian information criteria; SABIC, sample size adjusted BIC, CAIC = consistent Akaike information criterion, VLMRT = Vuong-Lo-Mendell-Rubin adjusted likelihood ratio test; Profile *n* is based on most likely profile membership.
+
+*Plot of information criteria values*
+
+```{r}
+print(enum460.fitplot)
+```
+
+\newpage
+
+*Indicator Means by Profile*
+
+```{r, fig.width = 14, fig.height = 10}
+print(enum460.plot)
+```
+
+*Indicator Means by Profile*
+
+```{r}
+enum460.dat %>% 
+  select(Model, Indicator, est, Profile) %>%
+  tidyr::spread(Profile, est) %>%
+  mutate(Indicator = forcats::fct_relevel(Indicator, "GAD Baseline", "PHQ Baseline", "PSI Baseline",
+                                          "GAD Change", "PHQ Change", "PSI Change")) %>%
+  arrange(Model, Indicator) %>%
+  format_flex() %>% knit_print()
+```
+
+\newpage
+
+
+
+```{r, eval=F}
+# Info here already added to Table 1
+cp.map <- data.frame(col_keys = names(enum460.cp),
+                      top = c("Model", "Profile", rep(c("Model Estimated", "Most Likely"), each = 2)),
+                      bottom = c("Model", "Profile" , rep(c("Count", "Proportion"), times = 2)))
+
+cpflex <- flextable::flextable(enum460.cp)
+cpflex <- flextable::colformat_double(cpflex, j = c(3,4,6), digits = 2)
+cpflex <- kfa:::two_level_flex(cpflex, mapping = cp.map, vert.cols = c("Model", "Profile"), border = border)
+knitr::knit_print(cpflex)
+```
+
+
+## Step 2
+
+*Table 2. Mental health indicators and demographic variables by profile* 
+
+```{r}
+knit_print(desc460.c)
+```
+
+*Model Estimated Addendum*
+
+```{r}
+knit_print(desc460.c.change)
+```
+
+*Note.* ^a^Mean and SD (in parenthesis) in Overall column are observed sample statistics whereas means in profile columns are model estimated. At Time 1, the full range of values for anxiety (0 – 21), depression (0 – 24), and social isolation (0 – 20) were observed. **Bold** = score indicates severe anxiety (> 10) or depression (≥ 15); italics = score indicates moderate anxiety (> 5 and ≤10) or mild to moderate depression (≥5 and <15). There are no clinical ranges for social isolation.  = Cell counts < 5 are suppressed to avoid presentation of unstable results and protect confidentiality. NH = non-Hispanic.
+
+*X2 tests* - Not used in manuscript
+
+```{r}
+x2df %>% format_flex() %>% knit_print()
+```
+
+\newpage
+
+## Step 3 - Distal Outcomes
+
+*Figure 1. Probability of Using Coping Strategy by Profile*
+
+```{r fig.width=10, fig.height=10}
+print(cope.prob.point)
+```
+
+
+```{r fig.width=12, fig.height=12, eval=F}
+#*Bars*
+print(cope.prob.bar)
+```
+
+\newpage
+
+*Supplemental Table 2. Probability of Using Coping Strategy by Profile*
+
+```{r}
+cope.prob.wide %>% format_flex() %>% knit_print()
+```
+
+
+*Latent Profile Odds Ratios*
+
+There were a total of 225 comparisons (i.e., one for each profile pair on each of the 15 coping strategies). The P.adj column is the Benjamini-Hochberg adjustment to the p-value to manage the false discovery rate. Only comparisons with p < .10 (i.e., the P column, not the P.adj column) are presented here. An OR < 1 implies the first profile in the Comp column is less likely than the second profile to use the coping strategy.
+
+```{r}
+comps.sig %>% format_flex() %>% knit_print()
+```
+
+*Table 3. Odds ratio (standard error) of profile membership for demographic variables*
+
+```{r}
+cov.params %>% flextable() %>% format_flex() %>% knit_print()
+```
+*Note.* Profile 2 (low-stable, *n* = 220) was the reference group.

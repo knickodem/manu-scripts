@@ -1,0 +1,22 @@
+TITLE:
+COVID paper - Mental Health LPA - 6 profiles;
+DATA:
+FILE = "Mplus BCH/Step 1/Sample 460/step1_6class_ceb92ce2d29a9eb90c55cabce9ab3151.dat";
+ 
+VARIABLE:
+NAMES = ID GAD_int PHQ_int PSI_int GADc PHQc PSIc; 
+ MISSING=.;
+ IDVARIABLE = ID;
+CLASSES = c(6);
+ANALYSIS:
+TYPE = MIXTURE;
+ STARTS = 2000 500;
+ PROCESSORS = 4;
+OUTPUT:
+ENTROPY TECH1 TECH11 TECH14;
+SAVEDATA:
+FILE = step1_6_probs.dat;
+SAVE = CPROBABILITIES;
+PLOT:
+TYPE IS PLOT3;
+SERIES IS GAD_int (1) GADc (2) PHQ_int (3) PHQc (4) PSI_int (5) PSIc (6);
